@@ -19,6 +19,8 @@ public class Player_Movement : MonoBehaviour
     
     void Update()
     {
+        if (controller == null || !controller.enabled) return;
+        
         is_grounded = controller.isGrounded;
         
         if (is_grounded && velocity.y < 0)
@@ -44,7 +46,7 @@ public class Player_Movement : MonoBehaviour
     
     public void Jump()
     {
-        if (is_grounded)
+        if (controller != null && controller.enabled && is_grounded)
             velocity.y = jump_force;
     }
 }

@@ -7,16 +7,12 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] private Player_Type player_type;
     private Player_Movement movement_script;
 
-    private Pickable_Object held_object = null;
-    private Transform hold_point;
-
     private bool is_in_push_mode = false;
 
 
     void Start()
     {
         movement_script = GetComponent<Player_Movement>();
-        Create_Hold_Point();
     }
 
     void Update()
@@ -113,21 +109,18 @@ public class Player_Controller : MonoBehaviour
 
     private bool GetInteractInput()
     {
-        bool interact_input = false;
-        
         if (player_type == Player_Type.Luthe)
         {
-            if (Input.GetKeyDown("joystick 1 button 2")) interact_input = true;
-            if (Input.GetKeyDown(KeyCode.E)) interact_input = true;
+            if (Input.GetKeyDown("joystick 1 button 2")) return true;
+            return Input.GetKeyDown(KeyCode.E);
         }
         else
         {
-            if (Input.GetKeyDown("joystick 2 button 2")) interact_input = true;
-            if (Input.GetKeyDown(KeyCode.Return)) interact_input = true;
+            if (Input.GetKeyDown("joystick 2 button 2")) return true;
+            return Input.GetKeyDown(KeyCode.Return);
         }
-        
-        return interact_input;
     }
+
     // ----------- INTERACTION SYSTEM UTILS -------------   
     public Player_Type Get_Player_Type()
     {
@@ -163,55 +156,32 @@ public class Player_Controller : MonoBehaviour
             return Input.GetKey(KeyCode.Return);
         }
     }
-
+    
     public float Get_Rotation_Input()
+{
+    float rotation = 0f;
+    
+    if (player_type == Player_Type.Luthe)
     {
-        float rotation = 0f;
-
-        if (player_type == Player_Type.Luthe)
-        {
-            // Controller 1 - L2/R2 buttons
-            if (Input.GetKey("joystick 1 button 6")) rotation = -1f;  // L2 = rotate left
-            if (Input.GetKey("joystick 1 button 7")) rotation = 1f;   // R2 = rotate right
-
-            // Keyboard fallback
-            if (Input.GetKey(KeyCode.Q)) rotation = -1f;  // Q = rotate left
-            if (Input.GetKey(KeyCode.R)) rotation = 1f;   // R = rotate right
-        }
-        else
-        {
-            // Controller 2 - L2/R2 buttons
-            if (Input.GetKey("joystick 2 button 6")) rotation = -1f;  // L2 = rotate left
-            if (Input.GetKey("joystick 2 button 7")) rotation = 1f;   // R2 = rotate right
-
-            // Keyboard fallback
-            if (Input.GetKey(KeyCode.Comma)) rotation = -1f;   // , = rotate left
-            if (Input.GetKey(KeyCode.Period)) rotation = 1f;   // . = rotate right
-        }
-
-        return rotation;
+        // Controller 1 - L2/R2 buttons
+        if (Input.GetKey("joystick 1 button 6")) rotation = -1f;  // L2 = rotate left
+        if (Input.GetKey("joystick 1 button 7")) rotation = 1f;   // R2 = rotate right
+        
+        // Keyboard fallback
+        if (Input.GetKey(KeyCode.Q)) rotation = -1f;  // Q = rotate left
+        if (Input.GetKey(KeyCode.R)) rotation = 1f;   // R = rotate right
     }
-
-    private void Create_Hold_Point()
+    else
     {
-        GameObject hold_point_obj = new GameObject("Hold_Point");
-        hold_point_obj.transform.SetParent(transform);
-        hold_point_obj.transform.localPosition = new Vector3(0, 1.5f, 0.8f);
-        hold_point = hold_point_obj.transform;
+        // Controller 2 - L2/R2 buttons
+        if (Input.GetKey("joystick 2 button 6")) rotation = -1f;  // L2 = rotate left
+        if (Input.GetKey("joystick 2 button 7")) rotation = 1f;   // R2 = rotate right
+        
+        // Keyboard fallback
+        if (Input.GetKey(KeyCode.Comma)) rotation = -1f;   // , = rotate left
+        if (Input.GetKey(KeyCode.Period)) rotation = 1f;   // . = rotate right
     }
-
-        public Transform Get_Hold_Point()
-    {
-        return hold_point;
-    }
-
-    public Pickable_Object Get_Held_Object()
-    {
-        return held_object;
-    }
-
-    public void Set_Held_Object(Pickable_Object obj)
-    {
-        held_object = obj;
-    }
-    }
+    
+    return rotation;
+}
+}

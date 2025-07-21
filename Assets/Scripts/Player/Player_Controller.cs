@@ -5,6 +5,7 @@ public enum Player_Type { Luthe, Cherie }
 public class Player_Controller : MonoBehaviour
 {
     [SerializeField] private Player_Type player_type;
+    [SerializeField] private bool use_controller = false; 
     private Player_Movement movement_script;
 
     private bool is_in_push_mode = false;
@@ -36,40 +37,43 @@ public class Player_Controller : MonoBehaviour
 
         }
     }
+
     private Vector2 Get_Input()
     {
-        try
+        if (use_controller)
         {
-            if (player_type == Player_Type.Luthe)
+            try
             {
-                float h = Input.GetAxis("Joy1_Horizontal");
-                float v = Input.GetAxis("Joy1_Vertical");
+                if (player_type == Player_Type.Luthe)
+                {
+                    float h = Input.GetAxis("Joy1_Horizontal");
+                    float v = Input.GetAxis("Joy1_Vertical");
 
-                if (Mathf.Abs(h) < 0.3f) h = 0f;
-                if (Mathf.Abs(v) < 0.3f) v = 0f;
+                    if (Mathf.Abs(h) < 0.3f) h = 0f;
+                    if (Mathf.Abs(v) < 0.3f) v = 0f;
 
-                if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
-                    return new Vector2(h, v);
+                    if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
+                        return new Vector2(h, v);
+                }
+                else
+                {
+                    float h = Input.GetAxis("Joy2_Horizontal");
+                    float v = Input.GetAxis("Joy2_Vertical");
+
+                    if (Mathf.Abs(h) < 0.3f) h = 0f;
+                    if (Mathf.Abs(v) < 0.3f) v = 0f;
+
+                    if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
+                        return new Vector2(h, v);
+                }
             }
-            else
+            catch
             {
-                float h = Input.GetAxis("Joy2_Horizontal");
-                float v = Input.GetAxis("Joy2_Vertical");
-
-                if (Mathf.Abs(h) < 0.2f) h = 0f;
-                if (Mathf.Abs(v) < 0.2f) v = 0f;
-
-                if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
-                    return new Vector2(h, v);
             }
-        }
-        catch
-        {
         }
 
         return Get_Keyboard_Input();
     }
-
     private Vector2 Get_Keyboard_Input()
     {
         float horizontal = 0f;

@@ -297,6 +297,9 @@ MonoBehaviour:
   player_2: {fileID: 994442026}
   split_distance: 15
   transition_speed: 2
+  force_split_screen: 1
+  force_follow_mode: 0
+  show_debug_info: 0
 --- !u!4 &141184370
 Transform:
   m_ObjectHideFlags: 0
@@ -448,7 +451,7 @@ Transform:
   m_GameObject: {fileID: 206959018}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.2181, y: 3.2808, z: -4.52}
+  m_LocalPosition: {x: -2.2181, y: 3.2808, z: -11.47}
   m_LocalScale: {x: 23.359814, y: 5.6368985, z: 0.33254358}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -897,10 +900,10 @@ MonoBehaviour:
   object_type: 1
   allowed_players: 1
   push_force: 2
+  rotation_force: 15
   friction_multiplier: 1
   grab_points: []
   snap_speed: 8
-  rotation_smoothness: 5
   show_debug: 1
 --- !u!1 &357047314
 GameObject:

@@ -40,61 +40,39 @@ public class Player_Controller : MonoBehaviour
 
     private Vector2 Get_Input()
     {
-        Vector2 controllerInput = Vector2.zero;
-        bool hasControllerInput = false;
-        
-        try
+        if (use_controller)
         {
-            if (player_type == Player_Type.Luthe)
+            try
             {
-                float h = Input.GetAxis("Joy1_Horizontal");
-                float v = Input.GetAxis("Joy1_Vertical");
-
-                if (Mathf.Abs(h) < 0.3f) h = 0f;
-                if (Mathf.Abs(v) < 0.3f) v = 0f;
-
-                if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
+                if (player_type == Player_Type.Luthe)
                 {
-                    controllerInput = new Vector2(h, v);
-                    hasControllerInput = true;
+                    float h = Input.GetAxis("Joy1_Horizontal");
+                    float v = Input.GetAxis("Joy1_Vertical");
+
+                    if (Mathf.Abs(h) < 0.3f) h = 0f;
+                    if (Mathf.Abs(v) < 0.3f) v = 0f;
+
+                    if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
+                        return new Vector2(h, v);
+                }
+                else
+                {
+                    float h = Input.GetAxis("Joy2_Horizontal");
+                    float v = Input.GetAxis("Joy2_Vertical");
+
+                    if (Mathf.Abs(h) < 0.3f) h = 0f;
+                    if (Mathf.Abs(v) < 0.3f) v = 0f;
+
+                    if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
+                        return new Vector2(h, v);
                 }
             }
-            else
+            catch
             {
-                float h = Input.GetAxis("Joy2_Horizontal");
-                float v = Input.GetAxis("Joy2_Vertical");
-
-                if (Mathf.Abs(h) < 0.3f) h = 0f;
-                if (Mathf.Abs(v) < 0.3f) v = 0f;
-
-                if (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f)
-                {
-                    controllerInput = new Vector2(h, v);
-                    hasControllerInput = true;
-                }
             }
         }
-        catch
-        {
-            // Controller input  // Imma keep
-        }
 
-        Vector2 keyboardInput = Get_Keyboard_Input();
-        bool hasKeyboardInput = keyboardInput != Vector2.zero;
-
-        if (hasControllerInput)
-        {
-            use_controller = true;
-            return controllerInput;
-        }
-        else if (hasKeyboardInput)
-        {
-            use_controller = false;
-            return keyboardInput;
-        }
-        
-        // No input detected, return based on current mode
-        return use_controller ? controllerInput : keyboardInput;
+        return Get_Keyboard_Input();
     }
     private Vector2 Get_Keyboard_Input()
     {

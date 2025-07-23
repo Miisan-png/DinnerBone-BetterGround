@@ -7,6 +7,7 @@ public class Player_Interaction : MonoBehaviour
     
     private Player_Controller player_controller;
     private I_Interactable current_interactable;
+    private GameObject current_interactable_object;
     private bool is_interacting = false;
     
     void Start()
@@ -24,23 +25,43 @@ public class Player_Interaction : MonoBehaviour
     {
         Collider[] nearby_objects = Physics.OverlapSphere(transform.position, interaction_range, interaction_layer);
         I_Interactable closest_interactable = null;
+        GameObject closest_object = null;
         float closest_distance = float.MaxValue;
         
         foreach (Collider col in nearby_objects)
         {
             I_Interactable interactable = col.GetComponent<I_Interactable>();
-            if (interactable != null && interactable.Can_Interact(player_controller.Get_Player_Type()))
+            if (interactable != null)
             {
                 float distance = Vector3.Distance(transform.position, col.transform.position);
                 if (distance < closest_distance)
                 {
                     closest_distance = distance;
                     closest_interactable = interactable;
+                    closest_object = col.gameObject;
                 }
             }
         }
         
-        current_interactable = closest_interactable;
+        if (closest_interactable != current_interactable)
+        {
+            if (current_interactable_object != null)
+            {
+                Proximity_System.Instance.HidePromptForObject(current_interactable_object);
+            }
+            
+            current_interactable = closest_interactable;
+            current_interactable_object = closest_object;
+            
+            if (current_interactable != null && current_interactable_object != null)
+            {
+                Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
+            }
+        }
+        else if (current_interactable != null && current_interactable_object != null)
+        {
+            Proximity_System.Instance.UpdatePromptForObject(current_interactable_object);
+        }
     }
     
     private void Handle_Interaction_Input()
@@ -50,7 +71,10 @@ public class Player_Interaction : MonoBehaviour
         
         if (current_interactable != null && interact_held && !is_interacting)
         {
-            Start_Interaction();
+            if (current_interactable.Can_Interact(player_controller.Get_Player_Type()))
+            {
+                Start_Interaction();
+            }
         }
         else if (is_interacting && !interact_held)
         {
@@ -62,6 +86,11 @@ public class Player_Interaction : MonoBehaviour
     {
         is_interacting = true;
         current_interactable.Start_Interaction(player_controller);
+        
+        if (current_interactable_object != null)
+        {
+            Proximity_System.Instance.HidePromptForObject(current_interactable_object);
+        }
     }
     
     private void End_Interaction()
@@ -71,6 +100,11 @@ public class Player_Interaction : MonoBehaviour
             current_interactable.End_Interaction(player_controller);
         }
         is_interacting = false;
+        
+        if (current_interactable != null && current_interactable_object != null)
+        {
+            Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
+        }
     }
     
     void OnDrawGizmos()

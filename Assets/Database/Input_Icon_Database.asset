@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc98e762804d484596a7c08e32b8fe7, type: 3}
+  m_Name: Input_Icon_Database
+  m_EditorClassIdentifier: 
+  interact_icons:
+    xbox_icon: {fileID: 21300000, guid: b6c8fa34b27652c48adbb8efff82625d, type: 3}
+    playstation_icon: {fileID: 21300000, guid: 3997eed43a39edc4899287df9c00d640, type: 3}
+    keyboard_luthe_icon: {fileID: 21300000, guid: 0b55f499d38096544b8e68773199011f, type: 3}
+    keyboard_cherie_icon: {fileID: 21300000, guid: 5b6a48ef53a9bb940bb47e0641786d58, type: 3}
+    generic_controller_icon: {fileID: 21300000, guid: b6c8fa34b27652c48adbb8efff82625d, type: 3}
+  restricted_icons:
+    xbox_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
+    playstation_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
+    keyboard_luthe_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
+    keyboard_cherie_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
+    generic_controller_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}

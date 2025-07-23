@@ -19,12 +19,16 @@ public class Proximity_Prompt : MonoBehaviour
     private Transform target_transform;
     private I_Interactable current_interactable;
     private Player_Controller assigned_player;
+    private string interaction_id; // Store the interaction type ID
     private bool is_visible = false;
     private Tween current_tween;
     private Camera active_camera;
     
     void Awake()
     {
+        // Ensure we have all required components
+        SetupUIComponents();
+        
         if (canvas_group == null)
         {
             canvas_group = GetComponent<CanvasGroup>();
@@ -36,6 +40,44 @@ public class Proximity_Prompt : MonoBehaviour
         
         canvas_group.alpha = 0f;
         transform.localScale = Vector3.zero;
+    }
+    
+    private void SetupUIComponents()
+    {
+        // Auto-find UI components if not assigned
+        if (icon_image == null)
+        {
+            icon_image = GetComponentInChildren<Image>();
+            if (icon_image == null)
+            {
+                // Try to find by name
+                Transform iconTransform = transform.Find("Icon");
+                if (iconTransform != null)
+                {
+                    icon_image = iconTransform.GetComponent<Image>();
+                }
+            }
+        }
+        
+        if (action_label == null)
+        {
+            action_label = GetComponentInChildren<TextMeshProUGUI>();
+            if (action_label == null)
+            {
+                // Try to find by name
+                Transform labelTransform = transform.Find("Action_Label");
+                if (labelTransform != null)
+                {
+                    action_label = labelTransform.GetComponent<TextMeshProUGUI>();
+                }
+            }
+        }
+        
+        // Debug what we found
+        if (debug_input)
+        {
+            Debug.Log($"Proximity_Prompt Setup - Icon Image: {(icon_image != null ? "Found" : "Missing")}, Action Label: {(action_label != null ? "Found" : "Missing")}");
+        }
     }
     
     void Update()
@@ -53,8 +95,26 @@ public class Proximity_Prompt : MonoBehaviour
         current_interactable = interactable;
         assigned_player = player;
         
+        // Get interaction ID from the interactable object
+        if (interactable is IInteractionIdentifier identifier)
+        {
+            interaction_id = identifier.GetInteractionID();
+        }
+        else
+        {
+            // Fallback: try to determine ID from object type
+            interaction_id = DetermineInteractionID(interactable);
+        }
+        
+        // Ensure components are set up before updating content
+        SetupUIComponents();
         UpdatePromptContent();
         UpdatePosition();
+        
+        if (debug_input)
+        {
+            Debug.Log($"Initializing prompt for player: {player.Get_Player_Type()} with interaction ID: {interaction_id}");
+        }
     }
     
     public void ShowPrompt()
@@ -63,6 +123,9 @@ public class Proximity_Prompt : MonoBehaviour
         
         is_visible = true;
         gameObject.SetActive(true);
+        
+        // Update content when showing to ensure latest device info
+        UpdatePromptContent();
         
         current_tween?.Kill();
         current_tween = DOTween.Sequence()
@@ -90,46 +153,103 @@ public class Proximity_Prompt : MonoBehaviour
     
     private void UpdatePromptContent()
     {
-        if (current_interactable == null || assigned_player == null) return;
+        if (current_interactable == null || assigned_player == null)
+        {
+            if (debug_input) Debug.Log("UpdatePromptContent: Missing interactable or player");
+            return;
+        }
         
         bool can_interact = current_interactable.Can_Interact(assigned_player.Get_Player_Type());
         
-        if (Input_Detector.Instance == null || Proximity_System.Instance == null) return;
+        if (Input_Detector.Instance == null)
+        {
+            if (debug_input) Debug.Log("UpdatePromptContent: Input_Detector.Instance is null");
+            return;
+        }
+        
+        if (Proximity_System.Instance == null)
+        {
+            if (debug_input) Debug.Log("UpdatePromptContent: Proximity_System.Instance is null");
+            return;
+        }
         
         InputDeviceType device_type = Input_Detector.Instance.GetPlayerDeviceType(assigned_player.Get_Player_Type());
         
         if (debug_input)
         {
-            Debug.Log($"Player {assigned_player.Get_Player_Type()} using device: {device_type}");
+            Debug.Log($"Player {assigned_player.Get_Player_Type()} using device: {device_type}, Can interact: {can_interact}, Interaction ID: {interaction_id}");
         }
         
         Input_Icon_Database icon_db = Proximity_System.Instance.GetIconDatabase();
-        if (icon_db != null && icon_image != null)
+        if (icon_db != null)
         {
-            Sprite icon = icon_db.GetIcon(device_type, assigned_player.Get_Player_Type(), !can_interact);
-            if (icon != null)
+            // Get complete interaction data from database
+            InteractionData interaction_data = icon_db.GetInteractionData(
+                interaction_id, 
+                device_type, 
+                assigned_player.Get_Player_Type(), 
+                !can_interact
+            );
+            
+            // Update icon
+            if (icon_image != null)
             {
-                icon_image.sprite = icon;
+                if (interaction_data.icon != null)
+                {
+                    icon_image.sprite = interaction_data.icon;
+                    if (debug_input) Debug.Log($"Updated icon sprite to: {interaction_data.icon.name}");
+                }
+                
+                // Update visual state
+                if (!can_interact)
+                {
+                    icon_image.color = Color.red;
+                    if (canvas_group != null) canvas_group.alpha = 0.7f;
+                }
+                else
+                {
+                    icon_image.color = Color.white;
+                    if (canvas_group != null) canvas_group.alpha = 1f;
+                }
             }
             
-            if (!can_interact)
+            // Update text with database text and color
+            if (action_label != null)
             {
-                icon_image.color = Color.red;
-                if (canvas_group != null) canvas_group.alpha = 0.7f;
-            }
-            else
-            {
-                icon_image.color = Color.white;
-                if (canvas_group != null) canvas_group.alpha = 1f;
+                action_label.text = interaction_data.text;
+                action_label.color = interaction_data.color;
+                
+                if (debug_input) Debug.Log($"Updated action text to: {interaction_data.text}");
             }
         }
-        
-        if (action_label != null)
+        else
         {
-            string interaction_text = current_interactable.Get_Interaction_Text();
-            action_label.text = can_interact ? interaction_text : "Cannot interact";
-            action_label.color = can_interact ? Color.white : Color.red;
+            if (debug_input)
+            {
+                Debug.Log("Missing Icon Database in Proximity_System");
+            }
         }
+    }
+    
+    private string DetermineInteractionID(I_Interactable interactable)
+    {
+        // Auto-detect interaction type based on object type
+        string type_name = interactable.GetType().Name.ToLower();
+        
+        if (type_name.Contains("vent_entry"))
+            return "vent_enter";
+        else if (type_name.Contains("vent_exit"))
+            return "vent_exit";
+        else if (type_name.Contains("push_object"))
+            return "push_object";
+        else if (type_name.Contains("door"))
+            return "door_open";
+        else if (type_name.Contains("switch"))
+            return "switch_activate";
+        else if (type_name.Contains("lever"))
+            return "lever_pull";
+        else
+            return "generic_interact";
     }
     
     private void UpdatePosition()
@@ -197,5 +317,10 @@ public class Proximity_Prompt : MonoBehaviour
     public I_Interactable GetInteractable()
     {
         return current_interactable;
+    }
+    
+    public Player_Controller GetAssignedPlayer()
+    {
+        return assigned_player;
     }
 }

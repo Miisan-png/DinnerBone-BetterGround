@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class Vent_Entry : MonoBehaviour, I_Interactable
+public class Vent_Entry : MonoBehaviour, I_Interactable, IInteractionIdentifier
 {
     [SerializeField] private Allowed_Players allowed_players = Allowed_Players.Anyone;
     [SerializeField] private bool is_locked = false;
     [SerializeField] private Transform enter_position;
     [SerializeField] private Vent_Exit connected_exit;
+    
+    [Header("Database Integration")]
+    [SerializeField] private string interaction_id = "vent_enter";
     
     public bool Can_Interact(Player_Type player_type)
     {
@@ -35,12 +38,19 @@ public class Vent_Entry : MonoBehaviour, I_Interactable
     
     public string Get_Interaction_Text()
     {
+        // This method is now mainly for fallback/compatibility
+        // The database system will handle the actual text display
         return is_locked ? "Vent is locked" : "Enter vent";
     }
     
     public Vector3 Get_Interaction_Position()
     {
         return transform.position;
+    }
+    
+    public string GetInteractionID()
+    {
+        return interaction_id;
     }
     
     public Transform Get_Enter_Position()

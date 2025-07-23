@@ -12,6 +12,7 @@ public class Proximity_System : MonoBehaviour
     [SerializeField] private GameObject prompt_prefab;
     [SerializeField] private Input_Icon_Database icon_database;
     [SerializeField] private int pool_size = 10;
+    [SerializeField] private bool debug_system = false;
     
     private Queue<Proximity_Prompt> prompt_pool = new Queue<Proximity_Prompt>();
     private List<Proximity_Prompt> active_prompts = new List<Proximity_Prompt>();
@@ -31,12 +32,33 @@ public class Proximity_System : MonoBehaviour
         }
     }
     
+    void Update()
+    {
+        if (Time.frameCount % 30 == 0) // Update every 30 frames (~0.5 seconds at 60fps)
+        {
+            UpdateActivePrompts();
+        }
+    }
+    
+    private void UpdateActivePrompts()
+    {
+        foreach (var prompt in active_prompts)
+        {
+            if (prompt != null && prompt.gameObject.activeInHierarchy)
+            {
+                prompt.UpdateContent();
+            }
+        }
+    }
+    
     private void InitializePool()
     {
         if (prompt_prefab == null)
         {
             CreateDefaultPromptPrefab();
         }
+        
+        ValidatePromptPrefab();
         
         for (int i = 0; i < pool_size; i++)
         {
@@ -50,6 +72,29 @@ public class Proximity_System : MonoBehaviour
             
             prompt_obj.SetActive(false);
             prompt_pool.Enqueue(prompt);
+        }
+        
+        if (debug_system)
+        {
+            Debug.Log($"Proximity System initialized with {pool_size} prompts. Icon Database: {(icon_database != null ? "Assigned" : "Missing")}");
+        }
+    }
+    
+    private void ValidatePromptPrefab()
+    {
+        if (prompt_prefab == null) return;
+        
+        Proximity_Prompt prompt_script = prompt_prefab.GetComponent<Proximity_Prompt>();
+        Image icon_image = prompt_prefab.GetComponentInChildren<Image>();
+        TextMeshProUGUI text_label = prompt_prefab.GetComponentInChildren<TextMeshProUGUI>();
+        CanvasGroup canvas_group = prompt_prefab.GetComponent<CanvasGroup>();
+        
+        if (debug_system)
+        {
+            Debug.Log($"Prefab Validation - Prompt Script: {(prompt_script != null ? "Found" : "Missing")}, " +
+                     $"Icon Image: {(icon_image != null ? "Found" : "Missing")}, " +
+                     $"Text Label: {(text_label != null ? "Found" : "Missing")}, " +
+                     $"Canvas Group: {(canvas_group != null ? "Found" : "Missing")}");
         }
     }
     
@@ -67,36 +112,74 @@ public class Proximity_System : MonoBehaviour
         rect.sizeDelta = new Vector2(200, 100);
         
         GameObject icon_obj = new GameObject("Icon");
-        icon_obj.transform.SetParent(prefab.transform);
+        icon_obj.transform.SetParent(prefab.transform, false);
         Image icon_image = icon_obj.AddComponent<Image>();
         RectTransform icon_rect = icon_obj.GetComponent<RectTransform>();
         icon_rect.sizeDelta = new Vector2(50, 50);
         icon_rect.anchoredPosition = new Vector2(0, 10);
+        icon_rect.anchorMin = new Vector2(0.5f, 0.5f);
+        icon_rect.anchorMax = new Vector2(0.5f, 0.5f);
         
         GameObject text_obj = new GameObject("Action_Label");
-        text_obj.transform.SetParent(prefab.transform);
+        text_obj.transform.SetParent(prefab.transform, false);
         TextMeshProUGUI text_component = text_obj.AddComponent<TextMeshProUGUI>();
         text_component.text = "Interact";
         text_component.fontSize = 16;
         text_component.alignment = TextAlignmentOptions.Center;
+        text_component.color = Color.white;
         RectTransform text_rect = text_obj.GetComponent<RectTransform>();
         text_rect.sizeDelta = new Vector2(180, 30);
         text_rect.anchoredPosition = new Vector2(0, -30);
+        text_rect.anchorMin = new Vector2(0.5f, 0.5f);
+        text_rect.anchorMax = new Vector2(0.5f, 0.5f);
         
         Proximity_Prompt prompt_script = prefab.AddComponent<Proximity_Prompt>();
+        
+        var iconField = typeof(Proximity_Prompt).GetField("icon_image", 
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var labelField = typeof(Proximity_Prompt).GetField("action_label", 
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var canvasGroupField = typeof(Proximity_Prompt).GetField("canvas_group", 
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        
+        iconField?.SetValue(prompt_script, icon_image);
+        labelField?.SetValue(prompt_script, text_component);
+        canvasGroupField?.SetValue(prompt_script, canvas_group);
         
         prompt_prefab = prefab;
         
         DontDestroyOnLoad(prefab);
+        
+        if (debug_system)
+        {
+            Debug.Log("Created default prompt prefab with properly assigned components");
+        }
     }
     
     public void ShowPromptForObject(GameObject target_object, I_Interactable interactable, Player_Controller player)
     {
+        bool can_interact = interactable.Can_Interact(player.Get_Player_Type());
+        
         if (object_to_prompt.ContainsKey(target_object))
         {
             var existing_prompt = object_to_prompt[target_object];
-            if (existing_prompt.IsAssignedToPlayer(player))
+            bool existing_can_interact = existing_prompt.GetInteractable().Can_Interact(existing_prompt.GetAssignedPlayer().Get_Player_Type());
+            
+            if (can_interact && !existing_can_interact)
             {
+                HidePromptForObject(target_object);
+            }
+            else if (existing_can_interact && !can_interact)
+            {
+                if (debug_system)
+                {
+                    Debug.Log($"Keeping existing interactive prompt for {target_object.name}, ignoring restricted request from {player.Get_Player_Type()}");
+                }
+                return;
+            }
+            else if (existing_prompt.IsAssignedToPlayer(player) || (can_interact == existing_can_interact))
+            {
+                existing_prompt.UpdateContent();
                 return;
             }
         }
@@ -109,6 +192,15 @@ public class Proximity_System : MonoBehaviour
             
             active_prompts.Add(prompt);
             object_to_prompt[target_object] = prompt;
+            
+            if (debug_system)
+            {
+                Debug.Log($"Showing {(can_interact ? "interactive" : "restricted")} prompt for {target_object.name} assigned to player {player.Get_Player_Type()}");
+            }
+        }
+        else
+        {
+            if (debug_system) Debug.LogWarning("Failed to get prompt from pool");
         }
     }
     
@@ -122,6 +214,11 @@ public class Proximity_System : MonoBehaviour
             });
             
             object_to_prompt.Remove(target_object);
+            
+            if (debug_system)
+            {
+                Debug.Log($"Hiding prompt for {target_object.name}");
+            }
         }
     }
     
@@ -140,12 +237,18 @@ public class Proximity_System : MonoBehaviour
             return prompt_pool.Dequeue();
         }
         
+        // Create new prompt if pool is empty
         GameObject prompt_obj = Instantiate(prompt_prefab, transform);
         Proximity_Prompt prompt = prompt_obj.GetComponent<Proximity_Prompt>();
         
         if (prompt == null)
         {
             prompt = prompt_obj.AddComponent<Proximity_Prompt>();
+        }
+        
+        if (debug_system)
+        {
+            Debug.Log("Created new prompt (pool was empty)");
         }
         
         return prompt;
@@ -159,11 +262,19 @@ public class Proximity_System : MonoBehaviour
     
     public Input_Icon_Database GetIconDatabase()
     {
+        if (icon_database == null && debug_system)
+        {
+            Debug.LogWarning("Icon database is not assigned in Proximity_System!");
+        }
         return icon_database;
     }
     
     public void SetIconDatabase(Input_Icon_Database database)
     {
         icon_database = database;
+        if (debug_system)
+        {
+            Debug.Log($"Icon database {(database != null ? "assigned" : "cleared")}");
+        }
     }
 }

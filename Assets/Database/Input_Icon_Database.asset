@@ -18,9 +18,40 @@ MonoBehaviour:
     keyboard_luthe_icon: {fileID: 21300000, guid: 0b55f499d38096544b8e68773199011f, type: 3}
     keyboard_cherie_icon: {fileID: 21300000, guid: 5b6a48ef53a9bb940bb47e0641786d58, type: 3}
     generic_controller_icon: {fileID: 21300000, guid: b6c8fa34b27652c48adbb8efff82625d, type: 3}
+    xbox_text: Hold X
+    playstation_text: Hold X
+    keyboard_luthe_text: Hold E
+    keyboard_cherie_text: Hold R
+    generic_controller_text: Hold A
   restricted_icons:
     xbox_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
     playstation_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
     keyboard_luthe_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
     keyboard_cherie_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
     generic_controller_icon: {fileID: 21300000, guid: 59dae977c343abe449a8910b3f051aa2, type: 3}
+    xbox_text: Hold X
+    playstation_text: Hold X
+    keyboard_luthe_text: Hold E
+    keyboard_cherie_text: Hold R
+    generic_controller_text: Hold A
+  interaction_types:
+  - interaction_id: vent_enter
+    display_name: Vent Entry
+    normal_action_text: enter vent
+    normal_text_color: {r: 1, g: 0.78883636, b: 0.1415093, a: 0}
+    restricted_action_text: too big!
+    restricted_text_color: {r: 1, g: 0.1745283, b: 0.42943138, a: 0}
+    custom_normal_template: 
+    custom_restricted_template: 
+  - interaction_id: push_object
+    display_name: Push Light Object
+    normal_action_text: push box
+    normal_text_color: {r: 1, g: 0.78883636, b: 0.1415093, a: 0}
+    restricted_action_text: too heavy!
+    restricted_text_color: {r: 1, g: 0.1745283, b: 0.42943138, a: 0}
+    custom_normal_template: 
+    custom_restricted_template: 
+  default_template: '{input} to {action}'
+  default_restricted_template: '{restricted_text}'
+  default_normal_color: {r: 1, g: 0.99472016, b: 0.18396229, a: 1}
+  default_restricted_color: {r: 1, g: 0.18679237, b: 0.40729603, a: 1}

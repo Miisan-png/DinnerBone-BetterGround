@@ -1,11 +1,9 @@
-/// ---------- Advanced pushable object with grab points and smooth rotation ----------
-
 using UnityEngine;
 
 public enum Push_Object_Type { Light, Heavy, Slippery }
 public enum Allowed_Players { Anyone, Luthe_Only, Cherie_Only }
 
-public class Push_Object : MonoBehaviour, I_Interactable
+public class Push_Object : MonoBehaviour, I_Interactable, IInteractionIdentifier
 {
     [Header("Object Settings")]
     [SerializeField] private Push_Object_Type object_type = Push_Object_Type.Light;
@@ -17,6 +15,9 @@ public class Push_Object : MonoBehaviour, I_Interactable
     [Header("Grab Points")]
     [SerializeField] private Transform[] grab_points;
     [SerializeField] private float snap_speed = 8f;
+    
+    [Header("Database Integration")]
+    [SerializeField] private string interaction_id = "push_object";
     
     [Header("Debug")]
     [SerializeField] private bool show_debug = true;
@@ -40,6 +41,9 @@ public class Push_Object : MonoBehaviour, I_Interactable
         rb.linearDamping = object_type == Push_Object_Type.Slippery ? 0.5f : 2f * friction_multiplier;
         
         Create_Default_Grab_Points();
+        
+        // Set interaction ID based on object type
+        UpdateInteractionID();
     }
     
     void Update()
@@ -54,6 +58,29 @@ public class Push_Object : MonoBehaviour, I_Interactable
             {
                 Handle_Push_Input();
                 Update_Player_Position();
+            }
+        }
+    }
+    
+    private void UpdateInteractionID()
+    {
+        // Auto-set interaction ID based on object type if not manually set
+        if (string.IsNullOrEmpty(interaction_id) || interaction_id == "push_object")
+        {
+            switch (object_type)
+            {
+                case Push_Object_Type.Light:
+                    interaction_id = "push_light";
+                    break;
+                case Push_Object_Type.Heavy:
+                    interaction_id = "push_heavy";
+                    break;
+                case Push_Object_Type.Slippery:
+                    interaction_id = "push_slippery";
+                    break;
+                default:
+                    interaction_id = "push_object";
+                    break;
             }
         }
     }
@@ -117,6 +144,7 @@ public class Push_Object : MonoBehaviour, I_Interactable
     
     public string Get_Interaction_Text()
     {
+        // Fallback text - database will override this
         string type_text = object_type.ToString().ToLower();
         return $"Hold to push {type_text} object";
     }
@@ -124,6 +152,11 @@ public class Push_Object : MonoBehaviour, I_Interactable
     public Vector3 Get_Interaction_Position()
     {
         return transform.position;
+    }
+    
+    public string GetInteractionID()
+    {
+        return interaction_id;
     }
     
     private void Create_Default_Grab_Points()

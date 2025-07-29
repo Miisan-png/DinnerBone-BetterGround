@@ -2,85 +2,89 @@ using UnityEngine;
 
 public class Camera_Follow : MonoBehaviour
 {
-    [SerializeField] private float follow_speed = 5f;
-    [SerializeField] private float zoom_speed = 2f;
-    [SerializeField] private float min_zoom = 5f;
-    [SerializeField] private float max_zoom = 15f;
-    [SerializeField] private Vector3 offset = new Vector3(0, 10, -8);
-    [SerializeField] private float rotation_damping = 3f;
-    [SerializeField] private float tilt_strength = 0.3f;
-    [SerializeField] private bool disable_velocity_follow = false;
-    [SerializeField] private bool lock_camera_position = false;
+    [SerializeField] private float horizontal_follow_speed = 8f;
+    [SerializeField] private float distance_offset = 2f;
+    [SerializeField] private float movement_threshold = 0.1f;
     
     private Camera target_camera;
     private Transform player_1;
     private Transform player_2;
-    private Vector3 velocity_direction;
-    private Vector3 last_center_position;
+    private Vector3 base_position;
+    private Quaternion base_rotation;
+    private Vector3 base_offset;
+    private bool split_mode_enabled = false;
+    private Vector3 last_p1_pos;
+    private Vector3 last_p2_pos;
+    private Transform active_player;
     
     public void Initialize(Camera camera, Transform p1, Transform p2)
     {
         target_camera = camera;
         player_1 = p1;
         player_2 = p2;
-        last_center_position = GetCenterPosition();
+        base_position = target_camera.transform.position;
+        base_rotation = target_camera.transform.rotation;
+        base_offset = base_position - GetCenterPosition();
         target_camera.orthographic = false;
-        target_camera.fieldOfView = 40f;
+        last_p1_pos = player_1.position;
+        last_p2_pos = player_2.position;
+        active_player = player_1;
     }
     
     void LateUpdate()
     {
         if (player_1 == null || player_2 == null || target_camera == null) return;
         
-        Vector3 center = GetCenterPosition();
-        UpdateMovementDirection(center);
+        Vector3 target_position;
         
-        if (!lock_camera_position)
+        if (split_mode_enabled)
         {
-            Vector3 target_position = center + offset;
-            target_camera.transform.position = Vector3.Lerp(target_camera.transform.position, target_position, follow_speed * Time.deltaTime);
-        }
-        
-        if (disable_velocity_follow)
-        {
-            Vector3 look_direction = (center - target_camera.transform.position).normalized;
-            Quaternion target_rotation = Quaternion.LookRotation(look_direction);
-            target_camera.transform.rotation = Quaternion.Lerp(target_camera.transform.rotation, target_rotation, rotation_damping * Time.deltaTime);
+            UpdateActivePlayer();
+            target_position = active_player.position + base_offset;
         }
         else
         {
-            Vector3 look_target = center + velocity_direction * 2f;
-            Vector3 look_direction = (look_target - target_camera.transform.position).normalized;
+            Vector3 center = GetCenterPosition();
+            target_position = center + base_offset;
             
-            float player_separation = (player_2.position - player_1.position).x;
-            float tilt = player_separation * tilt_strength;
-            
-            Quaternion base_rotation = Quaternion.LookRotation(look_direction);
-            Quaternion tilted_rotation = base_rotation * Quaternion.Euler(0, 0, -tilt);
-            
-            target_camera.transform.rotation = Quaternion.Lerp(target_camera.transform.rotation, tilted_rotation, rotation_damping * Time.deltaTime);
+            float player_distance = Vector3.Distance(player_1.position, player_2.position);
+            Vector3 distance_adjustment = base_rotation * Vector3.back * (player_distance * distance_offset);
+            target_position += distance_adjustment;
         }
         
-        UpdateZoom();
+        target_position.x = Mathf.Lerp(target_camera.transform.position.x, target_position.x, horizontal_follow_speed * Time.deltaTime);
+        target_position.y = base_position.y;
+        target_position.z = Mathf.Lerp(target_camera.transform.position.z, target_position.z, horizontal_follow_speed * Time.deltaTime);
         
-        last_center_position = center;
+        target_camera.transform.position = target_position;
+        target_camera.transform.rotation = base_rotation;
+        
+        last_p1_pos = player_1.position;
+        last_p2_pos = player_2.position;
+    }
+    
+    private void UpdateActivePlayer()
+    {
+        float p1_movement = Vector3.Distance(player_1.position, last_p1_pos);
+        float p2_movement = Vector3.Distance(player_2.position, last_p2_pos);
+        
+        if (p1_movement > movement_threshold && p2_movement <= movement_threshold)
+        {
+            active_player = player_1;
+        }
+        else if (p2_movement > movement_threshold && p1_movement <= movement_threshold)
+        {
+            active_player = player_2;
+        }
+    }
+    
+    public void SetSplitModeEnabled(bool enabled)
+    {
+        split_mode_enabled = enabled;
     }
     
     private Vector3 GetCenterPosition()
     {
         return (player_1.position + player_2.position) / 2f;
-    }
-    
-    private void UpdateMovementDirection(Vector3 current_center)
-    {
-        Vector3 movement = (current_center - last_center_position) / Time.deltaTime;
-        velocity_direction = Vector3.Lerp(velocity_direction, movement.normalized, Time.deltaTime);
-    }
-    
-    private void UpdateZoom()
-    {
-        float distance = Vector3.Distance(player_1.position, player_2.position);
-        float target_fov = Mathf.Clamp(35f + (distance * 2f), 30f, 60f);
-        target_camera.fieldOfView = Mathf.Lerp(target_camera.fieldOfView, target_fov, zoom_speed * Time.deltaTime);
     }
 }

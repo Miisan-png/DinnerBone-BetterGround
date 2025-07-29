@@ -9,6 +9,8 @@ public class Camera_Follow : MonoBehaviour
     [SerializeField] private Vector3 offset = new Vector3(0, 10, -8);
     [SerializeField] private float rotation_damping = 3f;
     [SerializeField] private float tilt_strength = 0.3f;
+    [SerializeField] private bool disable_velocity_follow = false;
+    [SerializeField] private bool lock_camera_position = false;
     
     private Camera target_camera;
     private Transform player_1;
@@ -33,19 +35,31 @@ public class Camera_Follow : MonoBehaviour
         Vector3 center = GetCenterPosition();
         UpdateMovementDirection(center);
         
-        Vector3 target_position = center + offset;
-        target_camera.transform.position = Vector3.Lerp(target_camera.transform.position, target_position, follow_speed * Time.deltaTime);
+        if (!lock_camera_position)
+        {
+            Vector3 target_position = center + offset;
+            target_camera.transform.position = Vector3.Lerp(target_camera.transform.position, target_position, follow_speed * Time.deltaTime);
+        }
         
-        Vector3 look_target = center + velocity_direction * 2f;
-        Vector3 look_direction = (look_target - target_camera.transform.position).normalized;
-        
-        float player_separation = (player_2.position - player_1.position).x;
-        float tilt = player_separation * tilt_strength;
-        
-        Quaternion base_rotation = Quaternion.LookRotation(look_direction);
-        Quaternion tilted_rotation = base_rotation * Quaternion.Euler(0, 0, -tilt);
-        
-        target_camera.transform.rotation = Quaternion.Lerp(target_camera.transform.rotation, tilted_rotation, rotation_damping * Time.deltaTime);
+        if (disable_velocity_follow)
+        {
+            Vector3 look_direction = (center - target_camera.transform.position).normalized;
+            Quaternion target_rotation = Quaternion.LookRotation(look_direction);
+            target_camera.transform.rotation = Quaternion.Lerp(target_camera.transform.rotation, target_rotation, rotation_damping * Time.deltaTime);
+        }
+        else
+        {
+            Vector3 look_target = center + velocity_direction * 2f;
+            Vector3 look_direction = (look_target - target_camera.transform.position).normalized;
+            
+            float player_separation = (player_2.position - player_1.position).x;
+            float tilt = player_separation * tilt_strength;
+            
+            Quaternion base_rotation = Quaternion.LookRotation(look_direction);
+            Quaternion tilted_rotation = base_rotation * Quaternion.Euler(0, 0, -tilt);
+            
+            target_camera.transform.rotation = Quaternion.Lerp(target_camera.transform.rotation, tilted_rotation, rotation_damping * Time.deltaTime);
+        }
         
         UpdateZoom();
         

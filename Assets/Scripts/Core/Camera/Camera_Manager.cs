@@ -15,12 +15,13 @@ public class Camera_Manager : MonoBehaviour
     [SerializeField] private float transition_speed = 2f;
     [SerializeField] private float screen_border_buffer = 0.1f;
     [SerializeField] private bool show_debug_info = false;
+    [SerializeField] private bool force_split_screen = false;
     
     private Camera_Mode current_mode = Camera_Mode.Follow;
     private Camera_Follow follow_script;
     private Split_Screen_Controller split_script;
     private bool is_transitioning = false;
-    private bool force_mode = false;
+    [SerializeField] private bool force_mode = false;
     private Vector3 main_cam_target_pos;
     private Quaternion main_cam_target_rot;
     private float main_cam_target_fov;
@@ -33,7 +34,14 @@ public class Camera_Manager : MonoBehaviour
         follow_script.Initialize(main_camera, player_1, player_2);
         split_script.Initialize(split_camera_1, split_camera_2, player_1, player_2);
         
-        SetCameraMode(Camera_Mode.Follow);
+        if (force_split_screen)
+        {
+            Force_Split_Screen();
+        }
+        else
+        {
+            SetCameraMode(Camera_Mode.Follow);
+        }
     }
     
     void Update()

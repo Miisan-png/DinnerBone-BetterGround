@@ -1,0 +1,5 @@
+ID,DIALOGUE_CONTENT,C_TYPE,D_TYPE,TAG
+1,cherie.. What the hell is going on ?.,Luthe,START,START_ROOM
+2,I don?t? know?. Luthe... I am scared?,Cherie,MID,START_ROOM
+3,ADSADAS,Cherie,MID,START_ROOM
+4,test testest ,Luthe,END,START_ROOM

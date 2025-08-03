@@ -8,12 +8,16 @@ public class Player_Indicator : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.1f;
     [SerializeField] private LayerMask groundMask = 1;
     [SerializeField] private float jumpThreshold = 0.5f;
+    [SerializeField] private float movementThreshold = 0.1f;
+    [SerializeField] private float idleDelay = 1f;
     
     private CharacterController characterController;
     private Renderer ringRenderer;
     private bool isGrounded = true;
+    private bool isMoving = false;
     private float currentAlpha = 1f;
     private float targetAlpha = 1f;
+    private float idleTimer = 0f;
     
     void Start()
     {
@@ -42,6 +46,7 @@ public class Player_Indicator : MonoBehaviour
     void Update()
     {
         CheckGroundStatus();
+        CheckMovementStatus();
         UpdateIndicatorVisibility();
     }
     
@@ -65,9 +70,36 @@ public class Player_Indicator : MonoBehaviour
         }
     }
     
+    private void CheckMovementStatus()
+    {
+        if (characterController != null)
+        {
+            Vector3 velocity = characterController.velocity;
+            Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
+            float speed = horizontalVelocity.magnitude;
+            
+            bool wasMoving = isMoving;
+            isMoving = speed > movementThreshold;
+            
+            if (isMoving)
+            {
+                idleTimer = 0f;
+            }
+            else if (wasMoving && !isMoving)
+            {
+                idleTimer = 0f;
+            }
+            else if (!isMoving)
+            {
+                idleTimer += Time.deltaTime;
+            }
+        }
+    }
+    
     private void UpdateIndicatorVisibility()
     {
-        targetAlpha = isGrounded ? 1f : 0f;
+        bool shouldShow = isGrounded && (isMoving || idleTimer < idleDelay);
+        targetAlpha = shouldShow ? 1f : 0f;
         
         currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, fadeSpeed * Time.deltaTime);
         
@@ -104,5 +136,11 @@ public class Player_Indicator : MonoBehaviour
         Gizmos.color = isGrounded ? Color.green : Color.red;
         Vector3 rayStart = transform.position + Vector3.up * 0.1f;
         Gizmos.DrawRay(rayStart, Vector3.down * (groundCheckDistance + 0.1f));
+        
+        if (isMoving)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, 0.5f);
+        }
     }
 }

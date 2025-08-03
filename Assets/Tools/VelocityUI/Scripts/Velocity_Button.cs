@@ -68,6 +68,8 @@ public class Velocity_Button : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (rectTransform != null)
         {
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         }
         
         originalScale = transform.localScale;
@@ -85,7 +87,7 @@ public class Velocity_Button : MonoBehaviour, IPointerEnterHandler, IPointerExit
             submitAction = playerInput.actions["Submit"];
         }
     }
-    
+        
     void Start()
     {
         AppearAnimation();

@@ -76,6 +76,7 @@ public class Player_Controller : MonoBehaviour
         if (IsCorrectDevice(context.control.device))
         {
             moveInput = context.ReadValue<Vector2>();
+            // Debug.Log(moveInput); 
         }
         else if (context.canceled)
         {

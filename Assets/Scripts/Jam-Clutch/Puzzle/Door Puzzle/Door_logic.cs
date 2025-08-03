@@ -1,5 +1,5 @@
 using UnityEngine;
-using DG.Tweening;
+
 public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
 {
     [SerializeField] private string requiredKeyID = "door_key";
@@ -37,10 +37,15 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
     {
         if (isOpen) return;
         
-        if (Inventory_Manager.Instance.HasItem(requiredKeyID, player.Get_Player_Type()))
+        if (Inventory_Manager.Instance != null && Inventory_Manager.Instance.HasItem(requiredKeyID, player.Get_Player_Type()))
         {
+            Debug.Log($"Opening door with key: {requiredKeyID}");
             Inventory_Manager.Instance.DropItem(player.Get_Player_Type());
             OpenDoor();
+        }
+        else
+        {
+            Debug.Log($"Cannot open door - missing key: {requiredKeyID}");
         }
     }
     
@@ -51,11 +56,17 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
     private void OpenDoor()
     {
         isOpen = true;
+        Debug.Log("Door opening...");
         
         if (doorAnimation != null && doorOpenClip != null)
         {
             doorAnimation.clip = doorOpenClip;
             doorAnimation.Play();
+            Debug.Log($"Playing animation: {doorOpenClip.name}");
+        }
+        else
+        {
+            Debug.LogError($"Missing components - Animation: {doorAnimation != null}, OpenClip: {doorOpenClip != null}");
         }
         
         if (interactIcon != null)

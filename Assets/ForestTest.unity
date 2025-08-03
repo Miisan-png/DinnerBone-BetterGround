@@ -937,7 +937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requiredKeyID: door_key
   doorAnimation: {fileID: 186698504}
-  doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
+  doorOpenClip: {fileID: 0}
   doorClosedClip: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
   interactIcon: {fileID: 2070044480}
   interaction_id: pickup_key
@@ -1839,24 +1839,40 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_PlayAutomatically
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_Animations.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
+      propertyPath: 'm_Animations.Array.data[0]'
+      value: 
+      objectReference: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: 'm_Animations.Array.data[1]'
       value: 
-      objectReference: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
+      propertyPath: 'm_Animations.Array.data[2]'
+      value: 
+      objectReference: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
     - target: {fileID: 5964579816831982809, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 5964579816831982809, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.1206927
+      value: 5.35
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1864,7 +1880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.6377053
+      value: 5.83
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1888,7 +1904,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.071762085
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2041,7 +2057,7 @@ GameObject:
   - component: {fileID: 535426118}
   - component: {fileID: 535426120}
   - component: {fileID: 535426119}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: left_bracket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2064,8 +2080,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.02, y: 1.43}
-  m_SizeDelta: {x: 0.7, y: 0.7}
+  m_AnchoredPosition: {x: -1.02, y: 1.409}
+  m_SizeDelta: {x: 0.1, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &535426119
 MonoBehaviour:
@@ -2087,7 +2103,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f74d34751a654d149b3a2ea40765312e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 87ce1bafdb0c125429d76bc6ac66877c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2485,7 +2501,7 @@ GameObject:
   - component: {fileID: 762634059}
   - component: {fileID: 762634061}
   - component: {fileID: 762634060}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: right_bracket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2508,8 +2524,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.617, y: 1.43}
-  m_SizeDelta: {x: 0.7, y: 0.7}
+  m_AnchoredPosition: {x: -0.617, y: 1.409}
+  m_SizeDelta: {x: 0.1, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &762634060
 MonoBehaviour:
@@ -2531,7 +2547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f74d34751a654d149b3a2ea40765312e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 87ce1bafdb0c125429d76bc6ac66877c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5874,10 +5890,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Interact_Icon_Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6317731998298649358, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6808789206356543671, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 330585545}
+    - target: {fileID: 7532097277664526895, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -5891,15 +5915,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6317731998298649358, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2070044480}
+    - targetCorrespondingSourceObject: {fileID: 6317731998298649358, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2070044481}
   m_SourcePrefab: {fileID: 100100000, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
 --- !u!224 &2070044476 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5515257537530797431, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
-  m_PrefabInstance: {fileID: 2070044475}
-  m_PrefabAsset: {fileID: 0}
---- !u!223 &2070044479 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 6808789206356543671, guid: 74099c34ead1c9d41b9af7c34d27e4f6, type: 3}
   m_PrefabInstance: {fileID: 2070044475}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2070044480
@@ -5914,17 +5936,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f926621793fad42a0c8aa4292b8c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactIconCanvas: {fileID: 2070044479}
+  canvasGroup: {fileID: 2070044481}
   iconImage: {fileID: 827639550}
   leftBracket: {fileID: 535426119}
   rightBracket: {fileID: 762634060}
   lockedIcon: {fileID: 21300000, guid: a929f18cf5c75d44aafe70b613a7ba68, type: 3}
   unlockedIcon: {fileID: 21300000, guid: 9710a0542e2074c4594e595c6712935b, type: 3}
-  lockedColor: {r: 1, g: 0, b: 0, a: 1}
-  unlockedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  bracketExpandDistance: 20
-  animationDuration: 0.3
+  visibleColor: {r: 0.8584906, g: 1, b: 0.8788156, a: 1}
+  canInteractColor: {r: 1, g: 0.8915454, b: 0, a: 1}
+  cannotInteractColor: {r: 1, g: 0, b: 0.3093238, a: 1}
+  bracketExpandDistance: 0.2
+  fadeSpeed: 0.3
   detectionRange: 3
+  interactRange: 2
+--- !u!225 &2070044481
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747137560}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &2074803817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6107,7 +6143,7 @@ MonoBehaviour:
   player2HeldIcon: {fileID: 413826602}
   allItems:
   - itemID: door_key
-    itemName: Key
+    itemName: Door Key
     itemIcon: {fileID: 21300000, guid: 9710a0542e2074c4594e595c6712935b, type: 3}
     isKeyItem: 1
 --- !u!1001 &2120719024

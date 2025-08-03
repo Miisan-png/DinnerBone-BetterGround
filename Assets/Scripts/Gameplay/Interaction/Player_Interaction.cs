@@ -33,6 +33,10 @@ public class Player_Interaction : MonoBehaviour
             I_Interactable interactable = col.GetComponent<I_Interactable>();
             if (interactable != null)
             {
+                bool canInteract = interactable.Can_Interact(player_controller.Get_Player_Type());
+                
+                if (!canInteract) continue;
+                
                 float distance = Vector3.Distance(transform.position, col.transform.position);
                 if (distance < closest_distance)
                 {
@@ -55,18 +59,31 @@ public class Player_Interaction : MonoBehaviour
             
             if (current_interactable != null && current_interactable_object != null)
             {
-                Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
+                bool canInteract = current_interactable.Can_Interact(player_controller.Get_Player_Type());
+                if (canInteract)
+                {
+                    Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
+                }
             }
         }
         else if (current_interactable != null && current_interactable_object != null)
         {
-            Proximity_System.Instance.UpdatePromptForObject(current_interactable_object);
+            bool canStillInteract = current_interactable.Can_Interact(player_controller.Get_Player_Type());
+            if (!canStillInteract)
+            {
+                Proximity_System.Instance.HidePromptForObject(current_interactable_object);
+                current_interactable = null;
+                current_interactable_object = null;
+            }
+            else
+            {
+                Proximity_System.Instance.UpdatePromptForObject(current_interactable_object);
+            }
         }
     }
     
     private void Handle_Interaction_Input()
     {
-        bool interact_pressed = player_controller.Get_Interact_Input();
         bool interact_held = player_controller.Get_Interact_Held();
         
         if (current_interactable != null && interact_held && !is_interacting)
@@ -103,7 +120,11 @@ public class Player_Interaction : MonoBehaviour
         
         if (current_interactable != null && current_interactable_object != null)
         {
-            Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
+            bool canStillInteract = current_interactable.Can_Interact(player_controller.Get_Player_Type());
+            if (canStillInteract)
+            {
+                Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
+            }
         }
     }
     

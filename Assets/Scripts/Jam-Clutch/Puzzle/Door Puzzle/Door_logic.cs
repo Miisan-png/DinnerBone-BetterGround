@@ -24,6 +24,15 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
             doorAnimation.clip = doorClosedClip;
             doorAnimation.Play();
         }
+        
+        if (doorOpenClip != null)
+        {
+            doorOpenClip.legacy = true;
+        }
+        if (doorClosedClip != null)
+        {
+            doorClosedClip.legacy = true;
+        }
     }
     
     public bool Can_Interact(Player_Type player_type)
@@ -60,8 +69,9 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
         
         if (doorAnimation != null && doorOpenClip != null)
         {
-            doorAnimation.clip = doorOpenClip;
-            doorAnimation.Play();
+            doorAnimation.AddClip(doorOpenClip, doorOpenClip.name);
+            doorAnimation.AddClip(doorClosedClip, doorClosedClip.name);
+            doorAnimation.Play(doorOpenClip.name);
             Debug.Log($"Playing animation: {doorOpenClip.name}");
         }
         else
@@ -82,7 +92,12 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
     
     public Vector3 Get_Interaction_Position()
     {
-        return transform.position;
+        Interaction_Position_Helper helper = GetComponent<Interaction_Position_Helper>();
+        if (helper != null)
+        {
+            return helper.GetInteractionPosition();
+        }
+        return transform.position + transform.forward * 1.5f;
     }
     
     public string GetInteractionID()

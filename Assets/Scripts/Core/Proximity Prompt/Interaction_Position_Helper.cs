@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class Interaction_Position_Helper : MonoBehaviour
 {
     [Header("Position Offset")]
@@ -17,7 +18,11 @@ public class Interaction_Position_Helper : MonoBehaviour
     {
         Vector3 basePosition = transform.position;
         Vector3 localOffsetWorld = transform.TransformDirection(localOffset);
-        return basePosition + localOffsetWorld + worldOffset + Vector3.up * heightOffset;
+        Vector3 finalPosition = basePosition + localOffsetWorld + worldOffset + Vector3.up * heightOffset;
+        
+        Debug.Log($"Helper calculating position: Base={basePosition}, Local={localOffsetWorld}, World={worldOffset}, Height={heightOffset}, Final={finalPosition}");
+        
+        return finalPosition;
     }
     
     void OnDrawGizmos()
@@ -27,9 +32,7 @@ public class Interaction_Position_Helper : MonoBehaviour
         Vector3 interactionPos = GetInteractionPosition();
         
         Gizmos.color = gizmoColor;
-        
         Gizmos.DrawWireSphere(interactionPos, gizmoSize);
-        
         Gizmos.DrawSphere(interactionPos, gizmoSize * 0.3f);
         
         if (showLine)
@@ -39,32 +42,6 @@ public class Interaction_Position_Helper : MonoBehaviour
         }
         
         Gizmos.color = Color.red;
-        Vector3 labelPos = interactionPos + Vector3.up * (gizmoSize + 0.2f);
-        
-        #if UNITY_EDITOR
-        UnityEditor.Handles.color = gizmoColor;
-        UnityEditor.Handles.Label(labelPos, "Interaction Point");
-        #endif
-    }
-    
-    void OnDrawGizmosSelected()
-    {
-        if (!showGizmos) return;
-        
-        Vector3 interactionPos = GetInteractionPosition();
-        
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(interactionPos, Vector3.one * 0.1f);
-        
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + transform.TransformDirection(localOffset));
-        
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(transform.position + transform.TransformDirection(localOffset), 
-                       transform.position + transform.TransformDirection(localOffset) + worldOffset);
-        
-        Gizmos.color = Color.green;
-        Vector3 beforeHeight = transform.position + transform.TransformDirection(localOffset) + worldOffset;
-        Gizmos.DrawLine(beforeHeight, beforeHeight + Vector3.up * heightOffset);
+        Gizmos.DrawWireCube(interactionPos + Vector3.up * 0.5f, Vector3.one * 0.2f);
     }
 }

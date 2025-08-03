@@ -86,14 +86,7 @@ public class Advanced_Interact_Icon : MonoBehaviour
     
     private void UpdateIconState()
     {
-        bool shouldShow = nearbyPlayer != null && parentInteractable != null;
-        
-        if (parentInteractable != null)
-        {
-            bool canStillInteract = parentInteractable.Can_Interact(nearbyPlayer?.Get_Player_Type() ?? Player_Type.Luthe) || 
-                                   parentInteractable.Can_Interact(nearbyPlayer?.Get_Player_Type() ?? Player_Type.Cherie);
-            if (!canStillInteract) shouldShow = false;
-        }
+        bool shouldShow = nearbyPlayer != null;
         
         if (shouldShow && !isVisible)
         {

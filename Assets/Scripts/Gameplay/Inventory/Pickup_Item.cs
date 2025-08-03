@@ -15,6 +15,7 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier
     private Player_Controller nearbyPlayer;
     private bool isScaledUp = false;
     private Vector3 originalScale;
+    private bool isPickedUp = false;
     
     void Start()
     {
@@ -29,11 +30,14 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier
         if (itemIconCanvas != null)
         {
             originalScale = itemIconCanvas.transform.localScale;
+            itemIconCanvas.transform.localScale = Vector3.zero;
         }
     }
     
     void Update()
     {
+        if (isPickedUp) return;
+        
         CheckForNearbyPlayers();
         UpdateIconScale();
     }
@@ -47,6 +51,8 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier
         
         foreach (Player_Controller player in players)
         {
+            if (Inventory_Manager.Instance.GetHeldItem(player.Get_Player_Type()) != null) continue;
+            
             float distance = Vector3.Distance(transform.position, player.transform.position);
             if (distance < closestDistance)
             {
@@ -72,19 +78,26 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier
         else if (!shouldScaleUp && isScaledUp)
         {
             isScaledUp = false;
-            itemIconCanvas.transform.DOScale(originalScale, animationSpeed);
+            itemIconCanvas.transform.DOScale(Vector3.zero, animationSpeed);
         }
     }
     
     public bool Can_Interact(Player_Type player_type)
     {
-        return itemData != null && Inventory_Manager.Instance.GetHeldItem(player_type) == null;
+        if (isPickedUp) return false;
+        if (itemData == null) return false;
+        if (Inventory_Manager.Instance == null) return true;
+        return Inventory_Manager.Instance.GetHeldItem(player_type) == null;
     }
     
     public void Start_Interaction(Player_Controller player)
     {
+        if (isPickedUp) return;
+        
         if (Inventory_Manager.Instance.PickupItem(itemData.itemID, player.Get_Player_Type()))
         {
+            isPickedUp = true;
+            
             if (itemIconCanvas != null)
             {
                 itemIconCanvas.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => {

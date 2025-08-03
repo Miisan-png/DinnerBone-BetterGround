@@ -36,6 +36,18 @@ public class Inventory_Manager : MonoBehaviour
         }
     }
     
+    void Start()
+    {
+        if (player1HeldIcon != null)
+        {
+            player1HeldIcon.gameObject.SetActive(false);
+        }
+        if (player2HeldIcon != null)
+        {
+            player2HeldIcon.gameObject.SetActive(false);
+        }
+    }
+    
     public bool PickupItem(string itemID, Player_Type playerType)
     {
         ItemData item = GetItemData(itemID);

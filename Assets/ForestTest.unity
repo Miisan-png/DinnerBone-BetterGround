@@ -2081,7 +2081,7 @@ MonoBehaviour:
   player2: {fileID: 994442026}
   dialogueAdvanceDelay: 4
   rotationSpeed: 2
-  debugMode: 1
+  debugMode: 0
   typewriterSpeed: 0.05
 --- !u!4 &644271300
 Transform:
@@ -2592,6 +2592,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54e10ac5b6afa6648bc5bb16a3c3ea69, type: 3}
+--- !u!114 &864998464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2147664209631964157, guid: 1a1b311fa3db0aa4ba6834485ce15867, type: 3}
+  m_PrefabInstance: {fileID: 1136341088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &898767477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4401431401273112, guid: 29f14dec24e07db4eaa6ffa1a1d5b604, type: 3}
@@ -5851,17 +5862,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a5e74be3ac88f449b81eec8a7ced91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1HeldIcon: {fileID: 2147664209121355602}
+  player1HeldIcon: {fileID: 864998464}
   player2HeldIcon: {fileID: 413826602}
   allItems:
-  - itemID: 
-    itemName: 
-    itemIcon: {fileID: 0}
-    isKeyItem: 0
-  - itemID: 
-    itemName: 
-    itemIcon: {fileID: 0}
-    isKeyItem: 0
+  - itemID: door_key
+    itemName: Key
+    itemIcon: {fileID: 21300000, guid: 9710a0542e2074c4594e595c6712935b, type: 3}
+    isKeyItem: 1
 --- !u!1001 &2120719024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6234,9 +6241,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 136257537408568268, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580975897432103717, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054523823427853335, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054538331643927095, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4055227144231571463, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
       propertyPath: m_Name
       value: Door_Key
+      objectReference: {fileID: 0}
+    - target: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525661141407447789, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
       propertyPath: m_LocalPosition.x

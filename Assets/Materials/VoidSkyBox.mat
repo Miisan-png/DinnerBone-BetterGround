@@ -100,7 +100,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HazeIntensity: 0.442
+    - _HazeIntensity: 0.458
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -118,8 +118,12 @@ Material:
     - _SpecularThreshold: 0.8
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _StarBrightness: 0.87
+    - _StarDensity: 0.127
+    - _StarSize: 5.7
+    - _StarTwinkleSpeed: 5.62
     - _Surface: 0
-    - _WispDensity: 0.944
+    - _WispDensity: 0.964
     - _WispScale: 0.89
     - _WispSpeed: 0.65
     - _WorkflowMode: 1
@@ -129,6 +133,9 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HazeColor: {r: 0.4285608, g: 0, b: 0.6830188, a: 1}
+    - _HazeColor1: {r: 0.8, g: 0.6, b: 0.9, a: 1}
+    - _HazeColor2: {r: 0.6, g: 0.8, b: 0.9, a: 1}
+    - _HazeColor3: {r: 0.9, g: 0.7, b: 0.6, a: 1}
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0.29999998, g: 0.29999998, b: 0.29999998, a: 1}

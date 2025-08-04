@@ -7,6 +7,7 @@ public class Player_Controller : MonoBehaviour
 {
     [SerializeField] private Player_Type player_type;
     [SerializeField] private InputSystem_Actions inputActions;
+    [SerializeField] private bool debugInput = false;
     
     private Player_Movement movement_script;
     private bool is_in_push_mode = false;
@@ -15,6 +16,7 @@ public class Player_Controller : MonoBehaviour
     private bool jumpPressed;
     private bool interactPressed;
     private bool interactHeld;
+    private bool sprintHeld;
     private float rotationInput;
 
     void Awake()
@@ -54,6 +56,10 @@ public class Player_Controller : MonoBehaviour
         inputActions.PlayerInputActions.InteractHeld.canceled += OnInteractHeld;
         inputActions.PlayerInputActions.Rotate.performed += OnRotate;
         inputActions.PlayerInputActions.Rotate.canceled += OnRotate;
+        
+        // Add sprint input callbacks
+        inputActions.PlayerInputActions.Sprint.performed += OnSprint;
+        inputActions.PlayerInputActions.Sprint.canceled += OnSprint;
     }
 
     private void CleanupInputCallbacks()
@@ -68,6 +74,8 @@ public class Player_Controller : MonoBehaviour
             inputActions.PlayerInputActions.InteractHeld.canceled -= OnInteractHeld;
             inputActions.PlayerInputActions.Rotate.performed -= OnRotate;
             inputActions.PlayerInputActions.Rotate.canceled -= OnRotate;
+            inputActions.PlayerInputActions.Sprint.performed -= OnSprint;
+            inputActions.PlayerInputActions.Sprint.canceled -= OnSprint;
         }
     }
 
@@ -76,7 +84,8 @@ public class Player_Controller : MonoBehaviour
         if (IsCorrectDevice(context.control.device))
         {
             moveInput = context.ReadValue<Vector2>();
-            // Debug.Log(moveInput); 
+            if (debugInput && moveInput.magnitude > 0.1f) 
+                Debug.Log($"{player_type} moveInput: {moveInput}");
         }
         else if (context.canceled)
         {
@@ -90,7 +99,10 @@ public class Player_Controller : MonoBehaviour
     private void OnJump(InputAction.CallbackContext context)
     {
         if (IsCorrectDevice(context.control.device))
+        {
             jumpPressed = true;
+            if (debugInput) Debug.Log($"{player_type} jump pressed");
+        }
     }
 
     private void OnInteract(InputAction.CallbackContext context)
@@ -109,6 +121,15 @@ public class Player_Controller : MonoBehaviour
     {
         if (IsCorrectDevice(context.control.device))
             rotationInput = context.ReadValue<float>();
+    }
+    
+    private void OnSprint(InputAction.CallbackContext context)
+    {
+        if (IsCorrectDevice(context.control.device))
+        {
+            sprintHeld = context.ReadValueAsButton();
+            if (debugInput) Debug.Log($"{player_type} sprint: {sprintHeld}");
+        }
     }
 
     private bool IsCorrectDevice(InputDevice device)
@@ -146,14 +167,16 @@ public class Player_Controller : MonoBehaviour
             return keyboard.wKey.isPressed || keyboard.aKey.isPressed || 
                    keyboard.sKey.isPressed || keyboard.dKey.isPressed ||
                    keyboard.spaceKey.isPressed || keyboard.eKey.isPressed ||
-                   keyboard.qKey.isPressed || keyboard.rKey.isPressed;
+                   keyboard.qKey.isPressed || keyboard.rKey.isPressed ||
+                   keyboard.leftShiftKey.isPressed; // Add sprint key
         }
         else
         {
             return keyboard.upArrowKey.isPressed || keyboard.downArrowKey.isPressed ||
                    keyboard.leftArrowKey.isPressed || keyboard.rightArrowKey.isPressed ||
                    keyboard.rightShiftKey.isPressed || keyboard.enterKey.isPressed ||
-                   keyboard.commaKey.isPressed || keyboard.periodKey.isPressed;
+                   keyboard.commaKey.isPressed || keyboard.periodKey.isPressed ||
+                   keyboard.rightCtrlKey.isPressed; // Add sprint key for player 2
         }
     }
 
@@ -162,6 +185,7 @@ public class Player_Controller : MonoBehaviour
         if (!is_in_push_mode)
         {
             movement_script.Move(moveInput);
+            movement_script.SetSprintInput(sprintHeld);
 
             if (jumpPressed)
             {
@@ -172,6 +196,7 @@ public class Player_Controller : MonoBehaviour
         else
         {
             movement_script.Move(Vector2.zero);
+            movement_script.SetSprintInput(false);
         }
 
         if (interactPressed)
@@ -210,5 +235,10 @@ public class Player_Controller : MonoBehaviour
     public float Get_Rotation_Input()
     {
         return rotationInput;
+    }
+    
+    public bool Get_Sprint_Input()
+    {
+        return sprintHeld;
     }
 }

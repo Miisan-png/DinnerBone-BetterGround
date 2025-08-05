@@ -151,9 +151,10 @@ public class CutsceneManager : MonoBehaviour
         if (skipText != null)
         {
             float progress = Mathf.Clamp01(currentHoldTime / holdTimeRequired);
-            Color textColor = skipText.color;
-            textColor.a = Mathf.Lerp(0.5f, 1f, progress);
-            skipText.color = textColor;
+            
+            Color currentColor = Color.Lerp(startColor, endColor, progress);
+            currentColor.a = Mathf.Lerp(0.5f, 1f, progress);
+            skipText.color = currentColor;
         }
     }
     
@@ -199,7 +200,7 @@ public class CutsceneManager : MonoBehaviour
         skipSequence.OnComplete(LoadNextScene);
     }
     
-    void LoadNextScene()
+    public void LoadNextScene()
     {
         if (!string.IsNullOrEmpty(nextSceneName))
         {

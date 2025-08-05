@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 
 public class Proximity_System : MonoBehaviour
@@ -34,7 +33,7 @@ public class Proximity_System : MonoBehaviour
     
     void Update()
     {
-        if (Time.frameCount % 30 == 0) // Update every 30 frames (~0.5 seconds at 60fps)
+        if (Time.frameCount % 30 == 0)
         {
             UpdateActivePrompts();
         }
@@ -86,14 +85,12 @@ public class Proximity_System : MonoBehaviour
         
         Proximity_Prompt prompt_script = prompt_prefab.GetComponent<Proximity_Prompt>();
         Image icon_image = prompt_prefab.GetComponentInChildren<Image>();
-        TextMeshProUGUI text_label = prompt_prefab.GetComponentInChildren<TextMeshProUGUI>();
         CanvasGroup canvas_group = prompt_prefab.GetComponent<CanvasGroup>();
         
         if (debug_system)
         {
             Debug.Log($"Prefab Validation - Prompt Script: {(prompt_script != null ? "Found" : "Missing")}, " +
                      $"Icon Image: {(icon_image != null ? "Found" : "Missing")}, " +
-                     $"Text Label: {(text_label != null ? "Found" : "Missing")}, " +
                      $"Canvas Group: {(canvas_group != null ? "Found" : "Missing")}");
         }
     }
@@ -109,41 +106,25 @@ public class Proximity_System : MonoBehaviour
         CanvasGroup canvas_group = prefab.AddComponent<CanvasGroup>();
         
         RectTransform rect = prefab.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(200, 100);
+        rect.sizeDelta = new Vector2(100, 100);
         
         GameObject icon_obj = new GameObject("Icon");
         icon_obj.transform.SetParent(prefab.transform, false);
         Image icon_image = icon_obj.AddComponent<Image>();
         RectTransform icon_rect = icon_obj.GetComponent<RectTransform>();
-        icon_rect.sizeDelta = new Vector2(50, 50);
-        icon_rect.anchoredPosition = new Vector2(0, 10);
+        icon_rect.sizeDelta = new Vector2(80, 80);
+        icon_rect.anchoredPosition = Vector2.zero;
         icon_rect.anchorMin = new Vector2(0.5f, 0.5f);
         icon_rect.anchorMax = new Vector2(0.5f, 0.5f);
-        
-        GameObject text_obj = new GameObject("Action_Label");
-        text_obj.transform.SetParent(prefab.transform, false);
-        TextMeshProUGUI text_component = text_obj.AddComponent<TextMeshProUGUI>();
-        text_component.text = "Interact";
-        text_component.fontSize = 16;
-        text_component.alignment = TextAlignmentOptions.Center;
-        text_component.color = Color.white;
-        RectTransform text_rect = text_obj.GetComponent<RectTransform>();
-        text_rect.sizeDelta = new Vector2(180, 30);
-        text_rect.anchoredPosition = new Vector2(0, -30);
-        text_rect.anchorMin = new Vector2(0.5f, 0.5f);
-        text_rect.anchorMax = new Vector2(0.5f, 0.5f);
         
         Proximity_Prompt prompt_script = prefab.AddComponent<Proximity_Prompt>();
         
         var iconField = typeof(Proximity_Prompt).GetField("icon_image", 
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var labelField = typeof(Proximity_Prompt).GetField("action_label", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         var canvasGroupField = typeof(Proximity_Prompt).GetField("canvas_group", 
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         
         iconField?.SetValue(prompt_script, icon_image);
-        labelField?.SetValue(prompt_script, text_component);
         canvasGroupField?.SetValue(prompt_script, canvas_group);
         
         prompt_prefab = prefab;
@@ -184,6 +165,15 @@ public class Proximity_System : MonoBehaviour
             }
         }
         
+        if (!can_interact)
+        {
+            if (debug_system)
+            {
+                Debug.Log($"Not showing restricted prompt for {target_object.name}");
+            }
+            return;
+        }
+        
         Proximity_Prompt prompt = GetPromptFromPool();
         if (prompt != null)
         {
@@ -195,7 +185,7 @@ public class Proximity_System : MonoBehaviour
             
             if (debug_system)
             {
-                Debug.Log($"Showing {(can_interact ? "interactive" : "restricted")} prompt for {target_object.name} assigned to player {player.Get_Player_Type()}");
+                Debug.Log($"Showing interactive prompt for {target_object.name} assigned to player {player.Get_Player_Type()}");
             }
         }
         else
@@ -222,6 +212,16 @@ public class Proximity_System : MonoBehaviour
         }
     }
     
+    public void PlayInteractionEffect(GameObject target_object)
+    {
+        if (object_to_prompt.TryGetValue(target_object, out Proximity_Prompt prompt))
+        {
+            prompt.PlayInteractionEffect();
+            active_prompts.Remove(prompt);
+            object_to_prompt.Remove(target_object);
+        }
+    }
+    
     public void UpdatePromptForObject(GameObject target_object)
     {
         if (object_to_prompt.TryGetValue(target_object, out Proximity_Prompt prompt))
@@ -237,7 +237,6 @@ public class Proximity_System : MonoBehaviour
             return prompt_pool.Dequeue();
         }
         
-        // Create new prompt if pool is empty
         GameObject prompt_obj = Instantiate(prompt_prefab, transform);
         Proximity_Prompt prompt = prompt_obj.GetComponent<Proximity_Prompt>();
         

@@ -35,10 +35,8 @@ public class Player_Interaction : MonoBehaviour
             {
                 bool canInteract = interactable.Can_Interact(player_controller.Get_Player_Type());
                 
-                if (!canInteract) continue;
-                
                 float distance = Vector3.Distance(transform.position, col.transform.position);
-                if (distance < closest_distance)
+                if (distance < closest_distance && canInteract)
                 {
                     closest_distance = distance;
                     closest_interactable = interactable;
@@ -59,11 +57,7 @@ public class Player_Interaction : MonoBehaviour
             
             if (current_interactable != null && current_interactable_object != null)
             {
-                bool canInteract = current_interactable.Can_Interact(player_controller.Get_Player_Type());
-                if (canInteract)
-                {
-                    Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
-                }
+                Proximity_System.Instance.ShowPromptForObject(current_interactable_object, current_interactable, player_controller);
             }
         }
         else if (current_interactable != null && current_interactable_object != null)
@@ -106,7 +100,7 @@ public class Player_Interaction : MonoBehaviour
         
         if (current_interactable_object != null)
         {
-            Proximity_System.Instance.HidePromptForObject(current_interactable_object);
+            Proximity_System.Instance.PlayInteractionEffect(current_interactable_object);
         }
     }
     

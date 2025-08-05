@@ -1,32 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
 
 public class Proximity_Prompt : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private Image icon_image;
-    [SerializeField] private TextMeshProUGUI action_label;
     [SerializeField] private CanvasGroup canvas_group;
     
     [Header("Settings")]
     [SerializeField] private float appear_duration = 0.3f;
     [SerializeField] private float disappear_duration = 0.2f;
-    [SerializeField] private float height_offset = 2f;
     [SerializeField] private bool debug_input = false;
+    
+    [Header("Interaction Effects")]
+    [SerializeField] private Color interaction_color = Color.green;
+    [SerializeField] private float interaction_scale = 1.2f;
     
     private Transform target_transform;
     private I_Interactable current_interactable;
     private Player_Controller assigned_player;
-    private string interaction_id; // Store the interaction type ID
+    private string interaction_id;
     private bool is_visible = false;
     private Tween current_tween;
     private Camera active_camera;
+    private Proximity_Prompt_Helper prompt_helper;
     
     void Awake()
     {
-        // Ensure we have all required components
         SetupUIComponents();
         
         if (canvas_group == null)
@@ -44,13 +45,11 @@ public class Proximity_Prompt : MonoBehaviour
     
     private void SetupUIComponents()
     {
-        // Auto-find UI components if not assigned
         if (icon_image == null)
         {
             icon_image = GetComponentInChildren<Image>();
             if (icon_image == null)
             {
-                // Try to find by name
                 Transform iconTransform = transform.Find("Icon");
                 if (iconTransform != null)
                 {
@@ -59,24 +58,9 @@ public class Proximity_Prompt : MonoBehaviour
             }
         }
         
-        if (action_label == null)
-        {
-            action_label = GetComponentInChildren<TextMeshProUGUI>();
-            if (action_label == null)
-            {
-                // Try to find by name
-                Transform labelTransform = transform.Find("Action_Label");
-                if (labelTransform != null)
-                {
-                    action_label = labelTransform.GetComponent<TextMeshProUGUI>();
-                }
-            }
-        }
-        
-        // Debug what we found
         if (debug_input)
         {
-            Debug.Log($"Proximity_Prompt Setup - Icon Image: {(icon_image != null ? "Found" : "Missing")}, Action Label: {(action_label != null ? "Found" : "Missing")}");
+            Debug.Log($"Proximity_Prompt Setup - Icon Image: {(icon_image != null ? "Found" : "Missing")}");
         }
     }
     
@@ -95,18 +79,17 @@ public class Proximity_Prompt : MonoBehaviour
         current_interactable = interactable;
         assigned_player = player;
         
-        // Get interaction ID from the interactable object
+        prompt_helper = target.GetComponent<Proximity_Prompt_Helper>();
+        
         if (interactable is IInteractionIdentifier identifier)
         {
             interaction_id = identifier.GetInteractionID();
         }
         else
         {
-            // Fallback: try to determine ID from object type
             interaction_id = DetermineInteractionID(interactable);
         }
         
-        // Ensure components are set up before updating content
         SetupUIComponents();
         UpdatePromptContent();
         UpdatePosition();
@@ -124,7 +107,6 @@ public class Proximity_Prompt : MonoBehaviour
         is_visible = true;
         gameObject.SetActive(true);
         
-        // Update content when showing to ensure latest device info
         UpdatePromptContent();
         
         current_tween?.Kill();
@@ -149,6 +131,21 @@ public class Proximity_Prompt : MonoBehaviour
                 on_complete?.Invoke();
             })
             .SetUpdate(true);
+    }
+    
+    public void PlayInteractionEffect()
+    {
+        if (icon_image != null)
+        {
+            icon_image.color = interaction_color;
+            icon_image.transform.DOScale(interaction_scale, 0.1f).OnComplete(() => {
+                HidePrompt();
+            });
+        }
+        else
+        {
+            HidePrompt();
+        }
     }
     
     private void UpdatePromptContent()
@@ -183,7 +180,6 @@ public class Proximity_Prompt : MonoBehaviour
         Input_Icon_Database icon_db = Proximity_System.Instance.GetIconDatabase();
         if (icon_db != null)
         {
-            // Get complete interaction data from database
             InteractionData interaction_data = icon_db.GetInteractionData(
                 interaction_id, 
                 device_type, 
@@ -191,7 +187,6 @@ public class Proximity_Prompt : MonoBehaviour
                 !can_interact
             );
             
-            // Update icon
             if (icon_image != null)
             {
                 if (interaction_data.icon != null)
@@ -200,7 +195,6 @@ public class Proximity_Prompt : MonoBehaviour
                     if (debug_input) Debug.Log($"Updated icon sprite to: {interaction_data.icon.name}");
                 }
                 
-                // Update visual state
                 if (!can_interact)
                 {
                     icon_image.color = Color.red;
@@ -211,15 +205,6 @@ public class Proximity_Prompt : MonoBehaviour
                     icon_image.color = Color.white;
                     if (canvas_group != null) canvas_group.alpha = 1f;
                 }
-            }
-            
-            // Update text with database text and color
-            if (action_label != null)
-            {
-                action_label.text = interaction_data.text;
-                action_label.color = interaction_data.color;
-                
-                if (debug_input) Debug.Log($"Updated action text to: {interaction_data.text}");
             }
         }
         else
@@ -233,7 +218,6 @@ public class Proximity_Prompt : MonoBehaviour
     
     private string DetermineInteractionID(I_Interactable interactable)
     {
-        // Auto-detect interaction type based on object type
         string type_name = interactable.GetType().Name.ToLower();
         
         if (type_name.Contains("vent_entry"))
@@ -256,7 +240,16 @@ public class Proximity_Prompt : MonoBehaviour
     {
         if (target_transform == null) return;
         
-        Vector3 world_position = target_transform.position + Vector3.up * height_offset;
+        Vector3 world_position;
+        if (prompt_helper != null)
+        {
+            world_position = prompt_helper.GetPromptPosition();
+        }
+        else
+        {
+            world_position = target_transform.position + Vector3.up * 2f;
+        }
+        
         transform.position = world_position;
     }
     

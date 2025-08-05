@@ -92,10 +92,10 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
     
     public Vector3 Get_Interaction_Position()
     {
-        Interaction_Position_Helper helper = GetComponent<Interaction_Position_Helper>();
+        Proximity_Prompt_Helper helper = GetComponent<Proximity_Prompt_Helper>();
         if (helper != null)
         {
-            return helper.GetInteractionPosition();
+            return helper.GetPromptPosition();
         }
         return transform.position + transform.forward * 1.5f;
     }

@@ -87,7 +87,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7767889733708723425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,12 +130,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon_image: {fileID: 7860386732386252443}
-  action_label: {fileID: 5920874283498394172}
   canvas_group: {fileID: 6194496339078313585}
   appear_duration: 0.3
   disappear_duration: 0.2
-  height_offset: 2
   debug_input: 0
+  interaction_color: {r: 0.98490566, g: 0.86926097, b: 0.31033814, a: 1}
+  interaction_scale: 1.2
 --- !u!1 &8380594361348454193
 GameObject:
   m_ObjectHideFlags: 0

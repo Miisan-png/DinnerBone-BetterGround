@@ -15,6 +15,7 @@ public class Camera_Manager : MonoBehaviour
     [SerializeField] private float split_distance = 6f;
     [SerializeField] private bool force_split_screen = false;
     [SerializeField] private bool enable_split_on_distance = true;
+    [SerializeField] private bool force_split_screen_only = false;
     
     private Camera_Mode current_mode = Camera_Mode.Follow;
     private Camera_Follow follow_script;
@@ -31,7 +32,11 @@ public class Camera_Manager : MonoBehaviour
         
         follow_script.SetSplitModeEnabled(enable_split_on_distance);
         
-        if (enable_split_on_distance)
+        if (force_split_screen_only)
+        {
+            SetCameraMode(Camera_Mode.Split_Screen);
+        }
+        else if (enable_split_on_distance)
         {
             SetCameraMode(Camera_Mode.Follow);
         }
@@ -43,7 +48,7 @@ public class Camera_Manager : MonoBehaviour
     
     void Update()
     {
-        if (is_transitioning) return;
+        if (is_transitioning || force_split_screen_only) return;
         
         if (enable_split_on_distance)
         {
@@ -137,11 +142,42 @@ public class Camera_Manager : MonoBehaviour
     [ContextMenu("Enable Auto Switch")]
     public void Enable_Auto_Switch()
     {
+        force_split_screen_only = false;
+        enable_split_on_distance = true;
+    }
+    
+    [ContextMenu("Toggle Split Screen Only")]
+    public void Toggle_Split_Screen_Only()
+    {
+        force_split_screen_only = !force_split_screen_only;
         
+        if (force_split_screen_only)
+        {
+            SetCameraMode(Camera_Mode.Split_Screen);
+        }
+        else
+        {
+            enable_split_on_distance = true;
+        }
+    }
+    
+    public void Set_Force_Split_Screen_Only(bool enabled)
+    {
+        force_split_screen_only = enabled;
+        
+        if (enabled)
+        {
+            SetCameraMode(Camera_Mode.Split_Screen);
+        }
+    }
+    
+    public bool Is_Force_Split_Screen_Only()
+    {
+        return force_split_screen_only;
     }
     
     public void Set_Split_Distance(float distance)
     {
-        
+        split_distance = distance;
     }
 }

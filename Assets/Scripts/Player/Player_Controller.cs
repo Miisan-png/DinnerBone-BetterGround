@@ -56,8 +56,6 @@ public class Player_Controller : MonoBehaviour
         inputActions.PlayerInputActions.InteractHeld.canceled += OnInteractHeld;
         inputActions.PlayerInputActions.Rotate.performed += OnRotate;
         inputActions.PlayerInputActions.Rotate.canceled += OnRotate;
-        
-        // Add sprint input callbacks
         inputActions.PlayerInputActions.Sprint.performed += OnSprint;
         inputActions.PlayerInputActions.Sprint.canceled += OnSprint;
     }
@@ -86,13 +84,6 @@ public class Player_Controller : MonoBehaviour
             moveInput = context.ReadValue<Vector2>();
             if (debugInput && moveInput.magnitude > 0.1f) 
                 Debug.Log($"{player_type} moveInput: {moveInput}");
-        }
-        else if (context.canceled)
-        {
-            if (IsPlayerKeyboard(context.control.device))
-            {
-                moveInput = Vector2.zero;
-            }
         }
     }
 
@@ -134,9 +125,9 @@ public class Player_Controller : MonoBehaviour
 
     private bool IsCorrectDevice(InputDevice device)
     {
-        if (device is Keyboard)
+        if (device is Keyboard keyboard)
         {
-            return IsCorrectKeyboardInput(device as Keyboard);
+            return IsCorrectKeyboardPlayer(keyboard);
         }
         else if (device is Gamepad gamepad)
         {
@@ -155,12 +146,7 @@ public class Player_Controller : MonoBehaviour
         return false;
     }
 
-    private bool IsPlayerKeyboard(InputDevice device)
-    {
-        return device is Keyboard;
-    }
-
-    private bool IsCorrectKeyboardInput(Keyboard keyboard)
+    private bool IsCorrectKeyboardPlayer(Keyboard keyboard)
     {
         if (player_type == Player_Type.Luthe)
         {
@@ -168,7 +154,7 @@ public class Player_Controller : MonoBehaviour
                    keyboard.sKey.isPressed || keyboard.dKey.isPressed ||
                    keyboard.spaceKey.isPressed || keyboard.eKey.isPressed ||
                    keyboard.qKey.isPressed || keyboard.rKey.isPressed ||
-                   keyboard.leftShiftKey.isPressed; // Add sprint key
+                   keyboard.leftShiftKey.isPressed;
         }
         else
         {
@@ -176,12 +162,14 @@ public class Player_Controller : MonoBehaviour
                    keyboard.leftArrowKey.isPressed || keyboard.rightArrowKey.isPressed ||
                    keyboard.rightShiftKey.isPressed || keyboard.enterKey.isPressed ||
                    keyboard.commaKey.isPressed || keyboard.periodKey.isPressed ||
-                   keyboard.rightCtrlKey.isPressed; // Add sprint key for player 2
+                   keyboard.rightCtrlKey.isPressed;
         }
     }
 
     void Update()
     {
+        HandleKeyboardInputDirect();
+        
         if (!is_in_push_mode)
         {
             movement_script.Move(moveInput);
@@ -203,6 +191,57 @@ public class Player_Controller : MonoBehaviour
         {
             interactPressed = false;
         }
+    }
+
+    private void HandleKeyboardInputDirect()
+    {
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard == null) return;
+
+        Vector2 keyboardInput = Vector2.zero;
+        bool keyboardSprint = false;
+        bool keyboardJump = false;
+        bool keyboardInteract = false;
+        bool keyboardInteractHeld = false;
+
+        if (player_type == Player_Type.Luthe)
+        {
+            if (keyboard.wKey.isPressed) keyboardInput.y += 1;
+            if (keyboard.sKey.isPressed) keyboardInput.y -= 1;
+            if (keyboard.aKey.isPressed) keyboardInput.x -= 1;
+            if (keyboard.dKey.isPressed) keyboardInput.x += 1;
+            
+            keyboardSprint = keyboard.leftShiftKey.isPressed;
+            keyboardJump = keyboard.spaceKey.wasPressedThisFrame;
+            keyboardInteract = keyboard.eKey.wasPressedThisFrame;
+            keyboardInteractHeld = keyboard.eKey.isPressed;
+        }
+        else
+        {
+            if (keyboard.upArrowKey.isPressed) keyboardInput.y += 1;
+            if (keyboard.downArrowKey.isPressed) keyboardInput.y -= 1;
+            if (keyboard.leftArrowKey.isPressed) keyboardInput.x -= 1;
+            if (keyboard.rightArrowKey.isPressed) keyboardInput.x += 1;
+            
+            keyboardSprint = keyboard.rightShiftKey.isPressed;
+            keyboardJump = keyboard.enterKey.wasPressedThisFrame;
+            keyboardInteract = keyboard.commaKey.wasPressedThisFrame;
+            keyboardInteractHeld = keyboard.commaKey.isPressed;
+        }
+
+        if (keyboardInput.magnitude > 0.1f)
+        {
+            moveInput = keyboardInput;
+        }
+        else if (Gamepad.all.Count == 0 || (player_type == Player_Type.Luthe && Gamepad.all.Count < 1) || (player_type == Player_Type.Cherie && Gamepad.all.Count < 2))
+        {
+            moveInput = Vector2.zero;
+        }
+
+        if (keyboardSprint) sprintHeld = true;
+        if (keyboardJump) jumpPressed = true;
+        if (keyboardInteract) interactPressed = true;
+        if (keyboardInteractHeld) interactHeld = true;
     }
 
     public Player_Type Get_Player_Type()

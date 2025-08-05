@@ -93,6 +93,7 @@ public class Proximity_Prompt : MonoBehaviour
         SetupUIComponents();
         UpdatePromptContent();
         UpdatePosition();
+        UpdateLookAt();
         
         if (debug_input)
         {
@@ -256,7 +257,7 @@ public class Proximity_Prompt : MonoBehaviour
     private void UpdateLookAt()
     {
         Camera target_camera = GetNearestCamera();
-        if (target_camera != null && target_camera != active_camera)
+        if (target_camera != null)
         {
             active_camera = target_camera;
         }
@@ -264,12 +265,12 @@ public class Proximity_Prompt : MonoBehaviour
         if (active_camera != null)
         {
             Vector3 camera_position = active_camera.transform.position;
-            Vector3 direction = camera_position - transform.position;
+            Vector3 direction = (camera_position - transform.position).normalized;
             
             if (direction.magnitude > 0.01f)
             {
-                transform.LookAt(camera_position);
-                transform.Rotate(0, 180, 0);
+                Quaternion target_rotation = Quaternion.LookRotation(-direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, target_rotation, Time.deltaTime * 15f);
             }
         }
     }

@@ -32,6 +32,7 @@ public class Advanced_Interact_Icon : MonoBehaviour
     private I_Interactable parentInteractable;
     private Player_Controller nearbyPlayer;
     private bool isInInteractRange = false;
+    private bool isDisabled = false;
     
     void Start()
     {
@@ -50,6 +51,8 @@ public class Advanced_Interact_Icon : MonoBehaviour
     
     void Update()
     {
+        if (isDisabled) return;
+        
         CheckForNearbyPlayers();
         UpdateIconState();
     }
@@ -86,7 +89,13 @@ public class Advanced_Interact_Icon : MonoBehaviour
     
     private void UpdateIconState()
     {
-        bool shouldShow = nearbyPlayer != null;
+        bool shouldShow = nearbyPlayer != null && parentInteractable != null;
+        
+        if (shouldShow && parentInteractable != null)
+        {
+            bool canInteract = parentInteractable.Can_Interact(nearbyPlayer.Get_Player_Type());
+            shouldShow = canInteract;
+        }
         
         if (shouldShow && !isVisible)
         {
@@ -152,7 +161,7 @@ public class Advanced_Interact_Icon : MonoBehaviour
             canvasGroup.DOFade(1f, fadeSpeed);
         }
     }
-    
+
     public void Hide()
     {
         isVisible = false;
@@ -167,8 +176,17 @@ public class Advanced_Interact_Icon : MonoBehaviour
             CollapseBrackets();
         }
     }
-    
 
+    public void DisableIcon()
+    {
+        isDisabled = true;
+        Hide();
+    }
+
+    public void EnableIcon()
+    {
+        isDisabled = false;
+    }
     
     private void ExpandBrackets()
     {

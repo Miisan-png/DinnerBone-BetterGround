@@ -1004,6 +1004,42 @@ Animation:
   m_CorrespondingSourceObject: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
   m_PrefabInstance: {fileID: 506631551}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &186698513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186698497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: 0, y: 0, z: 0}
+  worldOffset: {x: 0, y: 0, z: 0}
+  heightOffset: 2
+  showGizmos: 1
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSize: 0.3
+--- !u!114 &186698514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186698497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: -0.8, y: -0.04, z: -0.26}
+  worldOffset: {x: 0, y: 0, z: 0}
+  heightOffset: 2
+  showGizmos: 1
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSize: 0.3
 --- !u!1 &197757907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,11 +1518,6 @@ MonoBehaviour:
   indicatorRing: {fileID: 646280758}
   ringMaterial: {fileID: 0}
   fadeSpeed: 5
-  groundCheckDistance: 0.1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
-  jumpThreshold: 0.5
   movementThreshold: 0.1
   idleDelay: 1
 --- !u!1 &404672247
@@ -2054,6 +2085,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5964579816831982809, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 186698508}
+    - targetCorrespondingSourceObject: {fileID: 5964579816831982809, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 186698513}
+    - targetCorrespondingSourceObject: {fileID: 5964579816831982809, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 186698514}
   m_SourcePrefab: {fileID: 100100000, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
 --- !u!1001 &508945744
 PrefabInstance:
@@ -3717,6 +3754,24 @@ MonoBehaviour:
   scaleUpSize: 1.2
   animationSpeed: 0.3
   interaction_id: pickup_key
+--- !u!114 &1056360762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056360752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: 0, y: -0.76, z: 0}
+  worldOffset: {x: 0, y: -0.26, z: 0}
+  heightOffset: 2.33
+  showGizmos: 1
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSize: 0.3
 --- !u!1001 &1058237925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5261,11 +5316,6 @@ MonoBehaviour:
   indicatorRing: {fileID: 465746048}
   ringMaterial: {fileID: 0}
   fadeSpeed: 5
-  groundCheckDistance: 0.1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
-  jumpThreshold: 0.5
   movementThreshold: 0.1
   idleDelay: 1
 --- !u!4 &1680673429 stripped
@@ -8089,15 +8139,15 @@ PrefabInstance:
       objectReference: {fileID: 330585545}
     - target: {fileID: 2754668721938506682, guid: b72387d0ad816814a9325887436ba5e4, type: 3}
       propertyPath: m_Height
-      value: 1.02
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2754668721938506682, guid: b72387d0ad816814a9325887436ba5e4, type: 3}
       propertyPath: m_Radius
-      value: 0.31
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 2754668721938506682, guid: b72387d0ad816814a9325887436ba5e4, type: 3}
       propertyPath: m_Center.y
-      value: 0.04
+      value: 0.48
       objectReference: {fileID: 0}
     - target: {fileID: 3640208181690971330, guid: b72387d0ad816814a9325887436ba5e4, type: 3}
       propertyPath: m_Enabled
@@ -8342,6 +8392,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1056360757}
+    - targetCorrespondingSourceObject: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1056360762}
   m_SourcePrefab: {fileID: 100100000, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
 --- !u!1 &5753545133780556165
 GameObject:

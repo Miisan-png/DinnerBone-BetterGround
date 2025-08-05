@@ -5,23 +5,25 @@ public class Player_Indicator : MonoBehaviour
     [SerializeField] private GameObject indicatorRing;
     [SerializeField] private Material ringMaterial;
     [SerializeField] private float fadeSpeed = 5f;
-    [SerializeField] private float groundCheckDistance = 0.1f;
-    [SerializeField] private LayerMask groundMask = 1;
-    [SerializeField] private float jumpThreshold = 0.5f;
     [SerializeField] private float movementThreshold = 0.1f;
     [SerializeField] private float idleDelay = 1f;
     
     private CharacterController characterController;
+    private Player_Movement playerMovement;
     private Renderer ringRenderer;
-    private bool isGrounded = true;
+    private bool isJumping = false;
     private bool isMoving = false;
     private float currentAlpha = 1f;
     private float targetAlpha = 1f;
     private float idleTimer = 0f;
     
+    // For tracking movement when using Player_Movement script
+    private Vector3 lastPosition;
+    
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerMovement = GetComponent<Player_Movement>();
         
         if (indicatorRing != null)
         {
@@ -41,39 +43,72 @@ public class Player_Indicator : MonoBehaviour
                 ringRenderer.material = ringMaterial;
             }
         }
+        
+        // Initialize last position for movement detection
+        lastPosition = transform.position;
     }
     
     void Update()
     {
-        CheckGroundStatus();
+        CheckJumpingStatus();
         CheckMovementStatus();
         UpdateIndicatorVisibility();
     }
     
-    private void CheckGroundStatus()
+    private void CheckJumpingStatus()
     {
         if (characterController != null)
         {
-            isGrounded = characterController.isGrounded;
-            
+            // Simple check: if we have significant upward velocity, we're jumping
             Vector3 velocity = characterController.velocity;
-            if (transform.position.y > jumpThreshold || velocity.y > 0.1f)
-            {
-                isGrounded = false;
-            }
+            isJumping = velocity.y > 0.5f || !characterController.isGrounded;
         }
         else
         {
-            RaycastHit hit;
-            Vector3 rayStart = transform.position + Vector3.up * 0.1f;
-            isGrounded = Physics.Raycast(rayStart, Vector3.down, out hit, groundCheckDistance + 0.1f, groundMask);
+            // Fallback: assume not jumping if no CharacterController
+            isJumping = false;
         }
     }
     
     private void CheckMovementStatus()
     {
-        if (characterController != null)
+        // Use Player_Movement script if available, otherwise fall back to CharacterController
+        if (playerMovement != null)
         {
+            // Check if player is giving movement input or is sprinting
+            // We can detect movement by checking position change over time
+            Vector3 currentPosition = transform.position;
+            Vector3 horizontalMovement = new Vector3(
+                currentPosition.x - lastPosition.x, 
+                0, 
+                currentPosition.z - lastPosition.z
+            );
+            
+            float movementSpeed = horizontalMovement.magnitude / Time.deltaTime;
+            
+            bool wasMoving = isMoving;
+            isMoving = movementSpeed > movementThreshold;
+            
+            // Update idle timer
+            if (isMoving)
+            {
+                idleTimer = 0f;
+            }
+            else if (wasMoving && !isMoving)
+            {
+                idleTimer = 0f;
+            }
+            else if (!isMoving)
+            {
+                idleTimer += Time.deltaTime;
+            }
+            
+            // Update last position for next frame
+            lastPosition = currentPosition;
+        }
+        else if (characterController != null)
+        {
+            // Fallback to original CharacterController method
             Vector3 velocity = characterController.velocity;
             Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
             float speed = horizontalVelocity.magnitude;
@@ -98,7 +133,8 @@ public class Player_Indicator : MonoBehaviour
     
     private void UpdateIndicatorVisibility()
     {
-        bool shouldShow = isGrounded && (isMoving || idleTimer < idleDelay);
+        // Show indicator only when NOT jumping and (moving or recently moved)
+        bool shouldShow = !isJumping && (isMoving || idleTimer < idleDelay);
         targetAlpha = shouldShow ? 1f : 0f;
         
         currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, fadeSpeed * Time.deltaTime);
@@ -131,16 +167,34 @@ public class Player_Indicator : MonoBehaviour
         }
     }
     
+    // Public method to get movement info (optional, for debugging)
+    public bool IsPlayerMoving()
+    {
+        return isMoving;
+    }
+    
+    // Public method to check if using Player_Movement script
+    public bool IsUsingPlayerMovementScript()
+    {
+        return playerMovement != null;
+    }
+    
     void OnDrawGizmos()
     {
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Vector3 rayStart = transform.position + Vector3.up * 0.1f;
-        Gizmos.DrawRay(rayStart, Vector3.down * (groundCheckDistance + 0.1f));
+        Gizmos.color = !isJumping ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.5f, 0.2f);
         
         if (isMoving)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, 0.5f);
+        }
+        
+        // Visual indicator if using Player_Movement script
+        if (playerMovement != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireCube(transform.position + Vector3.up * 2f, Vector3.one * 0.2f);
         }
     }
 }

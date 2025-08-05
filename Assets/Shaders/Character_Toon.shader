@@ -24,6 +24,16 @@ Shader "Custom/OvercookedStyleCharacter"
         [Header(Color Grading)]
         _Saturation ("Saturation", Range(0, 2)) = 1.2
         _Brightness ("Brightness", Range(0, 2)) = 1.1
+        
+        [Header(Lighting Blend)]
+        _LightingInfluence ("Lighting Influence", Range(0, 1)) = 0.7
+        
+        [Header(Ambient Light)]
+        _AmbientContribution ("Ambient Contribution", Range(0, 1)) = 0.3
+        
+        [Header(Spot Light Effects)]
+        _SpotLightSoftness ("Spot Light Softness", Range(0, 1)) = 0.3
+        _SpotLightIntensity ("Spot Light Intensity", Range(0, 5)) = 1.5
     }
 
     SubShader
@@ -54,6 +64,10 @@ Shader "Custom/OvercookedStyleCharacter"
         float _SpecularSoftness;
         float _Saturation;
         float _Brightness;
+        float _LightingInfluence;
+        float _AmbientContribution;
+        float _SpotLightSoftness;
+        float _SpotLightIntensity;
         CBUFFER_END
 
         TEXTURE2D(_BaseMap);
@@ -89,6 +103,18 @@ Shader "Custom/OvercookedStyleCharacter"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            
+            float CalculateSpotLightEffect(float3 lightDir, float3 lightPosition, float3 worldPos, float spotAngle, float range)
+            {
+                float3 toPixel = worldPos - lightPosition;
+                float distance = length(toPixel);
+                float attenuation = 1.0 / (distance * distance);
+                
+                float cosAngle = dot(-lightDir, normalize(toPixel));
+                float spotEffect = smoothstep(cos(spotAngle * 0.5), cos(spotAngle * 0.5 * (1.0 - _SpotLightSoftness)), cosAngle);
+                
+                return spotEffect * attenuation * saturate(1.0 - distance / range) * _SpotLightIntensity;
+            }
             
             Varyings vert(Attributes input)
             {
@@ -127,13 +153,16 @@ Shader "Custom/OvercookedStyleCharacter"
                 float lightAttenuation = mainLight.shadowAttenuation * mainLight.distanceAttenuation;
                 
                 float toonNdotL = smoothstep(_ShadowThreshold - _ShadowSoftness, _ShadowThreshold + _ShadowSoftness, NdotL * lightAttenuation);
-                float3 diffuse = lerp(_ShadowTint.rgb, float3(1, 1, 1), toonNdotL);
+                float3 toonDiffuse = lerp(_ShadowTint.rgb, float3(1, 1, 1), toonNdotL);
+                
+                float3 realLighting = NdotL * lightAttenuation;
+                float3 blendedLighting = lerp(realLighting, toonDiffuse, _LightingInfluence);
                 
                 float toonSpecular = smoothstep(_SpecularThreshold - _SpecularSoftness, _SpecularThreshold + _SpecularSoftness, NdotH);
                 toonSpecular *= toonNdotL;
                 float3 specular = toonSpecular * _SpecularColor.rgb;
                 
-                float3 mainLightContribution = (diffuse + specular) * mainLight.color * baseColor;
+                float3 mainLightContribution = (blendedLighting + specular) * mainLight.color * baseColor;
                 finalColor += mainLightContribution;
                 
                 uint pixelLightCount = GetAdditionalLightsCount();
@@ -149,15 +178,21 @@ Shader "Custom/OvercookedStyleCharacter"
                     float additionalAttenuation = light.shadowAttenuation * light.distanceAttenuation;
                     
                     float additionalToonNdotL = smoothstep(_ShadowThreshold - _ShadowSoftness, _ShadowThreshold + _ShadowSoftness, additionalNdotL * additionalAttenuation);
-                    float3 additionalDiffuse = lerp(_ShadowTint.rgb, float3(1, 1, 1), additionalToonNdotL);
+                    float3 additionalToonDiffuse = lerp(_ShadowTint.rgb, float3(1, 1, 1), additionalToonNdotL);
+                    
+                    float3 additionalRealLighting = additionalNdotL * additionalAttenuation;
+                    float3 additionalBlendedLighting = lerp(additionalRealLighting, additionalToonDiffuse, _LightingInfluence);
                     
                     float additionalToonSpecular = smoothstep(_SpecularThreshold - _SpecularSoftness, _SpecularThreshold + _SpecularSoftness, additionalNdotH);
                     additionalToonSpecular *= additionalToonNdotL;
                     float3 additionalSpecular = additionalToonSpecular * _SpecularColor.rgb;
                     
-                    float3 additionalLightContribution = (additionalDiffuse + additionalSpecular) * light.color * baseColor;
+                    float3 additionalLightContribution = (additionalBlendedLighting + additionalSpecular) * light.color * baseColor;
                     finalColor += additionalLightContribution;
                 }
+                
+                float3 ambientLight = SampleSH(normalWS) * _AmbientContribution;
+                finalColor += ambientLight;
                 
                 float rimFactor = 1.0 - saturate(NdotV);
                 float rim = pow(rimFactor, _RimPower) * _RimIntensity;
@@ -168,7 +203,7 @@ Shader "Custom/OvercookedStyleCharacter"
                 finalColor = lerp(float3(luminance, luminance, luminance), finalColor, _Saturation);
                 finalColor *= _Brightness;
                 
-                return float4(finalColor, baseMap.a * _BaseColor.a);
+                return float4(saturate(finalColor), baseMap.a * _BaseColor.a);
             }
             ENDHLSL
         }

@@ -1705,7 +1705,7 @@ Transform:
   m_GameObject: {fileID: 368754249}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 12.87, y: 8.22, z: 4.59}
+  m_LocalPosition: {x: 12.87, y: 8.22, z: 1.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2011,13 +2011,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5371153, y: 0.3163056, z: 0.2997237, w: -0.72223526}
+  m_LocalRotation: {x: -0.16669673, y: -0.048966322, z: 0.6718953, w: -0.71998006}
   m_LocalPosition: {x: 32.82, y: 14.33, z: -18.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1266759605}
-  m_LocalEulerAnglesHint: {x: -324.109, y: -794.029, z: -72.52}
+  m_LocalEulerAnglesHint: {x: -342.191, y: -729.278, z: -87.499}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4195,7 +4195,9 @@ MonoBehaviour:
   fadeDuration: 0.5
   objectives:
   - title: this is a test objective
-    icon: {fileID: 21300000, guid: d55417040b9b51343a1866e5e6fc09c5, type: 3}
+    icon: {fileID: 21300000, guid: 69cc5f515b3759542937a5f998e6a4cd, type: 3}
+  - title: find key and open the door
+    icon: {fileID: 21300000, guid: 9710a0542e2074c4594e595c6712935b, type: 3}
 --- !u!4 &1046371635
 Transform:
   m_ObjectHideFlags: 0
@@ -5932,7 +5934,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 46.900024, y: -7.200012}
+  m_AnchoredPosition: {x: 46.900024, y: -9.599976}
   m_SizeDelta: {x: 194.7931, y: 18.3878}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1410725649
@@ -6020,7 +6022,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.9264221, w: 0}
+  m_margin: {x: 0, y: 0, z: -78.68671, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6254,6 +6256,10 @@ PrefabInstance:
     - target: {fileID: 1760316519179338774, guid: 2e4ef9cca0fd8684e83b968693f2ba52, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3766296028297535879, guid: 2e4ef9cca0fd8684e83b968693f2ba52, type: 3}
+      propertyPath: ShapeModule.type
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8583,6 +8589,14 @@ PrefabInstance:
       propertyPath: m_Height
       value: 1.02
       objectReference: {fileID: 0}
+    - target: {fileID: 316989482166901130, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
+      propertyPath: ShapeModule.type
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 316989482166901130, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1243142389744470203, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -8661,7 +8675,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4e32c6ddf6f8eaf4ea463c20a8f033fb, type: 2}
     - target: {fileID: 9105735238454848058, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 53.455
+      value: 54.07
       objectReference: {fileID: 0}
     - target: {fileID: 9105735238454848058, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8770,7 +8784,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 355af19ca85b46b499ee5e65149c6cde, type: 2}
+  - {fileID: 2100000, guid: dabd3a43d646c364a9031d89bf8d1d79, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9442,7 +9456,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6535018293543403442, guid: 9abe078ada0fe2d4c83c0398c991d6d6, type: 3}
+  - {fileID: 2100000, guid: 638daad7334017341b92741d3f31b867, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
+public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier, IIconVisibility
 {
     [SerializeField] private string requiredKeyID = "door_key";
     [SerializeField] private Animation doorAnimation;
@@ -103,5 +103,15 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier
     public string GetInteractionID()
     {
         return interaction_id;
+    }
+    
+    public bool ShouldShowIcon()
+    {
+        return !isOpen;
+    }
+    
+    public bool IsOpen()
+    {
+        return isOpen;
     }
 }

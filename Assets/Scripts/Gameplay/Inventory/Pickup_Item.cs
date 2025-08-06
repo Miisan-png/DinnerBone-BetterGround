@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier
+public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier, IIconVisibility
 {
     [SerializeField] private ItemData itemData;
     [SerializeField] private Canvas itemIconCanvas;
@@ -128,6 +128,16 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier
     public string GetInteractionID()
     {
         return interaction_id;
+    }
+    
+    public bool ShouldShowIcon()
+    {
+        return !isPickedUp;
+    }
+    
+    public bool IsPickedUp()
+    {
+        return isPickedUp;
     }
     
     void OnDrawGizmos()

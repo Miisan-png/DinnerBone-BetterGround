@@ -93,8 +93,16 @@ public class Advanced_Interact_Icon : MonoBehaviour
         
         if (shouldShow && parentInteractable != null)
         {
-            bool canInteract = parentInteractable.Can_Interact(nearbyPlayer.Get_Player_Type());
-            shouldShow = canInteract;
+            if (parentInteractable is IIconVisibility iconVisibility)
+            {
+                shouldShow = iconVisibility.ShouldShowIcon();
+            }
+            else
+            {
+                bool canInteract = parentInteractable.Can_Interact(nearbyPlayer.Get_Player_Type());
+                bool hasInteractionOption = canInteract || ShouldShowWhenLocked();
+                shouldShow = hasInteractionOption;
+            }
         }
         
         if (shouldShow && !isVisible)
@@ -108,7 +116,8 @@ public class Advanced_Interact_Icon : MonoBehaviour
         
         if (shouldShow && isVisible)
         {
-            UpdateVisualState();
+            bool canInteract = parentInteractable.Can_Interact(nearbyPlayer.Get_Player_Type());
+            UpdateVisualState(canInteract);
             
             if (isInInteractRange && !isExpanded)
             {
@@ -121,11 +130,19 @@ public class Advanced_Interact_Icon : MonoBehaviour
         }
     }
     
-    private void UpdateVisualState()
+    private bool ShouldShowWhenLocked()
+    {
+        string interactionText = parentInteractable.Get_Interaction_Text();
+        return !string.IsNullOrEmpty(interactionText) && 
+               !interactionText.Contains("completed") && 
+               !interactionText.Contains("used") && 
+               !interactionText.Contains("opened") &&
+               !interactionText.Contains("picked up");
+    }
+    
+    private void UpdateVisualState(bool canInteract)
     {
         if (nearbyPlayer == null || parentInteractable == null) return;
-        
-        bool canInteract = parentInteractable.Can_Interact(nearbyPlayer.Get_Player_Type());
         
         if (isInInteractRange)
         {

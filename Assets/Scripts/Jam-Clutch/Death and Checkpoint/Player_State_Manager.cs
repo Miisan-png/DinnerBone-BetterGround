@@ -11,8 +11,6 @@ public class Player_State_Manager : MonoBehaviour
     [SerializeField] private float deathShakeDuration = 0.5f;
     [SerializeField] private float deathShakeStrength = 1f;
     [SerializeField] private float respawnDelay = 1f;
-    [SerializeField] private GameObject lutherRespawnVFX;
-    [SerializeField] private GameObject cherieRespawnVFX;
     
     [Header("Checkpoints")]
     [SerializeField] private Vector3 player1DefaultSpawn = Vector3.zero;
@@ -152,25 +150,34 @@ public class Player_State_Manager : MonoBehaviour
         }
         
         EnablePlayer(player);
-        PlayRespawnVFX(respawnPosition, player.Get_Player_Type());
+        PlayRespawnVFX(player);
     }
     
-    private void PlayRespawnVFX(Vector3 position, Player_Type playerType)
+    private void PlayRespawnVFX(Player_Controller player)
     {
-        GameObject vfxPrefab = playerType == Player_Type.Luthe ? lutherRespawnVFX : cherieRespawnVFX;
+        string vfxName = player.Get_Player_Type() == Player_Type.Luthe ? "LutherRespawnVFX" : "CherieRespawnVFX";
         
-        if (vfxPrefab != null)
+        Transform vfxChild = player.transform.Find(vfxName);
+        if (vfxChild == null)
         {
-            GameObject vfx = Instantiate(vfxPrefab, position, vfxPrefab.transform.rotation);
-            vfx.transform.localScale = vfxPrefab.transform.localScale;
-            
-            ParticleSystem[] particles = vfx.GetComponentsInChildren<ParticleSystem>();
+            foreach (Transform child in player.transform)
+            {
+                ParticleSystem ps = child.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    vfxChild = child;
+                    break;
+                }
+            }
+        }
+        
+        if (vfxChild != null)
+        {
+            ParticleSystem[] particles = vfxChild.GetComponentsInChildren<ParticleSystem>();
             foreach (ParticleSystem ps in particles)
             {
                 ps.Play();
             }
-            
-            Destroy(vfx, 3f);
         }
     }
     

@@ -18,7 +18,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     
     public bool Can_Interact(Player_Type player_type)
     {
-        return true;
+        return !is_puzzle_active;
     }
     
     public void Start_Interaction(Player_Controller player)
@@ -86,6 +86,11 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         }
         
         if (interacting_player.Get_Interact_Input())
+        {
+            ExitPuzzle();
+        }
+        
+        if (interacting_player.Get_Exit_Input())
         {
             ExitPuzzle();
         }

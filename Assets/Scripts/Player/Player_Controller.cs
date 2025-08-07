@@ -19,6 +19,9 @@ public class Player_Controller : MonoBehaviour
     private bool sprintHeld;
     private float rotationInput;
 
+    private bool exitPressed;
+
+
     void Awake()
     {
         inputActions = new InputSystem_Actions();
@@ -58,6 +61,8 @@ public class Player_Controller : MonoBehaviour
         inputActions.PlayerInputActions.Rotate.canceled += OnRotate;
         inputActions.PlayerInputActions.Sprint.performed += OnSprint;
         inputActions.PlayerInputActions.Sprint.canceled += OnSprint;
+        inputActions.PlayerInputActions.Exit.performed += OnExit;
+
     }
 
     private void CleanupInputCallbacks()
@@ -74,6 +79,8 @@ public class Player_Controller : MonoBehaviour
             inputActions.PlayerInputActions.Rotate.canceled -= OnRotate;
             inputActions.PlayerInputActions.Sprint.performed -= OnSprint;
             inputActions.PlayerInputActions.Sprint.canceled -= OnSprint;
+            inputActions.PlayerInputActions.Exit.performed -= OnExit;
+
         }
     }
 
@@ -242,6 +249,18 @@ public class Player_Controller : MonoBehaviour
         if (keyboardJump) jumpPressed = true;
         if (keyboardInteract) interactPressed = true;
         if (keyboardInteractHeld) interactHeld = true;
+    }
+
+    private void OnExit(InputAction.CallbackContext context)
+    {
+        if (IsCorrectDevice(context.control.device))
+            exitPressed = true;
+    }
+    public bool Get_Exit_Input()
+    {
+        bool result = exitPressed;
+        exitPressed = false;
+        return result;
     }
 
     public Player_Type Get_Player_Type()

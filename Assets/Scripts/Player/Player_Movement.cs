@@ -135,7 +135,10 @@ public class Player_Movement : MonoBehaviour
     public void Jump()
     {
         if (controller != null && controller.enabled && is_grounded)
+        {
             velocity.y = jump_force;
+            GetComponent<Player_Animation_Controller>()?.TriggerJump(); // Add this line
+        }
     }
 
     private void UpdateSprinting()

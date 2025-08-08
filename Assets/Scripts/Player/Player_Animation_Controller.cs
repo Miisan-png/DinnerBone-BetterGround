@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using DG.Tweening;
 public class Player_Animation_Controller : MonoBehaviour
 {
     [SerializeField] private Animator meshAnimator;
@@ -8,16 +8,19 @@ public class Player_Animation_Controller : MonoBehaviour
     
     private Player_Movement playerMovement;
     private CharacterController characterController;
+    private Player_Controller playerController;
     
-    // Animation states
     private bool isWalking = false;
     private bool isRunning = false;
     private bool wasGrounded = true;
+    private bool isJumping = false;
+    private bool isPickingUp = false;
     
     void Start()
     {
         playerMovement = GetComponent<Player_Movement>();
         characterController = GetComponent<CharacterController>();
+        playerController = GetComponent<Player_Controller>();
         
         if (meshAnimator == null)
         {
@@ -42,36 +45,32 @@ public class Player_Animation_Controller : MonoBehaviour
     void Update()
     {
         HandleAnimations();
+        CheckForPickupTrigger();
     }
     
     private void HandleAnimations()
     {
         if (meshAnimator == null || characterController == null || playerMovement == null) return;
         
-        // Get current state info
+        if (isPickingUp || isJumping) return;
+        
         Vector3 velocity = characterController.velocity;
         Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
         float speed = horizontalVelocity.magnitude;
         bool isGrounded = characterController.isGrounded;
         bool isSprinting = playerMovement.IsSprinting();
         
-        // Determine if player should be moving
         bool shouldMove = speed > movementThreshold && isGrounded;
         
-        // Handle landing (if you have a landing animation)
         if (!wasGrounded && isGrounded)
         {
             if (debugAnimations) Debug.Log($"{gameObject.name}: Landing");
-            // You can add a landing trigger here if you have one
-            // meshAnimator.SetTrigger("land");
         }
         
-        // Handle animation state transitions
         if (shouldMove)
         {
             if (isSprinting)
             {
-                // Transition to running
                 if (!isRunning)
                 {
                     if (debugAnimations) Debug.Log($"{gameObject.name}: Starting to run");
@@ -82,7 +81,6 @@ public class Player_Animation_Controller : MonoBehaviour
             }
             else
             {
-                // Transition to walking
                 if (!isWalking)
                 {
                     if (debugAnimations) Debug.Log($"{gameObject.name}: Starting to walk");
@@ -94,7 +92,6 @@ public class Player_Animation_Controller : MonoBehaviour
         }
         else
         {
-            // Transition to idle
             if (isWalking || isRunning)
             {
                 if (debugAnimations) Debug.Log($"{gameObject.name}: Going to idle");
@@ -104,7 +101,6 @@ public class Player_Animation_Controller : MonoBehaviour
             }
         }
         
-        // Handle sprint state changes while moving
         if (shouldMove && isWalking && isSprinting)
         {
             if (debugAnimations) Debug.Log($"{gameObject.name}: Transitioning from walk to run");
@@ -122,10 +118,8 @@ public class Player_Animation_Controller : MonoBehaviour
         
         wasGrounded = isGrounded;
         
-        // Optional: Set animator parameters for more complex state machines
         if (meshAnimator.parameters.Length > 0)
         {
-            // Check if these parameters exist before setting them
             foreach (AnimatorControllerParameter param in meshAnimator.parameters)
             {
                 switch (param.name)
@@ -147,13 +141,49 @@ public class Player_Animation_Controller : MonoBehaviour
         }
     }
     
-    // Public methods for external animation triggers
+    private void CheckForPickupTrigger()
+    {
+        if (playerController != null && playerController.Get_Interact_Input() && !isPickingUp)
+        {
+            TriggerPickup();
+        }
+    }
+    
     public void TriggerJump()
     {
-        if (meshAnimator != null)
+        if (meshAnimator != null && !isJumping && !isPickingUp)
         {
             meshAnimator.SetTrigger("jump");
+            isJumping = true;
+            isWalking = false;
+            isRunning = false;
             if (debugAnimations) Debug.Log($"{gameObject.name}: Jump triggered");
+            
+            DOTween.Sequence()
+                .AppendInterval(0.5f)
+                .AppendCallback(() => {
+                    isJumping = false;
+                    meshAnimator.SetTrigger("idle");
+                });
+        }
+    }
+    
+    public void TriggerPickup()
+    {
+        if (meshAnimator != null && !isPickingUp && !isJumping)
+        {
+            meshAnimator.SetTrigger("pickup");
+            isPickingUp = true;
+            isWalking = false;
+            isRunning = false;
+            if (debugAnimations) Debug.Log($"{gameObject.name}: Pickup triggered");
+            
+            DOTween.Sequence()
+                .AppendInterval(1f)
+                .AppendCallback(() => {
+                    isPickingUp = false;
+                    meshAnimator.SetTrigger("idle");
+                });
         }
     }
     
@@ -173,13 +203,16 @@ public class Player_Animation_Controller : MonoBehaviour
             meshAnimator.SetTrigger("idle");
             isWalking = false;
             isRunning = false;
+            isJumping = false;
+            isPickingUp = false;
             if (debugAnimations) Debug.Log($"{gameObject.name}: Forced to idle");
         }
     }
     
-    // Getters for debugging
     public bool IsCurrentlyWalking() => isWalking;
     public bool IsCurrentlyRunning() => isRunning;
+    public bool IsCurrentlyJumping() => isJumping;
+    public bool IsCurrentlyPickingUp() => isPickingUp;
     
     void OnDrawGizmos()
     {
@@ -188,11 +221,10 @@ public class Player_Animation_Controller : MonoBehaviour
             Vector3 textPos = transform.position + Vector3.up * 2.5f;
             string state = "Idle";
             
-            if (isRunning) state = "Running";
+            if (isJumping) state = "Jumping";
+            else if (isPickingUp) state = "Picking Up";
+            else if (isRunning) state = "Running";
             else if (isWalking) state = "Walking";
-            
-            // This would show in scene view if you have a custom editor
-            // UnityEditor.Handles.Label(textPos, state);
         }
     }
 }

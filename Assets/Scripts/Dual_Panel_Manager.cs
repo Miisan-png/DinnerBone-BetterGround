@@ -83,11 +83,26 @@ public class Dual_Panel_Manager : MonoBehaviour
         overall_puzzle_complete = true;
         Debug.Log("Both panels complete! Activating lights and effects!");
         
+        if (panel_1 != null)
+        {
+            panel_1.TriggerPanelCompletion();
+        }
+        
+        if (panel_2 != null)
+        {
+            panel_2.TriggerPanelCompletion();
+        }
+        
         DOTween.Sequence()
             .AppendInterval(celebration_delay)
             .AppendCallback(() => {
                 ActivateLights();
                 PlaySuccessEffects();
+            })
+            .AppendInterval(2f)
+            .AppendCallback(() => {
+                if (panel_1 != null) panel_1.ExitPuzzleFromManager();
+                if (panel_2 != null) panel_2.ExitPuzzleFromManager();
             });
     }
     

@@ -403,22 +403,24 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         }
         
         Debug.Log("Puzzle completed! Starting indicator sequence...");
-        UpdatePowerIndicators();
         
         if (is_dual_panel_mode && dual_panel_manager != null)
         {
             dual_panel_manager.NotifyPanelComplete(panel_id, true);
         }
-        else if (!is_dual_panel_mode && light_flicker_manager != null)
+        else if (!is_dual_panel_mode)
         {
-            DOVirtual.DelayedCall(power_indicator_planes.Length * 0.3f + 0.5f, () => {
-                light_flicker_manager.ToggleFullBrightness(true);
+            UpdatePowerIndicators();
+            if (light_flicker_manager != null)
+            {
+                DOVirtual.DelayedCall(power_indicator_planes.Length * 0.3f + 0.5f, () => {
+                    light_flicker_manager.ToggleFullBrightness(true);
+                });
+            }
+            DOVirtual.DelayedCall(2f, () => {
+                ExitPuzzle();
             });
         }
-        
-        DOVirtual.DelayedCall(2f, () => {
-            ExitPuzzle();
-        });
     }
     
     private void UpdateArrowAppearance()
@@ -548,6 +550,16 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     public void SetPanelID(int id)
     {
         panel_id = id;
+    }
+    
+    public void TriggerPanelCompletion()
+    {
+        UpdatePowerIndicators();
+    }
+    
+    public void ExitPuzzleFromManager()
+    {
+        ExitPuzzle();
     }
     
     public void ForceReset()

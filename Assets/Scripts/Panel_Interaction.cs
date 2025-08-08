@@ -16,6 +16,13 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     [SerializeField] private bool[] can_rotate_objects;
     [SerializeField] private Vector3 rotation_axis = Vector3.forward;
     
+    [Header("Power Indicator Settings")]
+    [SerializeField] private GameObject[] power_indicator_planes;
+    [SerializeField] private float[] correct_z_rotations;
+    [SerializeField] private LightFlickerManager light_flicker_manager;
+    [SerializeField] private float reset_delay = 5f;
+    [SerializeField] private float reset_duration = 1f;
+    
     private Player_Controller interacting_player;
     private bool is_puzzle_active = false;
     private bool is_rotating_object = false;
@@ -23,6 +30,13 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     private Player_Movement player_movement;
     private bool input_pressed = false;
     private bool interact_pressed = false;
+    private Material[] indicator_materials;
+    private bool[] components_correct;
+    private int correct_components_count = 0;
+    private bool puzzle_solved = false;
+    private Vector3[] original_rotations;
+    private Tween[] reset_tweens;
+    private bool[] has_been_rotated;
     
     void Start()
     {
@@ -34,16 +48,83 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
                 can_rotate_objects[i] = true;
             }
         }
+        
+        if (correct_z_rotations == null || correct_z_rotations.Length != power_components.Length)
+        {
+            correct_z_rotations = new float[power_components.Length];
+            for (int i = 0; i < correct_z_rotations.Length; i++)
+            {
+                correct_z_rotations[i] = 0f;
+            }
+        }
+        
+        components_correct = new bool[power_components.Length];
+        original_rotations = new Vector3[power_components.Length];
+        reset_tweens = new Tween[power_components.Length];
+        has_been_rotated = new bool[power_components.Length];
+        
+        for (int i = 0; i < power_components.Length; i++)
+        {
+            if (power_components[i] != null)
+            {
+                original_rotations[i] = power_components[i].eulerAngles;
+            }
+        }
+        
+        InitializePowerIndicators();
+    }
+    
+    private void InitializePowerIndicators()
+    {
+        if (power_indicator_planes == null) return;
+        
+        indicator_materials = new Material[power_indicator_planes.Length];
+        
+        for (int i = 0; i < power_indicator_planes.Length; i++)
+        {
+            if (power_indicator_planes[i] != null)
+            {
+                Renderer renderer = power_indicator_planes[i].GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    indicator_materials[i] = new Material(renderer.material);
+                    renderer.material = indicator_materials[i];
+                    SetIndicatorRed(i);
+                }
+            }
+        }
+    }
+    
+    private void SetIndicatorRed(int index)
+    {
+        if (indicator_materials == null || index >= indicator_materials.Length || indicator_materials[index] == null) return;
+        
+        Material mat = indicator_materials[index];
+        Color deepRed = new Color(0.8f, 0.1f, 0.1f, 1f);
+        mat.SetColor("_GlowColor", deepRed);
+        mat.SetFloat("_GlowIntensity", 3f);
+    }
+    
+    private void SetIndicatorGreen(int index)
+    {
+        if (indicator_materials == null || index >= indicator_materials.Length || indicator_materials[index] == null) return;
+        
+        Material mat = indicator_materials[index];
+        Color brightGreen = new Color(0.2f, 1f, 0.2f, 1f);
+        mat.SetColor("_GlowColor", brightGreen);
+        mat.SetFloat("_GlowIntensity", 3f);
+        
+        Debug.Log($"Setting indicator {index} to green. Material: {mat.name}");
     }
     
     public bool Can_Interact(Player_Type player_type)
     {
-        return !is_puzzle_active;
+        return !is_puzzle_active && !puzzle_solved;
     }
     
     public void Start_Interaction(Player_Controller player)
     {
-        if (is_puzzle_active) return;
+        if (is_puzzle_active || puzzle_solved) return;
         
         is_puzzle_active = true;
         is_rotating_object = false;
@@ -61,8 +142,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             MoveArrowToCurrentComponent();
             UpdateArrowAppearance();
         }
-        
-        Debug.Log("Panel interaction started - Use movement keys to navigate, interact to select object for rotation");
     }
     
     public void End_Interaction(Player_Controller player)
@@ -96,17 +175,13 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         
         if (interact_just_pressed)
         {
-            Debug.Log("INTERACT BUTTON PRESSED!");
-            
             if (!is_rotating_object)
             {
                 StartObjectRotation();
-                Debug.Log($"STARTED ROTATING COMPONENT {current_component_index}");
             }
             else
             {
                 ExitObjectRotation();
-                Debug.Log($"STOPPED ROTATING COMPONENT {current_component_index}");
             }
         }
         
@@ -121,6 +196,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         if (has_input && !input_pressed)
         {
             input_pressed = true;
+            int old_index = current_component_index;
             int new_index = current_component_index;
             
             if (input.z > 0.5f)
@@ -142,10 +218,14 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             
             if (new_index != current_component_index)
             {
+                if (has_been_rotated[old_index])
+                {
+                    StartResetTimer(old_index);
+                }
+                
                 current_component_index = new_index;
                 MoveArrowToCurrentComponent();
                 UpdateArrowAppearance();
-                Debug.Log($"Selected component {current_component_index}");
             }
         }
         else if (!has_input)
@@ -191,15 +271,12 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
                     arrow_indicator.transform.DOScale(currentScale, 0.15f);
                 });
         }
-        
-        Debug.Log($"Started rotating component {current_component_index} - Use left/right to rotate, interact to exit rotation mode");
     }
     
     private void ExitObjectRotation()
     {
         is_rotating_object = false;
         UpdateArrowAppearance();
-        Debug.Log("Exited rotation mode - Use movement keys to navigate, interact to select object for rotation");
     }
     
     private void RotateCurrentObject(float degrees)
@@ -211,11 +288,124 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             Vector3 currentRotation = target.eulerAngles;
             Vector3 targetRotation = currentRotation + (Vector3.forward * degrees);
             
+            has_been_rotated[current_component_index] = true;
+            
+            if (reset_tweens[current_component_index] != null)
+            {
+                reset_tweens[current_component_index].Kill();
+            }
+            
             target.DORotate(targetRotation, rotation_duration)
-                .SetEase(Ease.OutQuad);
-                
-            Debug.Log($"Rotating component {current_component_index} by {degrees} degrees");
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() => {
+                    CheckComponentCorrectness(current_component_index);
+                });
         }
+    }
+    
+    private void CheckComponentCorrectness(int componentIndex)
+    {
+        if (componentIndex >= power_components.Length || componentIndex >= correct_z_rotations.Length) return;
+        
+        Transform component = power_components[componentIndex];
+        float currentZ = NormalizeAngle(component.eulerAngles.z);
+        float correctZ = NormalizeAngle(correct_z_rotations[componentIndex]);
+        
+        bool was_correct = components_correct[componentIndex];
+        bool is_correct = Mathf.Abs(currentZ - correctZ) < 5f;
+        
+        components_correct[componentIndex] = is_correct;
+        
+        if (is_correct && !was_correct)
+        {
+            correct_components_count++;
+            if (reset_tweens[componentIndex] != null)
+            {
+                reset_tweens[componentIndex].Kill();
+            }
+        }
+        else if (!is_correct && was_correct)
+        {
+            correct_components_count--;
+        }
+        
+        Debug.Log($"Component {componentIndex}: Correct={is_correct}, Total Correct={correct_components_count}/{power_components.Length}");
+        
+        if (correct_components_count == power_components.Length)
+        {
+            CompletePuzzle();
+        }
+    }
+    
+    private void StartResetTimer(int componentIndex)
+    {
+        if (!has_been_rotated[componentIndex]) return;
+        
+        reset_tweens[componentIndex] = DOVirtual.DelayedCall(reset_delay, () => {
+            ResetComponent(componentIndex);
+        });
+    }
+    
+    private void ResetComponent(int componentIndex)
+    {
+        if (componentIndex >= power_components.Length || puzzle_solved) return;
+        
+        Transform component = power_components[componentIndex];
+        component.DORotate(original_rotations[componentIndex], reset_duration);
+        has_been_rotated[componentIndex] = false;
+        
+        bool was_correct = components_correct[componentIndex];
+        components_correct[componentIndex] = false;
+        
+        if (was_correct)
+        {
+            correct_components_count--;
+        }
+    }
+    
+    private float NormalizeAngle(float angle)
+    {
+        angle = angle % 360f;
+        if (angle < 0) angle += 360f;
+        return angle;
+    }
+    
+    private void UpdatePowerIndicators()
+    {
+        for (int i = 0; i < power_indicator_planes.Length; i++)
+        {
+            int index = i;
+            DOVirtual.DelayedCall(i * 0.3f, () => {
+                SetIndicatorGreen(index);
+            });
+        }
+    }
+    
+    private void CompletePuzzle()
+    {
+        puzzle_solved = true;
+        
+        for (int i = 0; i < reset_tweens.Length; i++)
+        {
+            if (reset_tweens[i] != null)
+            {
+                reset_tweens[i].Kill();
+            }
+        }
+        
+        Debug.Log("Puzzle completed! Starting indicator sequence...");
+        UpdatePowerIndicators();
+        
+        if (light_flicker_manager != null)
+        {
+            DOVirtual.DelayedCall(power_indicator_planes.Length * 0.3f + 0.5f, () => {
+                light_flicker_manager.ToggleFullBrightness(true);
+            });
+        }
+        
+        DOVirtual.DelayedCall(2f, () => {
+            ExitPuzzle();
+        });
     }
     
     private void UpdateArrowAppearance()
@@ -301,12 +491,11 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         }
         
         interacting_player = null;
-        Debug.Log("Exited panel interaction");
     }
     
     public string Get_Interaction_Text()
     {
-        return "Use power panel";
+        return puzzle_solved ? "Power restored" : "Use power panel";
     }
     
     public Vector3 Get_Interaction_Position()
@@ -335,5 +524,10 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     public int GetCurrentComponentIndex()
     {
         return current_component_index;
+    }
+    
+    public bool IsPuzzleSolved()
+    {
+        return puzzle_solved;
     }
 }

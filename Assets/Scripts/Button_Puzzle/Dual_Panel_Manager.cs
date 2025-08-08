@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+
 public class Dual_Panel_Manager : MonoBehaviour
 {
     [Header("Panel References")]
@@ -15,6 +17,11 @@ public class Dual_Panel_Manager : MonoBehaviour
     [SerializeField] private float celebration_delay = 1f;
 
     [Header("Button Activation")]
+    [SerializeField] private GameObject[] activation_buttons;
+    [SerializeField] private Image[] button_icons;
+    [SerializeField] private Color activated_color = Color.white;
+    [SerializeField] private Color deactivated_color = Color.gray;
+    [SerializeField] private float icon_fade_duration = 0.5f;
     
     private static Dual_Panel_Manager instance;
     public static Dual_Panel_Manager Instance => instance;
@@ -48,6 +55,37 @@ public class Dual_Panel_Manager : MonoBehaviour
             panel_2.SetDualPanelManager(this);
             panel_2.SetPanelID(2);
         }
+        
+        // Initialize buttons as deactivated
+        InitializeButtons();
+    }
+    
+    private void InitializeButtons()
+    {
+        // Deactivate all button objects
+        if (activation_buttons != null)
+        {
+            foreach (var button in activation_buttons)
+            {
+                if (button != null)
+                {
+                    button.SetActive(false);
+                }
+            }
+        }
+        
+        // Set all icons to deactivated state
+        if (button_icons != null)
+        {
+            foreach (var icon in button_icons)
+            {
+                if (icon != null)
+                {
+                    icon.color = deactivated_color;
+                    icon.gameObject.SetActive(false);
+                }
+            }
+        }
     }
     
     public void NotifyPanelComplete(int panel_id, bool is_complete)
@@ -80,33 +118,34 @@ public class Dual_Panel_Manager : MonoBehaviour
         }
     }
     
-   private void CompleteOverallPuzzle()
-{
-    overall_puzzle_complete = true;
-    Debug.Log("Both panels complete! Activating lights and effects!");
-    
-    if (panel_1 != null)
+    private void CompleteOverallPuzzle()
     {
-        panel_1.TriggerPanelCompletion();
+        overall_puzzle_complete = true;
+        Debug.Log("Both panels complete! Activating lights, effects, and buttons!");
+        
+        if (panel_1 != null)
+        {
+            panel_1.TriggerPanelCompletion();
+        }
+        
+        if (panel_2 != null)
+        {
+            panel_2.TriggerPanelCompletion();
+        }
+        
+        DOTween.Sequence()
+            .AppendInterval(celebration_delay)
+            .AppendCallback(() => {
+                ActivateLights();
+                PlaySuccessEffects();
+                ActivateButtons();
+            })
+            .AppendInterval(2f)
+            .AppendCallback(() => {
+                if (panel_1 != null) panel_1.ExitPuzzleFromManager();
+                if (panel_2 != null) panel_2.ExitPuzzleFromManager();
+            });
     }
-    
-    if (panel_2 != null)
-    {
-        panel_2.TriggerPanelCompletion();
-    }
-    
-    DOTween.Sequence()
-        .AppendInterval(celebration_delay)
-        .AppendCallback(() => {
-            ActivateLights();
-            PlaySuccessEffects();
-        })
-        .AppendInterval(2f)
-        .AppendCallback(() => {
-            if (panel_1 != null) panel_1.ExitPuzzleFromManager();
-            if (panel_2 != null) panel_2.ExitPuzzleFromManager();
-        });
-}
     
     private void ResetOverallPuzzle()
     {
@@ -114,6 +153,75 @@ public class Dual_Panel_Manager : MonoBehaviour
         Debug.Log("Puzzle reset - not both panels complete");
         
         DeactivateLights();
+        DeactivateButtons();
+    }
+    
+    private void ActivateButtons()
+    {
+        // Activate button objects
+        if (activation_buttons != null)
+        {
+            foreach (var button in activation_buttons)
+            {
+                if (button != null)
+                {
+                    button.SetActive(true);
+                }
+            }
+        }
+        
+        // Show and animate icons
+        if (button_icons != null)
+        {
+            for (int i = 0; i < button_icons.Length; i++)
+            {
+                var icon = button_icons[i];
+                if (icon != null)
+                {
+                    icon.gameObject.SetActive(true);
+                    
+                    // Animate icon appearance with a slight delay for each
+                    DOTween.Sequence()
+                        .AppendInterval(i * 0.1f) // Stagger the animations
+                        .AppendCallback(() => {
+                            icon.color = deactivated_color;
+                            icon.transform.localScale = Vector3.zero;
+                        })
+                        .Append(icon.transform.DOScale(1f, icon_fade_duration).SetEase(Ease.OutBack))
+                        .Join(icon.DOColor(activated_color, icon_fade_duration));
+                }
+            }
+        }
+    }
+    
+    private void DeactivateButtons()
+    {
+        // Deactivate button objects
+        if (activation_buttons != null)
+        {
+            foreach (var button in activation_buttons)
+            {
+                if (button != null)
+                {
+                    button.SetActive(false);
+                }
+            }
+        }
+        
+        // Hide and reset icons
+        if (button_icons != null)
+        {
+            foreach (var icon in button_icons)
+            {
+                if (icon != null)
+                {
+                    icon.DOKill(); // Stop any ongoing animations
+                    icon.color = deactivated_color;
+                    icon.transform.localScale = Vector3.one;
+                    icon.gameObject.SetActive(false);
+                }
+            }
+        }
     }
     
     private void ActivateLights()
@@ -185,5 +293,24 @@ public class Dual_Panel_Manager : MonoBehaviour
         if (panel_2 != null) panel_2.ForceReset();
         
         DeactivateLights();
+        DeactivateButtons();
+    }
+    
+    // Public methods for external button interaction
+    public bool AreButtonsActivated()
+    {
+        return overall_puzzle_complete;
+    }
+    
+    public void OnButtonPressed(int button_index)
+    {
+        if (!overall_puzzle_complete)
+        {
+            Debug.Log($"Button {button_index} pressed but puzzle not complete!");
+            return;
+        }
+        
+        Debug.Log($"Button {button_index} successfully activated!");
+        // Add your button functionality here
     }
 }

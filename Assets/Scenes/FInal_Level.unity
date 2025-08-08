@@ -627,6 +627,7 @@ GameObject:
   - component: {fileID: 70870485}
   - component: {fileID: 70870484}
   - component: {fileID: 70870488}
+  - component: {fileID: 70870489}
   m_Layer: 3
   m_Name: Button_3
   m_TagString: Untagged
@@ -745,6 +746,24 @@ MonoBehaviour:
   connected_fan: {fileID: 775118423}
   audio_source: {fileID: 0}
   button_click_sound: {fileID: 0}
+--- !u!114 &70870489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70870483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: 0, y: -1.1, z: -0.54}
+  worldOffset: {x: 0, y: 0, z: 0}
+  heightOffset: 2
+  showGizmos: 1
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSize: 0.3
 --- !u!1 &78629221
 GameObject:
   m_ObjectHideFlags: 0
@@ -7904,14 +7923,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366891231}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.077986, y: -7.419055, z: -15.26}
+  m_LocalRotation: {x: -0, y: -0.37159088, z: -0, w: 0.9283966}
+  m_LocalPosition: {x: -7.64, y: -7.419055, z: -13.97}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 903322433}
   m_Father: {fileID: 2009928999}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -43.628, z: 0}
 --- !u!65 &366891233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9621,6 +9640,14 @@ MonoBehaviour:
   success_effects: []
   success_audio: {fileID: 0}
   celebration_delay: 1
+  activation_buttons:
+  - {fileID: 366891231}
+  - {fileID: 708116124}
+  - {fileID: 70870483}
+  button_icons: []
+  activated_color: {r: 1, g: 1, b: 1, a: 1}
+  deactivated_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  icon_fade_duration: 0.5
 --- !u!1 &644271298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10290,6 +10317,7 @@ GameObject:
   - component: {fileID: 708116126}
   - component: {fileID: 708116125}
   - component: {fileID: 708116129}
+  - component: {fileID: 708116130}
   m_Layer: 3
   m_Name: Button_2
   m_TagString: Untagged
@@ -10408,6 +10436,24 @@ MonoBehaviour:
   connected_fan: {fileID: 775118423}
   audio_source: {fileID: 0}
   button_click_sound: {fileID: 0}
+--- !u!114 &708116130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708116124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: 0, y: -1.1, z: -0.54}
+  worldOffset: {x: 0, y: 0, z: 0}
+  heightOffset: 2
+  showGizmos: 1
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSize: 0.3
 --- !u!1001 &708790375
 PrefabInstance:
   m_ObjectHideFlags: 0

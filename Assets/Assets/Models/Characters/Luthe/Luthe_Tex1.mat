@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader_Luthe
+  m_Name: Luthe_Tex1
   m_Shader: {fileID: 4800000, guid: c3d15fbd61fc02644af5444f46347e0f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

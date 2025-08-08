@@ -181,11 +181,7 @@ public class Player_Controller : MonoBehaviour
         {
             interactPressed = false;
         }
-        
-        if (exitPressed)
-        {
-            exitPressed = false;
-        }
+       
     }
 
     private void HandleDirectInput()

@@ -11,14 +11,14 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     [SerializeField] private float height_offset = 0.5f;
     
     [Header("Rotation Settings")]
-    [SerializeField] private float rotation_speed = 90f; // Degrees per rotation
+    [SerializeField] private float rotation_speed = 90f;
     [SerializeField] private float rotation_duration = 0.3f;
-    [SerializeField] private bool[] can_rotate_objects; // Which objects can be rotated
-    [SerializeField] private Vector3 rotation_axis = Vector3.forward; // Axis to rotate around (Y by default)
+    [SerializeField] private bool[] can_rotate_objects;
+    [SerializeField] private Vector3 rotation_axis = Vector3.forward;
     
     private Player_Controller interacting_player;
     private bool is_puzzle_active = false;
-    private bool is_rotating_object = false; // New state for rotating individual objects
+    private bool is_rotating_object = false;
     private int current_component_index = 0;
     private Player_Movement player_movement;
     private bool input_pressed = false;
@@ -26,11 +26,9 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     
     void Start()
     {
-        // Initialize rotation array if not set
         if (can_rotate_objects == null || can_rotate_objects.Length != power_components.Length)
         {
             can_rotate_objects = new bool[power_components.Length];
-            // Set all to true by default for prototype
             for (int i = 0; i < can_rotate_objects.Length; i++)
             {
                 can_rotate_objects[i] = true;
@@ -75,7 +73,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     {
         if (!is_puzzle_active || interacting_player == null || power_components.Length == 0) return;
         
-        // Handle interact input first
         HandleInteractInput();
         
         if (is_rotating_object)
@@ -94,10 +91,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     
     private void HandleInteractInput()
     {
-        // Get the current interact state (held down)
         bool current_interact_held = interacting_player.Get_Interact_Held();
-        
-        // Detect when interact button is PRESSED (transition from false to true)
         bool interact_just_pressed = current_interact_held && !last_interact_state;
         
         if (interact_just_pressed)
@@ -106,19 +100,16 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             
             if (!is_rotating_object)
             {
-                // Start rotating mode
                 StartObjectRotation();
                 Debug.Log($"STARTED ROTATING COMPONENT {current_component_index}");
             }
             else
             {
-                // Stop rotating mode
                 ExitObjectRotation();
                 Debug.Log($"STOPPED ROTATING COMPONENT {current_component_index}");
             }
         }
         
-        // Update last state
         last_interact_state = current_interact_held;
     }
     
@@ -132,19 +123,19 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             input_pressed = true;
             int new_index = current_component_index;
             
-            if (input.z > 0.5f) // Forward
+            if (input.z > 0.5f)
             {
                 new_index = MoveInGrid(-3);
             }
-            else if (input.z < -0.5f) // Backward
+            else if (input.z < -0.5f)
             {
                 new_index = MoveInGrid(3);
             }
-            else if (input.x < -0.5f) // Left
+            else if (input.x < -0.5f)
             {
                 new_index = MoveInGrid(-1);
             }
-            else if (input.x > 0.5f) // Right
+            else if (input.x > 0.5f)
             {
                 new_index = MoveInGrid(1);
             }
@@ -172,11 +163,11 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         {
             input_pressed = true;
             
-            if (input.x < -0.5f) // Left - rotate clockwise
+            if (input.x < -0.5f)
             {
                 RotateCurrentObject(rotation_speed);
             }
-            else if (input.x > 0.5f) // Right - rotate counter-clockwise
+            else if (input.x > 0.5f)
             {
                 RotateCurrentObject(-rotation_speed);
             }
@@ -231,10 +222,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     {
         if (arrow_indicator == null) return;
         
-        // Simple 2-color system:
-        // Yellow = Navigation mode
-        // Green = Rotation mode
-        
         Renderer arrowRenderer = arrow_indicator.GetComponent<Renderer>();
         if (arrowRenderer != null && arrowRenderer.material != null)
         {
@@ -243,14 +230,13 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             
             if (is_rotating_object)
             {
-                targetGlowColor = Color.green; // Green when rotating an object
+                targetGlowColor = Color.green;
             }
             else
             {
-                targetGlowColor = Color.yellow; // Yellow when just navigating
+                targetGlowColor = Color.yellow;
             }
             
-            // Use the glow color from your shader
             if (mat.HasProperty("_GlowColor"))
             {
                 mat.DOColor(targetGlowColor, "_GlowColor", 0.2f);
@@ -262,7 +248,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     {
         int new_index = current_component_index + direction;
         
-        // Handle horizontal wrapping (assuming 3-column grid)
         if (direction == -1 || direction == 1)
         {
             int current_row = current_component_index / 3;
@@ -273,7 +258,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             }
         }
         
-        // Clamp to valid range
         if (new_index < 0 || new_index >= power_components.Length)
         {
             return current_component_index;
@@ -297,14 +281,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     {
         if (interacting_player.Get_Exit_Input())
         {
-            if (is_rotating_object)
-            {
-                ExitObjectRotation();
-            }
-            else
-            {
-                ExitPuzzle();
-            }
+            ExitPuzzle();
         }
     }
     
@@ -342,7 +319,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         return interaction_id;
     }
     
-    // Helper method to set which objects can rotate (call this from inspector or other scripts)
     public void SetObjectRotatable(int index, bool canRotate)
     {
         if (index >= 0 && index < can_rotate_objects.Length)
@@ -351,13 +327,11 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         }
     }
     
-    // Helper method to get current rotation state
     public bool IsRotatingObject()
     {
         return is_rotating_object;
     }
     
-    // Helper method to get current selected component
     public int GetCurrentComponentIndex()
     {
         return current_component_index;

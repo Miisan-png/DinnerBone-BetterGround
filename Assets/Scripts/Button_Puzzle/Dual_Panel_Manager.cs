@@ -15,7 +15,6 @@ public class Dual_Panel_Manager : MonoBehaviour
     [SerializeField] private float celebration_delay = 1f;
 
     [Header("Button Activation")]
-    [SerializeField] private Button_Activation_Logic buttonActivationLogic; 
     
     private static Dual_Panel_Manager instance;
     public static Dual_Panel_Manager Instance => instance;
@@ -101,11 +100,6 @@ public class Dual_Panel_Manager : MonoBehaviour
         .AppendCallback(() => {
             ActivateLights();
             PlaySuccessEffects();
-            // Activate buttons here
-            if (buttonActivationLogic != null)
-            {
-                buttonActivationLogic.ActivateAllButtons();
-            }
         })
         .AppendInterval(2f)
         .AppendCallback(() => {

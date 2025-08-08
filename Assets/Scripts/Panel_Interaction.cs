@@ -16,6 +16,9 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     [SerializeField] private bool[] can_rotate_objects;
     [SerializeField] private Vector3 rotation_axis = Vector3.forward;
     
+    [Header("Dual Panel Settings")]
+    [SerializeField] private bool is_dual_panel_mode = false;
+    
     [Header("Power Indicator Settings")]
     [SerializeField] private GameObject[] power_indicator_planes;
     [SerializeField] private float[] correct_z_rotations;
@@ -37,6 +40,8 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     private Vector3[] original_rotations;
     private Tween[] reset_tweens;
     private bool[] has_been_rotated;
+    private Dual_Panel_Manager dual_panel_manager;
+    private int panel_id = 0;
     
     void Start()
     {
@@ -327,6 +332,10 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         else if (!is_correct && was_correct)
         {
             correct_components_count--;
+            if (is_dual_panel_mode && dual_panel_manager != null)
+            {
+                dual_panel_manager.NotifyPanelComplete(panel_id, false);
+            }
         }
         
         Debug.Log($"Component {componentIndex}: Correct={is_correct}, Total Correct={correct_components_count}/{power_components.Length}");
@@ -335,6 +344,13 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         {
             CompletePuzzle();
         }
+    }
+    
+    private float NormalizeAngle(float angle)
+    {
+        angle = angle % 360f;
+        if (angle < 0) angle += 360f;
+        return angle;
     }
     
     private void StartResetTimer(int componentIndex)
@@ -363,13 +379,6 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         }
     }
     
-    private float NormalizeAngle(float angle)
-    {
-        angle = angle % 360f;
-        if (angle < 0) angle += 360f;
-        return angle;
-    }
-    
     private void UpdatePowerIndicators()
     {
         for (int i = 0; i < power_indicator_planes.Length; i++)
@@ -396,7 +405,11 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         Debug.Log("Puzzle completed! Starting indicator sequence...");
         UpdatePowerIndicators();
         
-        if (light_flicker_manager != null)
+        if (is_dual_panel_mode && dual_panel_manager != null)
+        {
+            dual_panel_manager.NotifyPanelComplete(panel_id, true);
+        }
+        else if (!is_dual_panel_mode && light_flicker_manager != null)
         {
             DOVirtual.DelayedCall(power_indicator_planes.Length * 0.3f + 0.5f, () => {
                 light_flicker_manager.ToggleFullBrightness(true);
@@ -524,6 +537,54 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     public int GetCurrentComponentIndex()
     {
         return current_component_index;
+    }
+    
+    public void SetDualPanelManager(Dual_Panel_Manager manager)
+    {
+        dual_panel_manager = manager;
+        is_dual_panel_mode = true;
+    }
+    
+    public void SetPanelID(int id)
+    {
+        panel_id = id;
+    }
+    
+    public void ForceReset()
+    {
+        puzzle_solved = false;
+        correct_components_count = 0;
+        
+        for (int i = 0; i < components_correct.Length; i++)
+        {
+            components_correct[i] = false;
+        }
+        
+        for (int i = 0; i < has_been_rotated.Length; i++)
+        {
+            has_been_rotated[i] = false;
+        }
+        
+        for (int i = 0; i < reset_tweens.Length; i++)
+        {
+            if (reset_tweens[i] != null)
+            {
+                reset_tweens[i].Kill();
+            }
+        }
+        
+        for (int i = 0; i < power_components.Length; i++)
+        {
+            if (power_components[i] != null)
+            {
+                power_components[i].DORotate(original_rotations[i], reset_duration);
+            }
+        }
+        
+        for (int i = 0; i < power_indicator_planes.Length; i++)
+        {
+            SetIndicatorRed(i);
+        }
     }
     
     public bool IsPuzzleSolved()

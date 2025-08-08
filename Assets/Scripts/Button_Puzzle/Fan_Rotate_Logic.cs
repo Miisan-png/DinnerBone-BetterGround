@@ -15,6 +15,7 @@ public class Fan_Rotate_Logic : MonoBehaviour
     
     private Material icon_material;
     private int current_button_index = 0;
+    private int current_icon_id = 0;  // ID that matches the material index
     private float rotation_timer = 0f;
     private float icon_change_interval = 2f;
     private float current_rotation_speed;
@@ -48,6 +49,7 @@ public class Fan_Rotate_Logic : MonoBehaviour
         {
             rotation_timer = 0f;
             current_button_index = (current_button_index + 1) % 3;
+            current_icon_id = current_button_index;  // Keep icon ID in sync with button index
             UpdateIconMaterial();
         }
     }
@@ -56,10 +58,12 @@ public class Fan_Rotate_Logic : MonoBehaviour
     {
         if (icon_material != null && button_materials != null && button_materials.Length > 0)
         {
-            int material_index = current_button_index % button_materials.Length;
+            // Use current_icon_id to get the exact material index
+            int material_index = current_icon_id % button_materials.Length;
             if (button_materials[material_index] != null)
             {
                 icon_material.CopyPropertiesFromMaterial(button_materials[material_index]);
+                Debug.Log($"Icon updated to ID: {current_icon_id}, Material Index: {material_index}");
             }
         }
     }
@@ -67,6 +71,22 @@ public class Fan_Rotate_Logic : MonoBehaviour
     public int GetCurrentButtonIndex()
     {
         return current_button_index;
+    }
+    
+    public int GetCurrentIconId()
+    {
+        return current_icon_id;
+    }
+    
+    // Method to manually set icon ID (useful for button matching)
+    public void SetIconId(int id)
+    {
+        if (id >= 0 && id < button_materials.Length)
+        {
+            current_icon_id = id;
+            current_button_index = id;
+            UpdateIconMaterial();
+        }
     }
     
     public void SlowDownFan()

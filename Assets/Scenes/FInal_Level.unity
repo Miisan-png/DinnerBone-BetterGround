@@ -715,13 +715,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 70870483}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8499999, y: -1.548, z: -1.5600002}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.7779856, y: -7.4190555, z: -15.26}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1039273584}
-  m_Father: {fileID: 588865043}
+  m_Father: {fileID: 2009928999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &78629221
 GameObject:
@@ -7880,13 +7880,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366891231}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.45, y: -1.5479996, z: -1.56}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.077986, y: -7.419055, z: -15.26}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 903322433}
-  m_Father: {fileID: 588865043}
+  m_Father: {fileID: 2009928999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &366891233
 BoxCollider:
@@ -9454,57 +9454,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 0.5000001, z: 4.0000005}
   m_Center: {x: 0, y: 0.24999999, z: -0.000000014901161}
---- !u!1 &588865042
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 588865043}
-  - component: {fileID: 588865044}
-  m_Layer: 0
-  m_Name: Buttons_Activation_Logic
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &588865043
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 588865042}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.627986, y: -5.8710556, z: -13.7}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 366891232}
-  - {fileID: 708116128}
-  - {fileID: 70870487}
-  m_Father: {fileID: 2009928999}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &588865044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 588865042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9845e99fdff87c74681903e4fd29986b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttons:
-  - {fileID: 366891231}
-  - {fileID: 708116124}
-  - {fileID: 70870483}
 --- !u!1 &617944908 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c48013c97d3d39c48af94be7a310e9ac, type: 3}
@@ -9609,7 +9558,6 @@ MonoBehaviour:
   success_effects: []
   success_audio: {fileID: 0}
   celebration_delay: 1
-  buttonActivationLogic: {fileID: 588865044}
 --- !u!1 &644271298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10367,13 +10315,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708116124}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.626, y: -1.5439999, z: -1.5570002}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.0019865, y: -7.4150553, z: -15.257}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 740583672}
-  m_Father: {fileID: 588865043}
+  m_Father: {fileID: 2009928999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &708790375
 PrefabInstance:
@@ -24169,7 +24117,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 325660403}
-  - {fileID: 588865043}
+  - {fileID: 366891232}
+  - {fileID: 708116128}
+  - {fileID: 70870487}
   - {fileID: 1072113714}
   - {fileID: 118492097}
   - {fileID: 637712806}

@@ -608,11 +608,11 @@ Transform:
   m_GameObject: {fileID: 62762326}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 7.36, y: 2.5071, z: 8.826}
-  m_LocalScale: {x: 0.032387715, y: 0.00196, z: 0.02344603}
+  m_LocalPosition: {x: 0.66, y: 0.8325467, z: 0.90046453}
+  m_LocalScale: {x: 0.032387715, y: 0.00196, z: 0.023446033}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 473998424}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: -90}
 --- !u!1 &78629221
 GameObject:
@@ -1078,9 +1078,6 @@ MonoBehaviour:
   arrow_indicator: {fileID: 522298970}
   power_components:
   - {fileID: 1775296735}
-  - {fileID: 361867031}
-  - {fileID: 99108415}
-  - {fileID: 6076682}
   move_duration: 0.3
   z_offset: -0.1
   height_offset: 0.32
@@ -1088,15 +1085,12 @@ MonoBehaviour:
   rotation_duration: 0.3
   can_rotate_objects: 
   rotation_axis: {x: 0, y: 1, z: 0}
-  is_dual_panel_mode: 0
+  is_dual_panel_mode: 1
   power_indicator_planes:
   - {fileID: 1313168991}
   - {fileID: 1462158342}
   - {fileID: 1048360896}
   correct_z_rotations:
-  - -90
-  - -90
-  - -90
   - -90
   light_flicker_manager: {fileID: 476898308}
   reset_delay: 10
@@ -8685,6 +8679,39 @@ Transform:
   - {fileID: 496333863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &473998423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 473998424}
+  m_Layer: 0
+  m_Name: Void_Scene_Changer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &473998424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473998423}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.642754, y: 1.6745534, z: 7.9255357}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 62762330}
+  - {fileID: 1963104611}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &476898307
 GameObject:
   m_ObjectHideFlags: 0
@@ -10793,7 +10820,7 @@ GameObject:
   - component: {fileID: 775118420}
   - component: {fileID: 775118423}
   m_Layer: 0
-  m_Name: Fan
+  m_Name: Fan_Rotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12074,18 +12101,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adcb5945336300b4f913a9f5170a6985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interaction_id: fan_button_press
   button_id: 0
-  fan_logic: {fileID: 775118423}
-  fan_drag: {fileID: 2094795705}
-  slow_down_amount: 50
-  stop_duration: 20
-  reset_speed_duration: 2
-  pressed_material: {fileID: 0}
-  press_scale_multiplier: 0.8
-  original_material: {fileID: 0}
-  original_scale: {x: 0, y: 0, z: 0}
+  button_name: Fan Control Button
+  fan_rotate_logic: {fileID: 775118423}
+  button_activation_logic: {fileID: 588865044}
+  success_effect: {fileID: 0}
+  failure_effect: {fileID: 0}
+  button_audio: {fileID: 0}
+  success_sound: {fileID: 0}
+  failure_sound: {fileID: 0}
+  slowdown_amount: 50
+  slowdown_duration: 3
+  is_activated: 0
   is_pressed: 0
-  original_fan_speed: 0
+  button_material: {fileID: 0}
+  button_renderer: {fileID: 0}
 --- !u!61 &903322435
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13428,9 +13459,6 @@ MonoBehaviour:
   arrow_indicator: {fileID: 702166701}
   power_components:
   - {fileID: 1486261815}
-  - {fileID: 2071157766}
-  - {fileID: 401389275}
-  - {fileID: 1398012491}
   move_duration: 0.3
   z_offset: -0.1
   height_offset: 0.32
@@ -13438,15 +13466,12 @@ MonoBehaviour:
   rotation_duration: 0.3
   can_rotate_objects: 
   rotation_axis: {x: 0, y: 1, z: 0}
-  is_dual_panel_mode: 0
+  is_dual_panel_mode: 1
   power_indicator_planes:
   - {fileID: 1647308644}
   - {fileID: 1373151007}
   - {fileID: 1090258455}
   correct_z_rotations:
-  - -90
-  - -90
-  - -90
   - -90
   light_flicker_manager: {fileID: 476898308}
   reset_delay: 10
@@ -23475,11 +23500,11 @@ Transform:
   m_GameObject: {fileID: 1963104607}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 6.8623004, y: 2.5071, z: 8.826}
-  m_LocalScale: {x: 0.032387715, y: 0.00196, z: 0.02344603}
+  m_LocalPosition: {x: 0.16230011, y: 0.8325467, z: 0.90046453}
+  m_LocalScale: {x: 0.032387715, y: 0.00196, z: 0.023446033}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 473998424}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: -90}
 --- !u!1 &1980596327 stripped
 GameObject:
@@ -35549,6 +35574,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4403303362826666354, guid: b72387d0ad816814a9325887436ba5e4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.382
+      objectReference: {fileID: 0}
     - target: {fileID: 4480347432937491404, guid: b72387d0ad816814a9325887436ba5e4, type: 3}
       propertyPath: walk_sound
       value: 
@@ -45405,7 +45434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.32
+      value: 15.28
       objectReference: {fileID: 0}
     - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -55774,6 +55803,5 @@ SceneRoots:
   - {fileID: 476898309}
   - {fileID: 1753119113}
   - {fileID: 2049221861}
-  - {fileID: 62762330}
-  - {fileID: 1963104611}
   - {fileID: 2009928999}
+  - {fileID: 473998424}

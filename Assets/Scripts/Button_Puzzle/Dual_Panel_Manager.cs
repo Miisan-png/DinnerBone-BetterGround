@@ -13,6 +13,9 @@ public class Dual_Panel_Manager : MonoBehaviour
     [SerializeField] private GameObject[] success_effects;
     [SerializeField] private AudioSource success_audio;
     [SerializeField] private float celebration_delay = 1f;
+
+    [Header("Button Activation")]
+    [SerializeField] private Button_Activation_Logic buttonActivationLogic; 
     
     private static Dual_Panel_Manager instance;
     public static Dual_Panel_Manager Instance => instance;
@@ -78,33 +81,38 @@ public class Dual_Panel_Manager : MonoBehaviour
         }
     }
     
-    private void CompleteOverallPuzzle()
+   private void CompleteOverallPuzzle()
+{
+    overall_puzzle_complete = true;
+    Debug.Log("Both panels complete! Activating lights and effects!");
+    
+    if (panel_1 != null)
     {
-        overall_puzzle_complete = true;
-        Debug.Log("Both panels complete! Activating lights and effects!");
-        
-        if (panel_1 != null)
-        {
-            panel_1.TriggerPanelCompletion();
-        }
-        
-        if (panel_2 != null)
-        {
-            panel_2.TriggerPanelCompletion();
-        }
-        
-        DOTween.Sequence()
-            .AppendInterval(celebration_delay)
-            .AppendCallback(() => {
-                ActivateLights();
-                PlaySuccessEffects();
-            })
-            .AppendInterval(2f)
-            .AppendCallback(() => {
-                if (panel_1 != null) panel_1.ExitPuzzleFromManager();
-                if (panel_2 != null) panel_2.ExitPuzzleFromManager();
-            });
+        panel_1.TriggerPanelCompletion();
     }
+    
+    if (panel_2 != null)
+    {
+        panel_2.TriggerPanelCompletion();
+    }
+    
+    DOTween.Sequence()
+        .AppendInterval(celebration_delay)
+        .AppendCallback(() => {
+            ActivateLights();
+            PlaySuccessEffects();
+            // Activate buttons here
+            if (buttonActivationLogic != null)
+            {
+                buttonActivationLogic.ActivateAllButtons();
+            }
+        })
+        .AppendInterval(2f)
+        .AppendCallback(() => {
+            if (panel_1 != null) panel_1.ExitPuzzleFromManager();
+            if (panel_2 != null) panel_2.ExitPuzzleFromManager();
+        });
+}
     
     private void ResetOverallPuzzle()
     {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Fan_Drag_Player : MonoBehaviour
 {
-    [SerializeField] private float drag_force = 5f;
+    public float drag_force = 5f; 
     [SerializeField] private Transform fan_object;
     [SerializeField] private LayerMask player_layer = -1;
     

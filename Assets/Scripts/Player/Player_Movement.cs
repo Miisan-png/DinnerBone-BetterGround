@@ -24,7 +24,6 @@ public class Player_Movement : MonoBehaviour
     [SerializeField] private AudioSource audio_source;
     [SerializeField] private AudioClip walk_sound;
     [SerializeField] private float footstep_interval = 0.5f; // Time between footsteps
-    private float footstep_timer;
 
     private CharacterController controller;
     private Vector3 velocity;
@@ -39,6 +38,10 @@ public class Player_Movement : MonoBehaviour
     private bool can_sprint = true;
     private float stamina_regen_timer = 0f;
     private bool sprint_input = false;
+
+    // Footstep Audio Logic - Corrected variables
+    private float footstep_timer = 0f; // Initialize timer to 0
+    private bool wasMoving = false; // Track if player was moving last frame
 
     // Events for UI updates (optional)
     public System.Action<float, float> OnStaminaChanged; // current, max
@@ -66,6 +69,9 @@ public class Player_Movement : MonoBehaviour
         }
 
         Debug.Log($"Player mesh assigned to: {player_mesh.name}");
+        
+        // Initialize footstep timer
+        footstep_timer = footstep_interval;
     }
 
     void Update()
@@ -102,23 +108,35 @@ public class Player_Movement : MonoBehaviour
         // Trigger stamina UI update
         OnStaminaChanged?.Invoke(current_stamina, max_stamina);
 
-        // Footstep Audio Logic
-        if (current_input.magnitude > 0.1f && is_grounded)
+        // --- Corrected Footstep Audio Logic ---
+        bool isMoving = current_input.magnitude > 0.1f && is_grounded;
+
+        // Decrement the footstep timer every frame
+        if (isMoving)
         {
             footstep_timer -= Time.deltaTime;
-            if (footstep_timer <= 0)
-            {
-                if (audio_source != null && walk_sound != null)
-                {
-                    audio_source.PlayOneShot(walk_sound);
-                }
-                footstep_timer = footstep_interval;
-            }
         }
-        else // Reset the timer when the player stops moving
+
+        // Play footstep sound when timer reaches zero and player is moving
+        if (isMoving && footstep_timer <= 0f)
         {
-            footstep_timer = 0;
+            if (audio_source != null && walk_sound != null)
+            {
+                audio_source.PlayOneShot(walk_sound);
+            }
+            // Reset the timer for the next footstep
+            footstep_timer = footstep_interval;
         }
+
+        // Optional: Reset timer when player stops moving (for immediate sound on restart)
+        // This makes it feel more responsive when starting to walk again after a pause.
+        if (!isMoving && wasMoving)
+        {
+             footstep_timer = footstep_interval;
+        }
+        
+        // Update the previous moving state
+        wasMoving = isMoving;
     }
 
     public void Move(Vector2 input)

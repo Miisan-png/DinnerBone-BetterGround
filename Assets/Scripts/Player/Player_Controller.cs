@@ -18,9 +18,7 @@ public class Player_Controller : MonoBehaviour
     private bool interactHeld;
     private bool sprintHeld;
     private float rotationInput;
-
     private bool exitPressed;
-
 
     void Awake()
     {
@@ -62,7 +60,6 @@ public class Player_Controller : MonoBehaviour
         inputActions.PlayerInputActions.Sprint.performed += OnSprint;
         inputActions.PlayerInputActions.Sprint.canceled += OnSprint;
         inputActions.PlayerInputActions.Exit.performed += OnExit;
-
     }
 
     private void CleanupInputCallbacks()
@@ -80,7 +77,6 @@ public class Player_Controller : MonoBehaviour
             inputActions.PlayerInputActions.Sprint.performed -= OnSprint;
             inputActions.PlayerInputActions.Sprint.canceled -= OnSprint;
             inputActions.PlayerInputActions.Exit.performed -= OnExit;
-
         }
     }
 
@@ -130,52 +126,39 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    private void OnExit(InputAction.CallbackContext context)
+    {
+        if (IsCorrectDevice(context.control.device))
+            exitPressed = true;
+    }
+
     private bool IsCorrectDevice(InputDevice device)
     {
-        if (device is Keyboard keyboard)
+        if (device is Gamepad gamepad)
         {
-            return IsCorrectKeyboardPlayer(keyboard);
-        }
-        else if (device is Gamepad gamepad)
-        {
-            var gamepads = Gamepad.all;
-            
-            if (player_type == Player_Type.Luthe)
-            {
-                return gamepads.Count > 0 && gamepad == gamepads[0];
-            }
-            else
-            {
-                return gamepads.Count > 1 && gamepad == gamepads[1];
-            }
+            return IsCorrectGamepad(gamepad);
         }
         
         return false;
     }
 
-    private bool IsCorrectKeyboardPlayer(Keyboard keyboard)
+    private bool IsCorrectGamepad(Gamepad gamepad)
     {
+        var gamepads = Gamepad.all;
+        
         if (player_type == Player_Type.Luthe)
         {
-            return keyboard.wKey.isPressed || keyboard.aKey.isPressed || 
-                   keyboard.sKey.isPressed || keyboard.dKey.isPressed ||
-                   keyboard.spaceKey.isPressed || keyboard.eKey.isPressed ||
-                   keyboard.qKey.isPressed || keyboard.rKey.isPressed ||
-                   keyboard.leftShiftKey.isPressed;
+            return gamepads.Count > 0 && gamepad == gamepads[0];
         }
         else
         {
-            return keyboard.upArrowKey.isPressed || keyboard.downArrowKey.isPressed ||
-                   keyboard.leftArrowKey.isPressed || keyboard.rightArrowKey.isPressed ||
-                   keyboard.rightShiftKey.isPressed || keyboard.enterKey.isPressed ||
-                   keyboard.commaKey.isPressed || keyboard.periodKey.isPressed ||
-                   keyboard.rightCtrlKey.isPressed;
+            return gamepads.Count > 1 && gamepad == gamepads[1];
         }
     }
 
     void Update()
     {
-        HandleKeyboardInputDirect();
+        HandleDirectInput();
         
         if (!is_in_push_mode)
         {
@@ -198,69 +181,92 @@ public class Player_Controller : MonoBehaviour
         {
             interactPressed = false;
         }
+        
+        if (exitPressed)
+        {
+            exitPressed = false;
+        }
     }
 
-    private void HandleKeyboardInputDirect()
+    private void HandleDirectInput()
     {
         Keyboard keyboard = Keyboard.current;
-        if (keyboard == null) return;
-
-        Vector2 keyboardInput = Vector2.zero;
-        bool keyboardSprint = false;
-        bool keyboardJump = false;
-        bool keyboardInteract = false;
-        bool keyboardInteractHeld = false;
+        var gamepads = Gamepad.all;
+        
+        Vector2 directInput = Vector2.zero;
+        bool directSprint = false;
+        bool directJump = false;
+        bool directInteract = false;
+        bool directInteractHeld = false;
+        bool directExit = false;
 
         if (player_type == Player_Type.Luthe)
         {
-            if (keyboard.wKey.isPressed) keyboardInput.y += 1;
-            if (keyboard.sKey.isPressed) keyboardInput.y -= 1;
-            if (keyboard.aKey.isPressed) keyboardInput.x -= 1;
-            if (keyboard.dKey.isPressed) keyboardInput.x += 1;
+            if (gamepads.Count > 0)
+            {
+                var gamepad = gamepads[0];
+                directInput = gamepad.leftStick.ReadValue();
+                directSprint = gamepad.leftShoulder.isPressed;
+                directJump = gamepad.buttonSouth.wasPressedThisFrame;
+                directInteract = gamepad.buttonWest.wasPressedThisFrame;
+                directInteractHeld = gamepad.buttonWest.isPressed;
+                directExit = gamepad.buttonEast.wasPressedThisFrame;
+            }
             
-            keyboardSprint = keyboard.leftShiftKey.isPressed;
-            keyboardJump = keyboard.spaceKey.wasPressedThisFrame;
-            keyboardInteract = keyboard.eKey.wasPressedThisFrame;
-            keyboardInteractHeld = keyboard.eKey.isPressed;
+            if (keyboard != null)
+            {
+                Vector2 kbInput = Vector2.zero;
+                if (keyboard.wKey.isPressed) kbInput.y += 1;
+                if (keyboard.sKey.isPressed) kbInput.y -= 1;
+                if (keyboard.aKey.isPressed) kbInput.x -= 1;
+                if (keyboard.dKey.isPressed) kbInput.x += 1;
+                
+                if (kbInput.magnitude > 0.1f) directInput = kbInput;
+                
+                if (keyboard.leftShiftKey.isPressed) directSprint = true;
+                if (keyboard.spaceKey.wasPressedThisFrame) directJump = true;
+                if (keyboard.eKey.wasPressedThisFrame) directInteract = true;
+                if (keyboard.eKey.isPressed) directInteractHeld = true;
+                if (keyboard.escapeKey.wasPressedThisFrame) directExit = true;
+            }
         }
         else
         {
-            if (keyboard.upArrowKey.isPressed) keyboardInput.y += 1;
-            if (keyboard.downArrowKey.isPressed) keyboardInput.y -= 1;
-            if (keyboard.leftArrowKey.isPressed) keyboardInput.x -= 1;
-            if (keyboard.rightArrowKey.isPressed) keyboardInput.x += 1;
+            if (gamepads.Count > 1)
+            {
+                var gamepad = gamepads[1];
+                directInput = gamepad.leftStick.ReadValue();
+                directSprint = gamepad.leftShoulder.isPressed;
+                directJump = gamepad.buttonSouth.wasPressedThisFrame;
+                directInteract = gamepad.buttonWest.wasPressedThisFrame;
+                directInteractHeld = gamepad.buttonWest.isPressed;
+                directExit = gamepad.buttonEast.wasPressedThisFrame;
+            }
             
-            keyboardSprint = keyboard.rightShiftKey.isPressed;
-            keyboardJump = keyboard.enterKey.wasPressedThisFrame;
-            keyboardInteract = keyboard.commaKey.wasPressedThisFrame;
-            keyboardInteractHeld = keyboard.commaKey.isPressed;
+            if (keyboard != null)
+            {
+                Vector2 kbInput = Vector2.zero;
+                if (keyboard.upArrowKey.isPressed) kbInput.y += 1;
+                if (keyboard.downArrowKey.isPressed) kbInput.y -= 1;
+                if (keyboard.leftArrowKey.isPressed) kbInput.x -= 1;
+                if (keyboard.rightArrowKey.isPressed) kbInput.x += 1;
+                
+                if (kbInput.magnitude > 0.1f) directInput = kbInput;
+                
+                if (keyboard.rightShiftKey.isPressed) directSprint = true;
+                if (keyboard.enterKey.wasPressedThisFrame) directJump = true;
+                if (keyboard.commaKey.wasPressedThisFrame) directInteract = true;
+                if (keyboard.commaKey.isPressed) directInteractHeld = true;
+                if (keyboard.periodKey.wasPressedThisFrame) directExit = true;
+            }
         }
 
-        if (keyboardInput.magnitude > 0.1f)
-        {
-            moveInput = keyboardInput;
-        }
-        else if (Gamepad.all.Count == 0 || (player_type == Player_Type.Luthe && Gamepad.all.Count < 1) || (player_type == Player_Type.Cherie && Gamepad.all.Count < 2))
-        {
-            moveInput = Vector2.zero;
-        }
-
-        if (keyboardSprint) sprintHeld = true;
-        if (keyboardJump) jumpPressed = true;
-        if (keyboardInteract) interactPressed = true;
-        if (keyboardInteractHeld) interactHeld = true;
-    }
-
-    private void OnExit(InputAction.CallbackContext context)
-    {
-        if (IsCorrectDevice(context.control.device))
-            exitPressed = true;
-    }
-    public bool Get_Exit_Input()
-    {
-        bool result = exitPressed;
-        exitPressed = false;
-        return result;
+        moveInput = directInput;
+        sprintHeld = directSprint;
+        if (directJump) jumpPressed = true;
+        if (directInteract) interactPressed = true;
+        interactHeld = directInteractHeld;
+        if (directExit) exitPressed = true;
     }
 
     public Player_Type Get_Player_Type()
@@ -298,5 +304,12 @@ public class Player_Controller : MonoBehaviour
     public bool Get_Sprint_Input()
     {
         return sprintHeld;
+    }
+    
+    public bool Get_Exit_Input()
+    {
+        bool result = exitPressed;
+        exitPressed = false;
+        return result;
     }
 }

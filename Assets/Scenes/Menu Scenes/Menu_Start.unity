@@ -923,7 +923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pressAnyKeyText: {fileID: 1116809042}
   fadeCanvasGroup: {fileID: 542442621}
-  nextSceneName: MenuMainScene
+  nextSceneName: Main_Menu
   fadeInDuration: 1
   fadeOutDuration: 1
   floatDistance: 20

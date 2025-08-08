@@ -626,6 +626,7 @@ GameObject:
   - component: {fileID: 70870486}
   - component: {fileID: 70870485}
   - component: {fileID: 70870484}
+  - component: {fileID: 70870488}
   m_Layer: 3
   m_Name: Button_3
   m_TagString: Untagged
@@ -723,6 +724,27 @@ Transform:
   - {fileID: 1039273584}
   m_Father: {fileID: 2009928999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &70870488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70870483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d2ff17a72915a46be42323001463ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interaction_id: fan_button
+  button_id: 2
+  button_icon: {fileID: 1039273583}
+  button_glow_color: {r: 0, g: 1, b: 1, a: 1}
+  click_scale_amount: 1.2
+  click_animation_duration: 0.2
+  connected_fan: {fileID: 775118423}
+  audio_source: {fileID: 0}
+  button_click_sound: {fileID: 0}
 --- !u!1 &78629221
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,7 +876,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 54e10ac5b6afa6648bc5bb16a3c3ea69, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.16
+      value: 23.08
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 54e10ac5b6afa6648bc5bb16a3c3ea69, type: 3}
       propertyPath: m_LocalPosition.y
@@ -972,7 +994,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: c48013c97d3d39c48af94be7a310e9ac, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: fe75921f73e957344aec0f3e17429346, type: 2}
+      objectReference: {fileID: 2100000, guid: cf44ad69c569e1941966ea48faf7ae43, type: 2}
     - target: {fileID: 919132149155446097, guid: c48013c97d3d39c48af94be7a310e9ac, type: 3}
       propertyPath: m_Name
       value: Vent (7)
@@ -7865,6 +7887,8 @@ GameObject:
   - component: {fileID: 366891235}
   - component: {fileID: 366891234}
   - component: {fileID: 366891233}
+  - component: {fileID: 366891236}
+  - component: {fileID: 366891237}
   m_Layer: 3
   m_Name: Button_1
   m_TagString: Untagged
@@ -7962,6 +7986,45 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366891231}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &366891236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366891231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d2ff17a72915a46be42323001463ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interaction_id: fan_button
+  button_id: 0
+  button_icon: {fileID: 903322429}
+  button_glow_color: {r: 0.64697254, g: 1, b: 0, a: 1}
+  click_scale_amount: 1.2
+  click_animation_duration: 0.2
+  connected_fan: {fileID: 775118423}
+  audio_source: {fileID: 0}
+  button_click_sound: {fileID: 0}
+--- !u!114 &366891237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366891231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: 0, y: -1.1, z: -0.54}
+  worldOffset: {x: 0, y: 0, z: 0}
+  heightOffset: 2
+  showGizmos: 1
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
+  gizmoSize: 0.3
 --- !u!1 &400396571 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c48013c97d3d39c48af94be7a310e9ac, type: 3}
@@ -10226,6 +10289,7 @@ GameObject:
   - component: {fileID: 708116127}
   - component: {fileID: 708116126}
   - component: {fileID: 708116125}
+  - component: {fileID: 708116129}
   m_Layer: 3
   m_Name: Button_2
   m_TagString: Untagged
@@ -10323,6 +10387,27 @@ Transform:
   - {fileID: 740583672}
   m_Father: {fileID: 2009928999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &708116129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708116124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d2ff17a72915a46be42323001463ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interaction_id: fan_button
+  button_id: 1
+  button_icon: {fileID: 740583671}
+  button_glow_color: {r: 0, g: 1, b: 1, a: 1}
+  click_scale_amount: 1.2
+  click_animation_duration: 0.2
+  connected_fan: {fileID: 775118423}
+  audio_source: {fileID: 0}
+  button_click_sound: {fileID: 0}
 --- !u!1001 &708790375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11111,13 +11196,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fan_blades: {fileID: 775118419}
   rotation_speed: 100
-  slowdown_amount: 20
+  slowdown_amount: 30
   min_speed: 10
   button_icon: {fileID: 406173625}
   button_materials:
   - {fileID: 2100000, guid: f1776038c6d5313418eac51e3c4098e6, type: 2}
   - {fileID: 2100000, guid: 458495f8f10ace94ca3a01ecfdccf517, type: 2}
   - {fileID: 2100000, guid: 557102860bf2aec4cb2056c0349cb9bc, type: 2}
+  connected_buttons:
+  - {fileID: 366891236}
+  - {fileID: 708116129}
+  - {fileID: 70870488}
+  use_random_order: 1
+  min_icon_change_interval: 1.5
+  max_icon_change_interval: 3
+  slowdown_duration: 2
+  speed_recovery_rate: 30
 --- !u!1 &776787095
 GameObject:
   m_ObjectHideFlags: 0
@@ -24812,11 +24906,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74274bdcacb76264cbbcea26b9e1f0b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drag_force: 5
+  base_drag_force: 5
+  min_drag_multiplier: 0.1
   fan_object: {fileID: 775118419}
+  fan_logic: {fileID: 0}
   player_layer:
     serializedVersion: 2
     m_Bits: 4294967295
+  show_debug_info: 0
 --- !u!1 &2108055203
 GameObject:
   m_ObjectHideFlags: 0

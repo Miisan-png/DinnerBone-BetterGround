@@ -1,48 +1,53 @@
 using UnityEngine;
-using DG.Tweening;
 
-public class Spider_Leg_Logic : MonoBehaviour
+public class SpiderLegImpact : MonoBehaviour
 {
-    [SerializeField] private GameObject impactVFX;
-    [SerializeField] private Camera cam;
-    [SerializeField] private Transform legObject;
+    [Header("References")]
+    [SerializeField] private Transform legImpact;       // The moving leg object
+    [SerializeField] private GameObject impactVFX;      // Particle prefab
 
-    [SerializeField] private float startY = 4.02f;
-    [SerializeField] private float anticipateY = 1.75f;
-    [SerializeField] private float anticipateDuration = 0.11f;
-    [SerializeField] private float attackY = 0f;
-    [SerializeField] private float attackDuration = 0.2f;
-    [SerializeField] private float returnY = 4f;
-    [SerializeField] private float returnDuration = 0.3f;
+    [Header("Positions")]
+    [SerializeField] private float startY = 4.93f;
+    [SerializeField] private float impactY = 0.04f;
 
-    [SerializeField] private Vector3 cameraShakeStrength = new Vector3(0.1f, 0.1f, 0);
-    [SerializeField] private float cameraShakeDuration = 0.15f;
-    [SerializeField] private float attackInterval = 2f;
+    [Header("Timing")]
+    [SerializeField] private float waitBeforeImpact = 60f;
+    [SerializeField] private float moveSpeed = 5f;
 
-    private bool isAttacking;
+    private Vector3 startPos;
+    private Vector3 impactPos;
 
     void Start()
     {
-        legObject.localPosition = new Vector3(legObject.localPosition.x, startY, legObject.localPosition.z);
-        InvokeRepeating(nameof(TriggerAttack), 0f, attackInterval);
+        if (!legImpact) legImpact = transform; // If nothing set, use self
+        startPos = new Vector3(legImpact.position.x, startY, legImpact.position.z);
+        impactPos = new Vector3(legImpact.position.x, impactY, legImpact.position.z);
+
+        legImpact.position = startPos;
+        StartCoroutine(ImpactRoutine());
     }
 
-    public void TriggerAttack()
+    System.Collections.IEnumerator ImpactRoutine()
     {
-        if (isAttacking) return;
-        isAttacking = true;
+        // Wait 60 seconds before attack
+        yield return new WaitForSeconds(waitBeforeImpact);
 
-        legObject.DOLocalMoveY(anticipateY, anticipateDuration).SetEase(Ease.OutQuad).OnComplete(() =>
+        // Move leg down to impact
+        while (Vector3.Distance(legImpact.position, impactPos) > 0.01f)
         {
-            legObject.DOLocalMoveY(attackY, attackDuration).SetEase(Ease.InQuad).OnComplete(() =>
-            {
-                if (impactVFX) Instantiate(impactVFX, legObject.position, Quaternion.identity);
-                if (cam) cam.transform.DOShakePosition(cameraShakeDuration, cameraShakeStrength, 10, 90, false, true);
-                legObject.DOLocalMoveY(returnY, returnDuration).SetEase(Ease.OutQuad).OnComplete(() =>
-                {
-                    isAttacking = false;
-                });
-            });
-        });
+            legImpact.position = Vector3.MoveTowards(legImpact.position, impactPos, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // Spawn impact particle
+        if (impactVFX)
+            Instantiate(impactVFX, legImpact.position, Quaternion.identity);
+
+        // Move leg back up
+        while (Vector3.Distance(legImpact.position, startPos) > 0.01f)
+        {
+            legImpact.position = Vector3.MoveTowards(legImpact.position, startPos, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
     }
 }

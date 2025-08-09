@@ -1720,6 +1720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 202211024}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -8501,6 +8502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 352175034}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -8801,6 +8803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 359992261}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -8868,10 +8871,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 0
   requiredKeyID: unlocked_door_key
   doorAnimation: {fileID: 371428385}
-  doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
-  doorClosedClip: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
+  doorOpenClip: {fileID: 7400000, guid: b3eb0b36e89d559438720f9c78121f99, type: 2}
+  doorClosedClip: {fileID: 7400000, guid: 82b237344e3fae74cbb5d7b28af5261b, type: 2}
   interactIcon: {fileID: 1857324451}
   interaction_id: unlocked_door_key
 --- !u!114 &371428384
@@ -8881,7 +8885,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 371428380}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7834773b81d4e124780cc421d98db0f3, type: 3}
   m_Name: 
@@ -9010,6 +9014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 388965561}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -13558,6 +13563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 799264304}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -13808,6 +13814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 809580004}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -16077,52 +16084,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1056360752 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-  m_PrefabInstance: {fileID: 5612102117751544443}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1056360757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056360752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cb6aa11a3b180b42bfb7fee1e82fc73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData:
-    itemID: unlocked_door_key
-    itemName: Key
-    itemIcon: {fileID: 21300000, guid: 9710a0542e2074c4594e595c6712935b, type: 3}
-    isKeyItem: 1
-  itemIconCanvas: {fileID: 2451840521835390955}
-  itemIconImage: {fileID: 7975283128961473020}
-  detectionRange: 2.2
-  scaleUpSize: 1.2
-  animationSpeed: 0.3
-  interaction_id: unlocked_door_key
---- !u!114 &1056360762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056360752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0818e5b0e1e5f2a4a81ff60f50f3e972, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localOffset: {x: 0, y: -0.76, z: 0}
-  worldOffset: {x: 0, y: -0.26, z: 0}
-  heightOffset: 2.33
-  showGizmos: 1
-  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
-  gizmoSize: 0.3
 --- !u!1 &1068435451
 GameObject:
   m_ObjectHideFlags: 0
@@ -16844,6 +16805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1152226357}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -18210,15 +18172,15 @@ PrefabInstance:
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: 'm_Animations.Array.data[0]'
       value: 
-      objectReference: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
+      objectReference: {fileID: 7400000, guid: 82b237344e3fae74cbb5d7b28af5261b, type: 2}
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: 'm_Animations.Array.data[1]'
       value: 
-      objectReference: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
+      objectReference: {fileID: 7400000, guid: b3eb0b36e89d559438720f9c78121f99, type: 2}
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: 'm_Animations.Array.data[2]'
       value: 
-      objectReference: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
+      objectReference: {fileID: 7400000, guid: b3eb0b36e89d559438720f9c78121f99, type: 2}
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: 'm_Animations.Array.data[3]'
       value: 
@@ -18233,15 +18195,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.026692
+      value: 8.66
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.020248976
+      value: -0.166
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 44.32
+      value: 44.218
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -18257,7 +18219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6452990937525929571, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23738,6 +23700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1335762148}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -23918,6 +23881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1363094741}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -24060,6 +24024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1370905814}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -24765,6 +24730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1426498544}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -27396,6 +27362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1727151506}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -27747,6 +27714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1755175846}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -29244,6 +29212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 1918099391}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -30942,6 +30911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6a1c14b504a3f41ae1d141f4376979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiresKey: 1
   requiredKeyID: door_key
   doorAnimation: {fileID: 2138628164}
   doorOpenClip: {fileID: 7400000, guid: 45ed4a3ba42e47c48bb1ff78509504f1, type: 2}
@@ -41485,11 +41455,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!223 &2451840521835390955 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 591290899924119669, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-  m_PrefabInstance: {fileID: 5612102117751544443}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2464115090840459157
 GameObject:
   m_ObjectHideFlags: 0
@@ -51797,97 +51762,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1001 &5612102117751544443
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 136257537408568268, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1580975897432103717, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 4054523823427853335, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4054538331643927095, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4055227144231571463, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Name
-      value: Door_Key
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525661141407447789, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 15.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.3689
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913455184767244179, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1056360757}
-    - targetCorrespondingSourceObject: {fileID: 4478300908738292681, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1056360762}
-  m_SourcePrefab: {fileID: 100100000, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
 --- !u!1 &5753545134620482634
 GameObject:
   m_ObjectHideFlags: 0
@@ -52611,17 +52485,6 @@ Transform:
   - {fileID: 6646896953338599120}
   m_Father: {fileID: 994442026}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7975283128961473020 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5442331310434439999, guid: 8194a76b6daf1f2429faa8883f05936b, type: 3}
-  m_PrefabInstance: {fileID: 5612102117751544443}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8086034130795744519
 Transform:
   m_ObjectHideFlags: 0
@@ -62427,6 +62290,5 @@ SceneRoots:
   - {fileID: 2022381036}
   - {fileID: 1082767750}
   - {fileID: 1430967516}
-  - {fileID: 5612102117751544443}
   - {fileID: 1283285114}
   - {fileID: 652264563}

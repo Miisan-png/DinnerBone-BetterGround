@@ -31,9 +31,6 @@ public class SpiderAttackManager : MonoBehaviour
         if (player1 == null) player1 = FindPlayerByType(Player_Type.Luthe);
         if (player2 == null) player2 = FindPlayerByType(Player_Type.Cherie);
         
-        Debug.Log($"[SpiderManager] Found Player1: {(player1 != null ? player1.name : "NULL")}, Player2: {(player2 != null ? player2.name : "NULL")}");
-        Debug.Log($"[SpiderManager] Managing {spiderLegs.Length} spider legs");
-        
         InitializeAvailableLegs();
         StartCoroutine(AttackLoop());
     }
@@ -60,43 +57,30 @@ public class SpiderAttackManager : MonoBehaviour
 
     private IEnumerator AttackLoop()
     {
-        Debug.Log("[SpiderManager] Starting attack loop");
         while (true)
         {
             yield return new WaitForSeconds(attackInterval);
             
             if (!isAttacking)
             {
-                Debug.Log("[SpiderManager] Initiating new attack sequence");
                 StartCoroutine(ExecuteAttackPattern());
-            }
-            else
-            {
-                Debug.Log("[SpiderManager] Skipping attack - already attacking");
             }
         }
     }
 
     private IEnumerator ExecuteAttackPattern()
     {
-        if (spiderLegs.Length == 0) 
-        {
-            Debug.LogWarning("[SpiderManager] No spider legs assigned!");
-            yield break;
-        }
+        if (spiderLegs.Length == 0) yield break;
         
         isAttacking = true;
         
         int numberOfLegsToAttack = Random.Range(minLegsPerAttack, maxLegsPerAttack + 1);
         numberOfLegsToAttack = Mathf.Min(numberOfLegsToAttack, spiderLegs.Length);
         
-        Debug.Log($"[SpiderManager] Attacking with {numberOfLegsToAttack} legs");
-        
         List<int> selectedLegs = SelectLegsForAttack(numberOfLegsToAttack);
         
         if (attackSimultaneously)
         {
-            Debug.Log("[SpiderManager] Executing simultaneous attack");
             foreach (int legIndex in selectedLegs)
             {
                 TriggerLegAttack(legIndex);
@@ -104,18 +88,15 @@ public class SpiderAttackManager : MonoBehaviour
         }
         else if (attackInSequence)
         {
-            Debug.Log("[SpiderManager] Executing sequential attack");
             foreach (int legIndex in selectedLegs)
             {
                 TriggerLegAttack(legIndex);
                 float delay = Random.Range(minDelayBetweenLegs, maxDelayBetweenLegs);
-                Debug.Log($"[SpiderManager] Waiting {delay}s before next leg");
                 yield return new WaitForSeconds(delay);
             }
         }
         else if (randomAttackOrder)
         {
-            Debug.Log("[SpiderManager] Executing random order attack");
             foreach (int legIndex in selectedLegs)
             {
                 TriggerLegAttack(legIndex);
@@ -124,10 +105,8 @@ public class SpiderAttackManager : MonoBehaviour
             }
         }
         
-        Debug.Log("[SpiderManager] Waiting for attacks to complete");
         yield return new WaitForSeconds(2f);
         
-        Debug.Log("[SpiderManager] Ending all attacks");
         foreach (int legIndex in selectedLegs)
         {
             if (legIndex < spiderLegs.Length && spiderLegs[legIndex] != null)
@@ -137,7 +116,6 @@ public class SpiderAttackManager : MonoBehaviour
         }
         
         isAttacking = false;
-        Debug.Log("[SpiderManager] Attack sequence complete");
     }
 
     private List<int> SelectLegsForAttack(int numberOfLegs)
@@ -158,58 +136,37 @@ public class SpiderAttackManager : MonoBehaviour
     private void TriggerLegAttack(int legIndex)
     {
         if (legIndex < 0 || legIndex >= spiderLegs.Length || spiderLegs[legIndex] == null)
-        {
-            Debug.LogError($"[SpiderManager] Invalid leg index: {legIndex}");
             return;
-        }
             
         SpiderLegEvents leg = spiderLegs[legIndex];
-        
-        Debug.Log($"[SpiderManager] Triggering attack on leg {legIndex}: {leg.gameObject.name}");
         
         leg.StartAttack();
         
         Animator legAnimator = leg.GetComponent<Animator>();
         if (legAnimator != null)
         {
-            Debug.Log($"[SpiderManager] Playing attack animation on {leg.gameObject.name}");
             legAnimator.SetTrigger("Attack");
-        }
-        else
-        {
-            Debug.LogWarning($"[SpiderManager] No animator found on {leg.gameObject.name}");
         }
     }
 
     public void ManualTriggerAttack()
     {
-        Debug.Log("[SpiderManager] Manual attack triggered");
         if (!isAttacking)
         {
             StartCoroutine(ExecuteAttackPattern());
-        }
-        else
-        {
-            Debug.Log("[SpiderManager] Cannot trigger manual attack - already attacking");
         }
     }
 
     public void ManualTriggerLeg(int legIndex)
     {
-        Debug.Log($"[SpiderManager] Manual trigger leg {legIndex}");
         if (legIndex >= 0 && legIndex < spiderLegs.Length)
         {
             TriggerLegAttack(legIndex);
-        }
-        else
-        {
-            Debug.LogError($"[SpiderManager] Invalid manual trigger leg index: {legIndex}");
         }
     }
 
     public void StopAllAttacks()
     {
-        Debug.Log("[SpiderManager] Stopping all attacks");
         StopAllCoroutines();
         isAttacking = false;
         

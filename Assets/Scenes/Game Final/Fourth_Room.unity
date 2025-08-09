@@ -6349,7 +6349,7 @@ Transform:
   m_GameObject: {fileID: 454385042}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00008953462, y: 0.6426039, z: -0.000037309394, w: 0.7661986}
-  m_LocalPosition: {x: -17.520956, y: 17.4, z: -7.62}
+  m_LocalPosition: {x: -17.520956, y: 17.4, z: -8.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24482,16 +24482,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ca1a41dee52d448a87a724111f1cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spiderLegs: []
+  spiderLegs:
+  - {fileID: 5866666021250715819}
   player1: {fileID: 1110799340}
   player2: {fileID: 410946352}
   attackInterval: 3
   minDelayBetweenLegs: 0.2
-  maxDelayBetweenLegs: 1
+  maxDelayBetweenLegs: 2
   minLegsPerAttack: 1
   maxLegsPerAttack: 3
   randomAttackOrder: 1
-  attackInSequence: 0
+  attackInSequence: 1
   attackSimultaneously: 0
 --- !u!4 &1480516348
 Transform:

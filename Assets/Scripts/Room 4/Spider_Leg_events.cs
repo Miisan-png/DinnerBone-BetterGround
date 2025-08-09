@@ -22,23 +22,30 @@ public class SpiderLegEvents : MonoBehaviour
     [SerializeField] private LayerMask playerLayerMask = -1;
 
     [Header("Player Hit Detection")]
-    [SerializeField] private GameObject legTrigger; // New: Attach the trigger child object here
-    [SerializeField] private Player_Controller player1; // Direct reference to player 1
-    [SerializeField] private Player_Controller player2; // Direct reference to player 2
+    [SerializeField] private GameObject legTrigger;
+    [SerializeField] private Player_Controller player1;
+    [SerializeField] private Player_Controller player2;
+
+    [Header("Attack Timing")]
+    [SerializeField] private bool enableAutoAttack = true;
+    [SerializeField] private float minAttackInterval = 2f;
+    [SerializeField] private float maxAttackInterval = 5f;
+    [SerializeField] private bool useRandomInterval = true;
+    [SerializeField] private float fixedAttackInterval = 3f;
 
     [Header("Lock-on Settings")]
     [SerializeField] private float rotationSpeed = 2f;
     [SerializeField] private Transform legPivot;
     [SerializeField] private Transform legRoot;
-    [SerializeField] private bool enablePositionLockOn = true;
-    [SerializeField] private float positionMoveSpeed = 1f;
-    [SerializeField] private float maxMoveDistance = 3f;
     [SerializeField] private bool enableRootRotation = true;
     [SerializeField] private float rootRotationSpeed = 1f;
 
     [Header("Hit Detection")]
     [SerializeField] private float hitRadius = 1f;
     [SerializeField] private Transform hitPoint;
+
+    [Header("Debug")]
+    [SerializeField] private bool debugAttackTiming = false;
 
     private bool isAttacking = false;
     private bool animationFinished = false;
@@ -47,6 +54,9 @@ public class SpiderLegEvents : MonoBehaviour
     private Vector3 originalPosition;
     private Quaternion originalRootRotation;
     private Spider_Boss_Player_State playerStateManager;
+    
+    private float nextAttackTime = 0f;
+    private float currentAttackInterval;
 
     void Awake()
     {
@@ -57,15 +67,14 @@ public class SpiderLegEvents : MonoBehaviour
         
         originalRotation = legPivot.rotation;
         originalPosition = legRoot.position;
+        originalRootRotation = legRoot.rotation;
         
-        // Get or create the player state manager
         playerStateManager = FindObjectOfType<Spider_Boss_Player_State>();
         if (playerStateManager == null)
         {
             Debug.LogWarning("[SpiderLegEvents] No Spider_Boss_Player_State found in scene. Player hit effects will not work.");
         }
         
-        // Setup the leg trigger if assigned
         if (legTrigger != null)
         {
             Collider triggerCollider = legTrigger.GetComponent<Collider>();
@@ -75,15 +84,12 @@ public class SpiderLegEvents : MonoBehaviour
             }
             triggerCollider.isTrigger = true;
             
-            // Add the trigger component if it doesn't exist
             Spider_Leg_Trigger triggerScript = legTrigger.GetComponent<Spider_Leg_Trigger>();
             if (triggerScript == null)
             {
                 triggerScript = legTrigger.AddComponent<Spider_Leg_Trigger>();
             }
             triggerScript.SetParentLeg(this);
-            
-            Debug.Log($"[SpiderLeg] {gameObject.name} - Leg trigger setup complete");
         }
         
         if (detectionRadius != null)
@@ -95,14 +101,66 @@ public class SpiderLegEvents : MonoBehaviour
                 ((SphereCollider)detectionCollider).radius = detectionRange;
             }
             detectionCollider.isTrigger = true;
-            Debug.Log($"[SpiderLeg] {gameObject.name} - Detection radius setup complete");
         }
         
-        Debug.Log($"[SpiderLeg] {gameObject.name} - Initialized with pivot: {legPivot.name}, root: {legRoot.name}");
+        SetNextAttackTime();
+    }
+
+    void Update()
+    {
+        if (enableAutoAttack && !isAttacking && Time.time >= nextAttackTime)
+        {
+            if (IsPlayerInRange())
+            {
+                StartAttack();
+            }
+            else
+            {
+                SetNextAttackTime();
+            }
+        }
+
+        if (isAttacking && targetPlayer != null && !animationFinished)
+        {
+            RotateTowardsPlayer();
+            if (enableRootRotation)
+            {
+                RotateRootTowardsPlayer();
+            }
+        }
+    }
+
+    private bool IsPlayerInRange()
+    {
+        if (detectionRadius == null) return false;
+
+        Collider[] playersInRange = Physics.OverlapSphere(detectionRadius.transform.position, detectionRange, playerLayerMask);
+        
+        foreach (Collider col in playersInRange)
+        {
+            Player_Controller player = col.GetComponent<Player_Controller>();
+            if (player != null)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    private void SetNextAttackTime()
+    {
+        currentAttackInterval = useRandomInterval
+            ? Random.Range(minAttackInterval, maxAttackInterval)
+            : fixedAttackInterval;
+        
+        nextAttackTime = Time.time + currentAttackInterval;
     }
 
     public void StartAttack()
     {
+        if (isAttacking) return;
+        
         isAttacking = true;
         animationFinished = false;
         targetPlayer = FindClosestPlayer();
@@ -110,14 +168,16 @@ public class SpiderLegEvents : MonoBehaviour
         if (targetPlayer != null)
         {
             RotateTowardsPlayer();
-            if (enablePositionLockOn)
-            {
-                MoveTowardsPlayer();
-            }
             if (enableRootRotation)
             {
                 RotateRootTowardsPlayer();
             }
+        }
+        
+        Animator legAnimator = GetComponent<Animator>();
+        if (legAnimator != null)
+        {
+            legAnimator.SetTrigger("Attack");
         }
     }
 
@@ -131,15 +191,14 @@ public class SpiderLegEvents : MonoBehaviour
         isAttacking = false;
         animationFinished = false;
         targetPlayer = null;
+        
         legPivot.DORotateQuaternion(originalRotation, 0.5f);
-        if (enablePositionLockOn)
-        {
-            legRoot.DOMove(originalPosition, 0.8f).SetEase(Ease.OutQuad);
-        }
         if (enableRootRotation)
         {
             legRoot.DORotateQuaternion(originalRootRotation, 0.8f).SetEase(Ease.OutQuad);
         }
+        
+        SetNextAttackTime();
     }
 
     public void OnImpact()
@@ -149,13 +208,11 @@ public class SpiderLegEvents : MonoBehaviour
         CheckForPlayerHit();
     }
 
-    // New method called by the leg trigger
     public void OnPlayerHitByTrigger(Player_Controller hitPlayer)
     {
         if (playerStateManager != null && hitPlayer != null)
         {
             playerStateManager.OnPlayerHit(hitPlayer);
-            Debug.Log($"[SpiderLeg] Player {hitPlayer.Get_Player_Type()} hit by leg trigger!");
         }
     }
 
@@ -219,36 +276,6 @@ public class SpiderLegEvents : MonoBehaviour
             if (player != null && playerStateManager != null)
             {
                 playerStateManager.OnPlayerHit(player);
-                Debug.Log($"[SpiderLeg] Player {player.Get_Player_Type()} hit by hit detection!");
-            }
-        }
-    }
-
-    private void MoveTowardsPlayer()
-    {
-        if (targetPlayer == null || legRoot == null) return;
-
-        Vector3 directionToPlayer = (targetPlayer.position - legRoot.position);
-        directionToPlayer.y = 0;
-        directionToPlayer = directionToPlayer.normalized;
-        
-        Vector3 targetPosition = originalPosition + (directionToPlayer * maxMoveDistance);
-        
-        legRoot.DOMove(targetPosition, 1f / positionMoveSpeed).SetEase(Ease.OutQuad);
-    }
-
-    void Update()
-    {
-        if (isAttacking && targetPlayer != null && !animationFinished)
-        {
-            RotateTowardsPlayer();
-            if (enablePositionLockOn)
-            {
-                MoveTowardsPlayer();
-            }
-            if (enableRootRotation)
-            {
-                RotateRootTowardsPlayer();
             }
         }
     }
@@ -277,6 +304,44 @@ public class SpiderLegEvents : MonoBehaviour
         );
 
         if (unscaledTime) t.SetUpdate(true);
+    }
+
+    public void SetAttackInterval(float min, float max)
+    {
+        minAttackInterval = min;
+        maxAttackInterval = max;
+        SetNextAttackTime();
+    }
+
+    public void SetFixedAttackInterval(float interval)
+    {
+        fixedAttackInterval = interval;
+        useRandomInterval = false;
+        SetNextAttackTime();
+    }
+
+    public void EnableAutoAttack(bool enable)
+    {
+        enableAutoAttack = enable;
+        if (enable)
+        {
+            SetNextAttackTime();
+        }
+    }
+
+    [ContextMenu("Force Attack Now")]
+    public void ForceAttackNow()
+    {
+        if (!isAttacking)
+        {
+            StartAttack();
+        }
+    }
+
+    [ContextMenu("Reset Attack Timer")]
+    public void ResetAttackTimer()
+    {
+        SetNextAttackTime();
     }
 
     void OnDrawGizmosSelected()

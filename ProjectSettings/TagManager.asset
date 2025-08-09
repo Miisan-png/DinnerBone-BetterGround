@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Player1
   - Player2
+  - DeathZone
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - Interactable
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Wall
   - 
   - 
   - 

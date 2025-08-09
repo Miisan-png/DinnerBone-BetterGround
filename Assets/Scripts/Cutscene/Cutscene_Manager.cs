@@ -17,8 +17,8 @@ public class CutsceneManager : MonoBehaviour
     
     [Header("Skip Settings")]
     public float holdTimeRequired = 2f;
-    public float fadeInSpeed = 1f;
-    public float fadeOutSpeed = 2f;
+    public float fadeInSpeed = 1f;   // Fade in speed (for skip transition)
+    public float fadeOutSpeed = 1f;  // Fade out speed (for scene start)
     public float breathingSpeed = 2f;
     public float breathingIntensity = 0.3f;
     
@@ -40,6 +40,7 @@ public class CutsceneManager : MonoBehaviour
     {
         InitializeComponents();
         StartBreathingEffect();
+        FadeOutAtStart();
     }
     
     void InitializeComponents()
@@ -57,13 +58,21 @@ public class CutsceneManager : MonoBehaviour
         if (fadePanel != null)
         {
             Color panelColor = fadePanel.color;
-            panelColor.a = 0f;
+            panelColor.a = 1f; // Fully visible at start
             fadePanel.color = panelColor;
         }
         
         if (cameraToShake != null)
         {
             originalCameraPosition = cameraToShake.transform.position;
+        }
+    }
+
+    void FadeOutAtStart()
+    {
+        if (fadePanel != null)
+        {
+            fadePanel.DOFade(0f, fadeOutSpeed); // Fade out to reveal scene
         }
     }
     
@@ -109,10 +118,7 @@ public class CutsceneManager : MonoBehaviour
     {
         isHolding = true;
         
-        if (breathingTween != null)
-        {
-            breathingTween.Kill();
-        }
+        breathingTween?.Kill();
         
         if (skipText != null)
         {
@@ -137,7 +143,8 @@ public class CutsceneManager : MonoBehaviour
             skipText.color = startColor;
             
             skipFadeTween = skipText.DOFade(0f, 1f / fadeOutSpeed)
-                .OnComplete(() => {
+                .OnComplete(() =>
+                {
                     if (!isHolding)
                     {
                         StartBreathingEffect();
@@ -164,20 +171,9 @@ public class CutsceneManager : MonoBehaviour
         
         isSkipping = true;
         
-        if (breathingTween != null)
-        {
-            breathingTween.Kill();
-        }
-        
-        if (skipFadeTween != null)
-        {
-            skipFadeTween.Kill();
-        }
-        
-        if (colorTween != null)
-        {
-            colorTween.Kill();
-        }
+        breathingTween?.Kill();
+        skipFadeTween?.Kill();
+        colorTween?.Kill();
         
         if (cameraToShake != null)
         {
@@ -193,7 +189,7 @@ public class CutsceneManager : MonoBehaviour
         
         if (fadePanel != null)
         {
-            skipSequence.Append(fadePanel.DOFade(1f, 1f));
+            skipSequence.Append(fadePanel.DOFade(1f, fadeInSpeed)); // Fade in before scene change
         }
         
         skipSequence.AppendInterval(0.5f);

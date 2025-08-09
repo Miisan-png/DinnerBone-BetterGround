@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier, IIconVisibility
 {
-    [Header("Door Settings")]
-    [SerializeField] private bool requiresKey = true; // NEW: Toggle for key requirement
     [SerializeField] private string requiredKeyID = "door_key";
     [SerializeField] private Animation doorAnimation;
     [SerializeField] private AnimationClip doorOpenClip;
@@ -35,31 +33,11 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
         {
             doorClosedClip.legacy = true;
         }
-
-        // Update interaction ID based on whether key is required
-        UpdateInteractionID();
-    }
-
-    private void UpdateInteractionID()
-    {
-        if (requiresKey)
-        {
-            interaction_id = "door_open"; // Key required
-        }
-        else
-        {
-            interaction_id = "door_open_free"; // No key required
-        }
     }
     
     public bool Can_Interact(Player_Type player_type)
     {
         if (isOpen) return false;
-        
-        // If no key required, anyone can interact
-        if (!requiresKey) return true;
-        
-        // If key is required, check for key
         if (Inventory_Manager.Instance == null) return false;
         return Inventory_Manager.Instance.HasItem(requiredKeyID, player_type);
     }
@@ -68,25 +46,15 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
     {
         if (isOpen) return;
         
-        if (requiresKey)
+        if (Inventory_Manager.Instance != null && Inventory_Manager.Instance.HasItem(requiredKeyID, player.Get_Player_Type()))
         {
-            // Original key-based logic
-            if (Inventory_Manager.Instance != null && Inventory_Manager.Instance.HasItem(requiredKeyID, player.Get_Player_Type()))
-            {
-                Debug.Log($"Opening door with key: {requiredKeyID}");
-                Inventory_Manager.Instance.DropItem(player.Get_Player_Type());
-                OpenDoor();
-            }
-            else
-            {
-                Debug.Log($"Cannot open door - missing key: {requiredKeyID}");
-            }
+            Debug.Log($"Opening door with key: {requiredKeyID}");
+            Inventory_Manager.Instance.DropItem(player.Get_Player_Type());
+            OpenDoor();
         }
         else
         {
-            // No key required - just open the door
-            Debug.Log("Opening door (no key required)");
-            OpenDoor();
+            Debug.Log($"Cannot open door - missing key: {requiredKeyID}");
         }
     }
     
@@ -119,11 +87,6 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
     
     public string Get_Interaction_Text()
     {
-        if (isOpen) return "Door is open";
-        
-        if (!requiresKey) return "Open door";
-        
-        // Key required logic
         return Can_Interact(Player_Type.Luthe) || Can_Interact(Player_Type.Cherie) ? "Open door" : "Locked";
     }
     
@@ -150,25 +113,5 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
     public bool IsOpen()
     {
         return isOpen;
-    }
-
-    // Public methods for runtime control
-    public void SetRequiresKey(bool requires)
-    {
-        requiresKey = requires;
-        UpdateInteractionID();
-        Debug.Log($"Door key requirement set to: {requiresKey}");
-    }
-
-    public bool DoesRequireKey()
-    {
-        return requiresKey;
-    }
-
-    // Context menu for easy testing in editor
-    [ContextMenu("Toggle Key Requirement")]
-    public void ToggleKeyRequirement()
-    {
-        SetRequiresKey(!requiresKey);
     }
 }

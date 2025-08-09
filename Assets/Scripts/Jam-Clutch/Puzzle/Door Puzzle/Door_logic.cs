@@ -2,10 +2,16 @@ using UnityEngine;
 
 public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier, IIconVisibility
 {
+    [Header("Door Settings")]
+    [SerializeField] private bool noKeyRequired = false; // Toggle to bypass key requirement
     [SerializeField] private string requiredKeyID = "door_key";
+    
+    [Header("Animation")]
     [SerializeField] private Animation doorAnimation;
     [SerializeField] private AnimationClip doorOpenClip;
     [SerializeField] private AnimationClip doorClosedClip;
+    
+    [Header("UI")]
     [SerializeField] private Advanced_Interact_Icon interactIcon;
     [SerializeField] private string interaction_id = "door_open";
     
@@ -38,6 +44,11 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
     public bool Can_Interact(Player_Type player_type)
     {
         if (isOpen) return false;
+        
+        // If no key required, always allow interaction
+        if (noKeyRequired) return true;
+        
+        // Otherwise check for key
         if (Inventory_Manager.Instance == null) return false;
         return Inventory_Manager.Instance.HasItem(requiredKeyID, player_type);
     }
@@ -46,6 +57,15 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
     {
         if (isOpen) return;
         
+        // If no key required, just open the door
+        if (noKeyRequired)
+        {
+            Debug.Log("Opening door (no key required)");
+            OpenDoor();
+            return;
+        }
+        
+        // Otherwise check for key
         if (Inventory_Manager.Instance != null && Inventory_Manager.Instance.HasItem(requiredKeyID, player.Get_Player_Type()))
         {
             Debug.Log($"Opening door with key: {requiredKeyID}");
@@ -87,6 +107,9 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
     
     public string Get_Interaction_Text()
     {
+        if (noKeyRequired)
+            return "Open door";
+        
         return Can_Interact(Player_Type.Luthe) || Can_Interact(Player_Type.Cherie) ? "Open door" : "Locked";
     }
     

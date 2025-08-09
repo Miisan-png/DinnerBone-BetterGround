@@ -5,7 +5,7 @@ public class Bed_Jumpable : MonoBehaviour
 {
     [SerializeField] private float bounceForce = 15f;
     [SerializeField] private float scaleAmount = 0.7f;
-    [SerializeField] private float animationDuration = 0.3f;
+    [SerializeField] private float animationDuration = 0.5f;
     
     private Vector3 originalScale;
     

@@ -21,6 +21,11 @@ public class SpiderLegEvents : MonoBehaviour
     [SerializeField] private float detectionRange = 5f;
     [SerializeField] private LayerMask playerLayerMask = -1;
 
+    [Header("Player Hit Detection")]
+    [SerializeField] private GameObject legTrigger; // New: Attach the trigger child object here
+    [SerializeField] private Player_Controller player1; // Direct reference to player 1
+    [SerializeField] private Player_Controller player2; // Direct reference to player 2
+
     [Header("Lock-on Settings")]
     [SerializeField] private float rotationSpeed = 2f;
     [SerializeField] private Transform legPivot;
@@ -41,6 +46,7 @@ public class SpiderLegEvents : MonoBehaviour
     private Quaternion originalRotation;
     private Vector3 originalPosition;
     private Quaternion originalRootRotation;
+    private Spider_Boss_Player_State playerStateManager;
 
     void Awake()
     {
@@ -51,6 +57,34 @@ public class SpiderLegEvents : MonoBehaviour
         
         originalRotation = legPivot.rotation;
         originalPosition = legRoot.position;
+        
+        // Get or create the player state manager
+        playerStateManager = FindObjectOfType<Spider_Boss_Player_State>();
+        if (playerStateManager == null)
+        {
+            Debug.LogWarning("[SpiderLegEvents] No Spider_Boss_Player_State found in scene. Player hit effects will not work.");
+        }
+        
+        // Setup the leg trigger if assigned
+        if (legTrigger != null)
+        {
+            Collider triggerCollider = legTrigger.GetComponent<Collider>();
+            if (triggerCollider == null)
+            {
+                triggerCollider = legTrigger.AddComponent<BoxCollider>();
+            }
+            triggerCollider.isTrigger = true;
+            
+            // Add the trigger component if it doesn't exist
+            Spider_Leg_Trigger triggerScript = legTrigger.GetComponent<Spider_Leg_Trigger>();
+            if (triggerScript == null)
+            {
+                triggerScript = legTrigger.AddComponent<Spider_Leg_Trigger>();
+            }
+            triggerScript.SetParentLeg(this);
+            
+            Debug.Log($"[SpiderLeg] {gameObject.name} - Leg trigger setup complete");
+        }
         
         if (detectionRadius != null)
         {
@@ -115,6 +149,16 @@ public class SpiderLegEvents : MonoBehaviour
         CheckForPlayerHit();
     }
 
+    // New method called by the leg trigger
+    public void OnPlayerHitByTrigger(Player_Controller hitPlayer)
+    {
+        if (playerStateManager != null && hitPlayer != null)
+        {
+            playerStateManager.OnPlayerHit(hitPlayer);
+            Debug.Log($"[SpiderLeg] Player {hitPlayer.Get_Player_Type()} hit by leg trigger!");
+        }
+    }
+
     private Transform FindClosestPlayer()
     {
         if (detectionRadius == null) return null;
@@ -172,9 +216,10 @@ public class SpiderLegEvents : MonoBehaviour
         foreach (Collider col in hitColliders)
         {
             Player_Controller player = col.GetComponent<Player_Controller>();
-            if (player != null)
+            if (player != null && playerStateManager != null)
             {
-                Debug.Log("Player Hit");
+                playerStateManager.OnPlayerHit(player);
+                Debug.Log($"[SpiderLeg] Player {player.Get_Player_Type()} hit by hit detection!");
             }
         }
     }
@@ -246,6 +291,24 @@ public class SpiderLegEvents : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(hitPoint.position, hitRadius);
+        }
+
+        if (legTrigger != null)
+        {
+            Gizmos.color = Color.magenta;
+            Collider triggerCollider = legTrigger.GetComponent<Collider>();
+            if (triggerCollider != null)
+            {
+                Gizmos.matrix = legTrigger.transform.localToWorldMatrix;
+                if (triggerCollider is BoxCollider box)
+                {
+                    Gizmos.DrawWireCube(box.center, box.size);
+                }
+                else if (triggerCollider is SphereCollider sphere)
+                {
+                    Gizmos.DrawWireSphere(sphere.center, sphere.radius);
+                }
+            }
         }
     }
 }

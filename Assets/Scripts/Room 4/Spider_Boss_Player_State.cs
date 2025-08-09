@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
 
 public class Spider_Boss_Player_State : MonoBehaviour
 {
@@ -7,9 +9,13 @@ public class Spider_Boss_Player_State : MonoBehaviour
     [SerializeField] private Player_Controller player1;
     [SerializeField] private Player_Controller player2;
     
+    [Header("Respawn Points")]
+    [SerializeField] private Transform player1RespawnPoint;
+    [SerializeField] private Transform player2RespawnPoint;
+    
     [Header("Player Hit VFX")]
-    [SerializeField] private GameObject player1HitVFX; // Child VFX for player 1
-    [SerializeField] private GameObject player2HitVFX; // Child VFX for player 2
+    [SerializeField] private GameObject player1HitVFX;
+    [SerializeField] private GameObject player2HitVFX;
     
     [Header("Knockback Settings")]
     [SerializeField] private float knockbackForce = 5f;
@@ -17,22 +23,35 @@ public class Spider_Boss_Player_State : MonoBehaviour
     [SerializeField] private bool useCharacterController = true;
     
     [Header("Hit Cooldown")]
-    [SerializeField] private float hitCooldown = 1f; // Prevent multiple hits in quick succession
+    [SerializeField] private float hitCooldown = 1f;
     
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip player1HitSound;
     [SerializeField] private AudioClip player2HitSound;
+    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioClip respawnSound;
+    
+    [Header("Lives System")]
+    [SerializeField] private int maxHitsPerPlayer = 2;
+    
+    [Header("Fade Settings")]
+    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private float respawnDelay = 2f;
     
     [Header("Debug")]
     [SerializeField] private bool debugHits = true;
     
+    private int player1Hits = 0;
+    private int player2Hits = 0;
     private float player1LastHitTime = -999f;
     private float player2LastHitTime = -999f;
     
+    private Canvas fadeCanvas;
+    private Image fadeImage;
+    
     void Start()
     {
-        // Auto-find players if not assigned
         if (player1 == null || player2 == null)
         {
             Player_Controller[] players = FindObjectsByType<Player_Controller>(FindObjectsSortMode.None);
@@ -49,7 +68,6 @@ public class Spider_Boss_Player_State : MonoBehaviour
             }
         }
         
-        // Auto-find audio source
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -59,21 +77,46 @@ public class Spider_Boss_Player_State : MonoBehaviour
             }
         }
         
-        // Ensure VFX are initially inactive
         if (player1HitVFX != null) player1HitVFX.SetActive(false);
         if (player2HitVFX != null) player2HitVFX.SetActive(false);
         
+        CreateFadeCanvas();
+        
         if (debugHits)
         {
-            Debug.Log($"[Spider_Boss_Player_State] Initialized with Player1: {(player1 != null ? player1.name : "None")}, Player2: {(player2 != null ? player2.name : "None")}");
+            Debug.Log($"[Spider_Boss_Player_State] Initialized - P1 Hits: {player1Hits}/{maxHitsPerPlayer}, P2 Hits: {player2Hits}/{maxHitsPerPlayer}");
         }
+    }
+    
+    private void CreateFadeCanvas()
+    {
+        GameObject canvasObj = new GameObject("Fade Canvas");
+        fadeCanvas = canvasObj.AddComponent<Canvas>();
+        fadeCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        fadeCanvas.sortingOrder = 9999;
+        
+        canvasObj.AddComponent<CanvasScaler>();
+        canvasObj.AddComponent<GraphicRaycaster>();
+        
+        GameObject fadeObj = new GameObject("Fade Image");
+        fadeObj.transform.SetParent(canvasObj.transform);
+        
+        fadeImage = fadeObj.AddComponent<Image>();
+        fadeImage.color = new Color(0, 0, 0, 0);
+        
+        RectTransform rect = fadeImage.rectTransform;
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        
+        fadeCanvas.gameObject.SetActive(false);
     }
     
     public void OnPlayerHit(Player_Controller hitPlayer)
     {
         if (hitPlayer == null) return;
         
-        // Check cooldown to prevent spam hits
         float currentTime = Time.time;
         
         if (hitPlayer == player1)
@@ -84,9 +127,16 @@ public class Spider_Boss_Player_State : MonoBehaviour
             PlayHitEffects(player1, player1HitVFX, player1HitSound);
             ApplyKnockback(player1);
             
+            player1Hits++;
+            
             if (debugHits)
             {
-                Debug.Log($"[Spider_Boss_Player_State] Player 1 ({player1.Get_Player_Type()}) hit!");
+                Debug.Log($"[Spider_Boss_Player_State] Player 1 hit! Hits: {player1Hits}/{maxHitsPerPlayer}");
+            }
+            
+            if (player1Hits > maxHitsPerPlayer)
+            {
+                HandleBothPlayersDeath();
             }
         }
         else if (hitPlayer == player2)
@@ -97,20 +147,20 @@ public class Spider_Boss_Player_State : MonoBehaviour
             PlayHitEffects(player2, player2HitVFX, player2HitSound);
             ApplyKnockback(player2);
             
+            player2Hits++;
+            
             if (debugHits)
             {
-                Debug.Log($"[Spider_Boss_Player_State] Player 2 ({player2.Get_Player_Type()}) hit!");
+                Debug.Log($"[Spider_Boss_Player_State] Player 2 hit! Hits: {player2Hits}/{maxHitsPerPlayer}");
+            }
+            
+            if (player2Hits > maxHitsPerPlayer)
+            {
+                HandleBothPlayersDeath();
             }
         }
         else
         {
-            // Handle case where hit player doesn't match our references
-            if (debugHits)
-            {
-                Debug.LogWarning($"[Spider_Boss_Player_State] Unknown player hit: {hitPlayer.name} ({hitPlayer.Get_Player_Type()})");
-            }
-            
-            // Try to match by player type as fallback
             if (hitPlayer.Get_Player_Type() == Player_Type.Luthe && player1 != null)
             {
                 OnPlayerHit(player1);
@@ -122,27 +172,91 @@ public class Spider_Boss_Player_State : MonoBehaviour
         }
     }
     
+    private void HandleBothPlayersDeath()
+    {
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
+        
+        if (debugHits)
+        {
+            Debug.Log($"[Spider_Boss_Player_State] Both players died! Respawning...");
+        }
+        
+        StartCoroutine(RespawnBothPlayers());
+    }
+    
+    private IEnumerator RespawnBothPlayers()
+    {
+        fadeCanvas.gameObject.SetActive(true);
+        
+        yield return fadeImage.DOFade(1f, fadeDuration).WaitForCompletion();
+        
+        yield return new WaitForSeconds(respawnDelay);
+        
+        if (player1RespawnPoint != null)
+        {
+            TeleportPlayer(player1, player1RespawnPoint.position, player1RespawnPoint.rotation);
+        }
+        
+        if (player2RespawnPoint != null)
+        {
+            TeleportPlayer(player2, player2RespawnPoint.position, player2RespawnPoint.rotation);
+        }
+        
+        player1Hits = 0;
+        player2Hits = 0;
+        
+        if (audioSource != null && respawnSound != null)
+        {
+            audioSource.PlayOneShot(respawnSound);
+        }
+        
+        yield return fadeImage.DOFade(0f, fadeDuration).WaitForCompletion();
+        
+        fadeCanvas.gameObject.SetActive(false);
+        
+        if (debugHits)
+        {
+            Debug.Log($"[Spider_Boss_Player_State] Both players respawned! Hits reset.");
+        }
+    }
+    
+    private void TeleportPlayer(Player_Controller player, Vector3 position, Quaternion rotation)
+    {
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false;
+            player.transform.position = position;
+            player.transform.rotation = rotation;
+            cc.enabled = true;
+        }
+        else
+        {
+            player.transform.position = position;
+            player.transform.rotation = rotation;
+        }
+    }
+    
     private void PlayHitEffects(Player_Controller player, GameObject hitVFX, AudioClip hitSound)
     {
-        // Play VFX
         if (hitVFX != null)
         {
             hitVFX.SetActive(true);
             
-            // Get all particle systems in the VFX
             ParticleSystem[] particles = hitVFX.GetComponentsInChildren<ParticleSystem>();
             foreach (var ps in particles)
             {
                 ps.Play();
             }
             
-            // Auto-disable VFX after a short time (optional)
             DOVirtual.DelayedCall(2f, () => {
                 if (hitVFX != null) hitVFX.SetActive(false);
             });
         }
         
-        // Play audio
         if (audioSource != null && hitSound != null)
         {
             audioSource.PlayOneShot(hitSound);
@@ -153,13 +267,11 @@ public class Spider_Boss_Player_State : MonoBehaviour
     {
         if (player == null) return;
         
-        // Calculate knockback direction (away from spider/center)
         Vector3 knockbackDirection = (player.transform.position - transform.position).normalized;
-        knockbackDirection.y = 0; // Keep knockback horizontal
+        knockbackDirection.y = 0;
         
         if (knockbackDirection.magnitude < 0.1f)
         {
-            // Fallback direction if player is too close to center
             knockbackDirection = player.transform.forward;
         }
         
@@ -167,7 +279,6 @@ public class Spider_Boss_Player_State : MonoBehaviour
         
         if (useCharacterController)
         {
-            // Use CharacterController for knockback
             CharacterController cc = player.GetComponent<CharacterController>();
             if (cc != null)
             {
@@ -176,14 +287,8 @@ public class Spider_Boss_Player_State : MonoBehaviour
         }
         else
         {
-            // Use transform-based knockback
             Vector3 targetPosition = player.transform.position + knockbackVector;
             player.transform.DOMove(targetPosition, knockbackDuration).SetEase(Ease.OutQuad);
-        }
-        
-        if (debugHits)
-        {
-            Debug.Log($"[Spider_Boss_Player_State] Applied knockback to {player.Get_Player_Type()}: {knockbackVector}");
         }
     }
     
@@ -195,7 +300,7 @@ public class Spider_Boss_Player_State : MonoBehaviour
         while (elapsed < knockbackDuration)
         {
             float progress = elapsed / knockbackDuration;
-            float easeOut = 1f - (progress * progress); // Ease out curve
+            float easeOut = 1f - (progress * progress);
             
             Vector3 frameKnockback = currentKnockback * easeOut * Time.deltaTime;
             cc.Move(frameKnockback);
@@ -205,7 +310,6 @@ public class Spider_Boss_Player_State : MonoBehaviour
         }
     }
     
-    // Public methods for manual testing
     [ContextMenu("Test Hit Player 1")]
     public void TestHitPlayer1()
     {
@@ -224,24 +328,14 @@ public class Spider_Boss_Player_State : MonoBehaviour
         }
     }
     
-    // Getters for other scripts
     public Player_Controller GetPlayer1() => player1;
     public Player_Controller GetPlayer2() => player2;
-    
-    public void SetPlayers(Player_Controller p1, Player_Controller p2)
-    {
-        player1 = p1;
-        player2 = p2;
-        
-        if (debugHits)
-        {
-            Debug.Log($"[Spider_Boss_Player_State] Players set - P1: {(p1 != null ? p1.name : "None")}, P2: {(p2 != null ? p2.name : "None")}");
-        }
-    }
+    public int GetPlayer1Hits() => player1Hits;
+    public int GetPlayer2Hits() => player2Hits;
+    public int GetMaxHits() => maxHitsPerPlayer;
     
     void OnDrawGizmosSelected()
     {
-        // Draw debug lines to players
         if (player1 != null)
         {
             Gizmos.color = Color.blue;
@@ -256,7 +350,18 @@ public class Spider_Boss_Player_State : MonoBehaviour
             Gizmos.DrawWireSphere(player2.transform.position, 0.5f);
         }
         
-        // Draw knockback range
+        if (player1RespawnPoint != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireCube(player1RespawnPoint.position, Vector3.one);
+        }
+        
+        if (player2RespawnPoint != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(player2RespawnPoint.position, Vector3.one);
+        }
+        
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, knockbackForce);
     }

@@ -1,16 +1,39 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class Bed_Jumpable : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private float bounceForce = 15f;
+    [SerializeField] private float scaleAmount = 0.7f;
+    [SerializeField] private float animationDuration = 0.3f;
+    
+    private Vector3 originalScale;
+    
     void Start()
     {
-        
+        originalScale = transform.localScale;
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    void OnTriggerEnter(Collider other)
     {
+        Player_Controller player = other.GetComponent<Player_Controller>();
+        if (player == null) return;
         
+        CharacterController controller = player.GetComponent<CharacterController>();
+        if (controller == null) return;
+        
+        Vector3 targetScale = new Vector3(originalScale.x, originalScale.y * scaleAmount, originalScale.z);
+        
+        transform.DOScale(targetScale, animationDuration * 0.5f).SetEase(Ease.OutQuad)
+            .OnComplete(() => {
+                transform.DOScale(originalScale, animationDuration * 0.5f).SetEase(Ease.OutBounce);
+            });
+        
+        Player_Movement movement = player.GetComponent<Player_Movement>();
+        if (movement != null)
+        {
+            typeof(Player_Movement).GetField("velocity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(movement, new Vector3(0, bounceForce, 0));
+        }
     }
 }

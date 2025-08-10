@@ -1,27 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8758703104538251621
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
-  m_Name: LiftGammaGain
-  m_EditorClassIdentifier: 
-  active: 0
-  lift:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.72741705, z: 0.97933614, w: 0}
-  gamma:
-    m_OverrideState: 1
-    m_Value: {x: 0.8603424, y: 0.85186154, z: 1, w: -0.37910694}
-  gain:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
 --- !u!114 &-8098103875356282632
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -81,16 +59,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70afe9e12c7a7ed47911bb608a23a8ff, type: 3}
   m_Name: SplitToning
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.31399074, g: 0.36081564, b: 0.4528302, a: 1}
+    m_Value: {r: 0.41859487, g: 0.45836496, b: 0.5345911, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.38644186, b: 0.2028302, a: 1}
+    m_Value: {r: 0.9056604, g: 0.80068314, b: 0.49839795, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: -7.2
+    m_Value: -19
 --- !u!114 &-5151255253834222710
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -103,31 +81,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 0.8
+    m_Value: 0.1
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 30
+    m_Value: 60
   gaussianMaxRadius:
     m_OverrideState: 1
-    m_Value: 0.654
+    m_Value: 0.5
   highQualitySampling:
     m_OverrideState: 0
     m_Value: 0
   focusDistance:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 10
   aperture:
-    m_OverrideState: 0
-    m_Value: 5.6
+    m_OverrideState: 1
+    m_Value: 6
   focalLength:
-    m_OverrideState: 0
-    m_Value: 50
+    m_OverrideState: 1
+    m_Value: 96
   bladeCount:
     m_OverrideState: 0
     m_Value: 5
@@ -137,25 +115,6 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-2542141779800063337
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb60a22f311433c4c962b888d1393f88, type: 3}
-  m_Name: PaniniProjection
-  m_EditorClassIdentifier: 
-  active: 0
-  distance:
-    m_OverrideState: 1
-    m_Value: 0
-  cropToFit:
-    m_OverrideState: 1
-    m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,79 +130,9 @@ MonoBehaviour:
   components:
   - {fileID: -8098103875356282632}
   - {fileID: 4686684933756517451}
-  - {fileID: 8224082528432489369}
   - {fileID: -5151255253834222710}
   - {fileID: -5774296510016095522}
-  - {fileID: 1444617053324141636}
-  - {fileID: -2542141779800063337}
-  - {fileID: -8758703104538251621}
---- !u!114 &1444617053324141636
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06437c1ff663d574d9447842ba0a72e4, type: 3}
-  m_Name: ScreenSpaceLensFlare
-  m_EditorClassIdentifier: 
-  active: 0
-  intensity:
-    m_OverrideState: 1
-    m_Value: 0.94
-  tintColor:
-    m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
-  bloomMip:
-    m_OverrideState: 0
-    m_Value: 1
-  firstFlareIntensity:
-    m_OverrideState: 1
-    m_Value: 1
-  secondaryFlareIntensity:
-    m_OverrideState: 1
-    m_Value: 1
-  warpedFlareIntensity:
-    m_OverrideState: 1
-    m_Value: 1
-  warpedFlareScale:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1}
-  samples:
-    m_OverrideState: 1
-    m_Value: 1
-  sampleDimmer:
-    m_OverrideState: 0
-    m_Value: 0.5
-  vignetteEffect:
-    m_OverrideState: 1
-    m_Value: 1
-  startingPosition:
-    m_OverrideState: 1
-    m_Value: 1.25
-  scale:
-    m_OverrideState: 1
-    m_Value: 1.5
-  streaksIntensity:
-    m_OverrideState: 1
-    m_Value: 0
-  streaksLength:
-    m_OverrideState: 1
-    m_Value: 0.5
-  streaksOrientation:
-    m_OverrideState: 1
-    m_Value: 0
-  streaksThreshold:
-    m_OverrideState: 1
-    m_Value: 0.25
-  resolution:
-    m_OverrideState: 0
-    m_Value: 4
-  chromaticAbberationIntensity:
-    m_OverrideState: 1
-    m_Value: 0.5
+  - {fileID: 6488293460688507976}
 --- !u!114 &4686684933756517451
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -272,7 +161,7 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &8224082528432489369
+--- !u!114 &6488293460688507976
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -281,10 +170,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
-  m_Name: ChromaticAberration
+  m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
+  m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: 
-  active: 0
-  intensity:
+  active: 1
+  shadows:
     m_OverrideState: 1
+    m_Value: {x: 0.9082316, y: 0.9531207, z: 1, w: 0.027210781}
+  midtones:
+    m_OverrideState: 1
+    m_Value: {x: 0.94267607, y: 1, z: 0.9191263, w: -0.08163265}
+  highlights:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: -0.06802742}
+  shadowsStart:
+    m_OverrideState: 0
     m_Value: 0
+  shadowsEnd:
+    m_OverrideState: 0
+    m_Value: 0.3
+  highlightsStart:
+    m_OverrideState: 0
+    m_Value: 0.55
+  highlightsEnd:
+    m_OverrideState: 0
+    m_Value: 1

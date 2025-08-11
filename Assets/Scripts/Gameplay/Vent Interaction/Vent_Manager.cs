@@ -6,7 +6,6 @@ public class Vent_Manager : MonoBehaviour
     public static Vent_Manager Instance => instance;
 
     private Player_Controller current_vent_player;
-    private Camera_Manager main_camera_manager;
     private bool player_in_vent = false;
 
     void Awake()
@@ -22,33 +21,14 @@ public class Vent_Manager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        main_camera_manager = FindFirstObjectByType<Camera_Manager>();
-    }
-
-    void Update()
-    {
-        // If player somehow moved far away from entry/exit while in vent, allow re-entry
-        if (player_in_vent && current_vent_player != null)
-        {
-            // Optional safeguard to ensure vent state is never stuck
-            if (current_vent_player.GetComponent<CharacterController>() != null &&
-                !current_vent_player.GetComponent<CharacterController>().enabled)
-            {
-                current_vent_player.GetComponent<CharacterController>().enabled = true;
-            }
-        }
-    }
-
     public void Enter_Vent(Player_Controller player, Vent_Entry entry)
     {
         current_vent_player = player;
         player_in_vent = true;
 
-        Vent_Fade.Instance.Fade_In_Out(() => {
+        Vent_Fade.Instance.Fade_In_Out(() =>
+        {
             TeleportPlayerToVent(player, entry);
-            SetupSplitScreenForVent();
         });
     }
 
@@ -56,9 +36,9 @@ public class Vent_Manager : MonoBehaviour
     {
         if (current_vent_player != player) return;
 
-        Vent_Fade.Instance.Fade_In_Out(() => {
+        Vent_Fade.Instance.Fade_In_Out(() =>
+        {
             TeleportPlayerFromVent(player, exit);
-            RestoreNormalCameraSystem();
             ResetVentState();
         });
     }
@@ -89,27 +69,6 @@ public class Vent_Manager : MonoBehaviour
         }
 
         if (playerCC != null) playerCC.enabled = true;
-    }
-
-    private void SetupSplitScreenForVent()
-    {
-        if (main_camera_manager != null)
-        {
-            main_camera_manager.Force_Split_Screen();
-            main_camera_manager.enabled = false;
-
-            var follow_script = main_camera_manager.GetComponent<Camera_Follow>();
-            if (follow_script != null) follow_script.enabled = false;
-        }
-    }
-
-    private void RestoreNormalCameraSystem()
-    {
-        if (main_camera_manager != null)
-        {
-            main_camera_manager.Enable_Auto_Switch();
-            main_camera_manager.enabled = true;
-        }
     }
 
     private void ResetVentState()

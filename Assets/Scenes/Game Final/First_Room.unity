@@ -13002,7 +13002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel_1: {fileID: 1072113715}
-  panel_2: {fileID: 0}
+  panel_2: {fileID: 1116124987}
   light_managers:
   - {fileID: 476898308}
   success_effects: []

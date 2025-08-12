@@ -119,30 +119,32 @@ public class Dual_Panel_Manager : MonoBehaviour
     }
     
     private void CompleteOverallPuzzle()
-{
-    overall_puzzle_complete = true;
-
-    if (Objective_Global.Instance != null)
     {
-        Objective_Global.Instance.SetObjective("Emergency Power Restored");
+        overall_puzzle_complete = true;
+
+        if (Objective_Global.Instance != null)
+        {
+            Objective_Global.Instance.SetObjective("Emergency Power Restored");
+        }
+
+        if (panel_1 != null) panel_1.TriggerPanelCompletion();
+        if (panel_2 != null) panel_2.TriggerPanelCompletion();
+
+        SoundManager.Instance.PlaySound("sfx_start_generator");
+
+        DOTween.Sequence()
+            .AppendInterval(celebration_delay)
+            .AppendCallback(() => {
+                ActivateLights();
+                PlaySuccessEffects();
+                ActivateButtons();
+            })
+            .AppendInterval(2f)
+            .AppendCallback(() => {
+                if (panel_1 != null) panel_1.ExitPuzzleFromManager();
+                if (panel_2 != null) panel_2.ExitPuzzleFromManager();
+            });
     }
-
-    if (panel_1 != null) panel_1.TriggerPanelCompletion();
-    if (panel_2 != null) panel_2.TriggerPanelCompletion();
-
-    DOTween.Sequence()
-        .AppendInterval(celebration_delay)
-        .AppendCallback(() => {
-            ActivateLights();
-            PlaySuccessEffects();
-            ActivateButtons();
-        })
-        .AppendInterval(2f)
-        .AppendCallback(() => {
-            if (panel_1 != null) panel_1.ExitPuzzleFromManager();
-            if (panel_2 != null) panel_2.ExitPuzzleFromManager();
-        });
-}
 
     
     private void ResetOverallPuzzle()

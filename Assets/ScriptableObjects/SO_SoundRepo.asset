@@ -91,5 +91,29 @@ MonoBehaviour:
     Volume: 0.5
     SpatialBlend: 0
     Pitch: 1
+  - SoundName: sfx_start_generator
+    Clip: {fileID: 8300000, guid: 9a27767f3cc3b434d9b13ae4d8915323, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.5
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_player_death
+    Clip: {fileID: 8300000, guid: 8107bee66fb21cb47b8116e164d2be3a, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_player_respawn
+    Clip: {fileID: 8300000, guid: 9b33460b31422cf429d97abefb8ce3a7, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_vent_enter
+    Clip: {fileID: 8300000, guid: 9be2c0ba97ce88c4a96c022b906ca2ea, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
   BGMList: []
   DialoguePath: 

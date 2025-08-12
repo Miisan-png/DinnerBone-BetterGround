@@ -19765,7 +19765,7 @@ PrefabInstance:
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7400000, guid: bfd963b269b19ea4d94dea78d4af53ee, type: 2}
     - target: {fileID: 197679031934399029, guid: 5319d0dbace54a2438cd405a9d9790e7, type: 3}
       propertyPath: m_PlayAutomatically
       value: 0

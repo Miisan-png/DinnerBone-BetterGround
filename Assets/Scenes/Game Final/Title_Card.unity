@@ -374,7 +374,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 842536064}
   titleText: {fileID: 834684966}
-  fadeInDuration: 1
   typeWriterSpeed: 0.05
   holdTime: 2
   fadeOutDuration: 1

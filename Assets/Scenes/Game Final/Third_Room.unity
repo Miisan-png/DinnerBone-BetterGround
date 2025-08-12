@@ -2259,8 +2259,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightsToFlicker:
   - {fileID: 78629222}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 230005186}
   minIntensity: 19.1
   maxIntensity: 520.27

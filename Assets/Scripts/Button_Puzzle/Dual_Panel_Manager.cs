@@ -119,33 +119,31 @@ public class Dual_Panel_Manager : MonoBehaviour
     }
     
     private void CompleteOverallPuzzle()
+{
+    overall_puzzle_complete = true;
+
+    if (Objective_Global.Instance != null)
     {
-        overall_puzzle_complete = true;
-        Debug.Log("Both panels complete! Activating lights, effects, and buttons!");
-        
-        if (panel_1 != null)
-        {
-            panel_1.TriggerPanelCompletion();
-        }
-        
-        if (panel_2 != null)
-        {
-            panel_2.TriggerPanelCompletion();
-        }
-        
-        DOTween.Sequence()
-            .AppendInterval(celebration_delay)
-            .AppendCallback(() => {
-                ActivateLights();
-                PlaySuccessEffects();
-                ActivateButtons();
-            })
-            .AppendInterval(2f)
-            .AppendCallback(() => {
-                if (panel_1 != null) panel_1.ExitPuzzleFromManager();
-                if (panel_2 != null) panel_2.ExitPuzzleFromManager();
-            });
+        Objective_Global.Instance.SetObjective("Emergency Power Restored");
     }
+
+    if (panel_1 != null) panel_1.TriggerPanelCompletion();
+    if (panel_2 != null) panel_2.TriggerPanelCompletion();
+
+    DOTween.Sequence()
+        .AppendInterval(celebration_delay)
+        .AppendCallback(() => {
+            ActivateLights();
+            PlaySuccessEffects();
+            ActivateButtons();
+        })
+        .AppendInterval(2f)
+        .AppendCallback(() => {
+            if (panel_1 != null) panel_1.ExitPuzzleFromManager();
+            if (panel_2 != null) panel_2.ExitPuzzleFromManager();
+        });
+}
+
     
     private void ResetOverallPuzzle()
     {

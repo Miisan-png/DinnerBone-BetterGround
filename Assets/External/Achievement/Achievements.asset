@@ -13,13 +13,26 @@ MonoBehaviour:
   m_Name: Achievements
   m_EditorClassIdentifier: 
   achievements:
-  - achievement_tag: test
-    achievement_icon: {fileID: 21300000, guid: 938d0510b71a6f746a0823ba0805fbe2, type: 3}
-    description_text: test achi
-    icon_color: {r: 1, g: 1, b: 1, a: 1}
+  - achievement_tag: Vent
+    achievement_icon: {fileID: 21300000, guid: cea0814c2856a35448f6f943fb391981, type: 3}
+    description_text: "Achievement Unlocked: \nVent Crawler\n"
+    icon_color: {r: 0.8078432, g: 0.67058825, b: 0.2509804, a: 1}
     text_color: {r: 1, g: 1, b: 1, a: 1}
-  - achievement_tag: screw
-    achievement_icon: {fileID: 21300000, guid: 69cc5f515b3759542937a5f998e6a4cd, type: 3}
-    description_text: screw that vent!
-    icon_color: {r: 1, g: 1, b: 1, a: 1}
+  - achievement_tag: Start
+    achievement_icon: {fileID: 21300000, guid: 1751f0ad252afab4cba6ce0de105240f, type: 3}
+    description_text: "Achievement Unlocked: \nInvoluntary Patient\n\n"
+    icon_color: {r: 0.8078432, g: 0.67058825, b: 0.2509804, a: 1}
+    text_color: {r: 1, g: 1, b: 1, a: 1}
+  - achievement_tag: spider
+    achievement_icon: {fileID: 21300000, guid: c65d82281b94b4e4c8d5bc89928c4555, type: 3}
+    description_text: 'Achievement Unlocked: Eight Steps Ahead'
+    icon_color: {r: 0.8078432, g: 0.67058825, b: 0.2509804, a: 1}
+    text_color: {r: 1, g: 1, b: 1, a: 1}
+  - achievement_tag: died
+    achievement_icon: {fileID: 21300000, guid: 1d5bce1a20fd057489cc6303a5d58622, type: 3}
+    description_text: 'Achievement Unlocked: Critical Condition
+
+
+'
+    icon_color: {r: 0.8078432, g: 0.67058825, b: 0.2509804, a: 1}
     text_color: {r: 1, g: 1, b: 1, a: 1}

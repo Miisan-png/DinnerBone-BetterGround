@@ -124,7 +124,8 @@ public class Artifact_Note_System : MonoBehaviour, I_Interactable, IInteractionI
         
         isUsed = true;
         ShowNote();
-        Destroy(gameObject);
+        Util.WaitNextFrame(this, ()=>Destroy(gameObject));
+        
     }
     
     public void End_Interaction(Player_Controller player) {

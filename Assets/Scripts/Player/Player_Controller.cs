@@ -251,9 +251,9 @@ public class Player_Controller : MonoBehaviour
                 
                 if (keyboard.rightShiftKey.isPressed) directSprint = true;
                 if (keyboard.enterKey.wasPressedThisFrame) directJump = true;
-                if (keyboard.commaKey.wasPressedThisFrame) directInteract = true;
-                if (keyboard.commaKey.isPressed) directInteractHeld = true;
-                if (keyboard.periodKey.wasPressedThisFrame) directExit = true;
+                if (keyboard.periodKey.wasPressedThisFrame) directInteract = true;
+                if (keyboard.periodKey.isPressed) directInteractHeld = true;
+                if (keyboard.commaKey.wasPressedThisFrame) directExit = true;
             }
         }
 

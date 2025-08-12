@@ -112,6 +112,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    // To fix in firesout! lol
     public int PlaySound(SoundVariationizer variationizer, Transform attachedObj = null, SoundSetting soundSettingOverwrite = null)
     {
         if (soundSettingOverwrite != null)
@@ -123,7 +124,7 @@ public class SoundManager : MonoBehaviour
             soundSettingOverwrite = new SoundSetting() { Pitch = variationizer.Pitch };
         }
 
-        return PlaySound(variationizer.SoundName, attachedObj, new SoundSetting() { });
+        return PlaySound(variationizer.SoundName, attachedObj, soundSettingOverwrite);
     }
 
     /// <summary>

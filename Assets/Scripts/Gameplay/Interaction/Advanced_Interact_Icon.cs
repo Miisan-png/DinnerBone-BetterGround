@@ -107,10 +107,14 @@ public class Advanced_Interact_Icon : MonoBehaviour
         
         if (shouldShow && !isVisible)
         {
+            SoundManager.Instance.PlaySound("sfx_interactable_appear");
+
             Show();
         }
         else if (!shouldShow && isVisible)
         {
+            SoundManager.Instance.PlaySound("sfx_interactable_disappear");
+
             Hide();
         }
         

@@ -118,11 +118,12 @@ public class Player_Movement : MonoBehaviour
         }
 
         // Play footstep sound when timer reaches zero and player is moving
-        if (isMoving && footstep_timer <= 0f)
+        if (isMoving && footstep_timer <= 0f && controller.velocity.magnitude > 0.1f)
         {
             if (audio_source != null && walk_sound != null)
             {
-                audio_source.PlayOneShot(walk_sound);
+                SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_footstep", 0.1f));
+                //audio_source.PlayOneShot(walk_sound);
             }
             // Reset the timer for the next footstep
             footstep_timer = footstep_interval;

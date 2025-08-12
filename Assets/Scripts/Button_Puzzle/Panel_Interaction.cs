@@ -270,6 +270,8 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         
         if (arrow_indicator != null)
         {
+            SoundManager.Instance.PlaySound("sfx_wire_select");
+
             Vector3 currentScale = arrow_indicator.transform.localScale;
             arrow_indicator.transform.DOScale(currentScale * 1.2f, 0.15f)
                 .OnComplete(() => {
@@ -281,6 +283,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     private void ExitObjectRotation()
     {
         is_rotating_object = false;
+        SoundManager.Instance.PlaySound("sfx_wire_deselect");
         UpdateArrowAppearance();
     }
     
@@ -294,7 +297,9 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             Vector3 targetRotation = currentRotation + (Vector3.forward * degrees);
             
             has_been_rotated[current_component_index] = true;
-            
+            SoundManager.Instance.PlaySound("sfx_wire_rotate");
+
+
             if (reset_tweens[current_component_index] != null)
             {
                 reset_tweens[current_component_index].Kill();
@@ -475,6 +480,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     {
         if (arrow_indicator != null && current_component_index < power_components.Length)
         {
+            SoundManager.Instance.PlaySound("sfx_wire_choose");
             Vector3 target_pos = power_components[current_component_index].position;
             target_pos.z += z_offset;
             target_pos.y += height_offset;

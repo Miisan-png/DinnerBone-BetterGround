@@ -11686,7 +11686,7 @@ MonoBehaviour:
   count_label: {fileID: 905243274}
   achievement_database: {fileID: 11400000, guid: 86ba282430fe834478d3d5187d565abe, type: 2}
   slide_duration: 0.8
-  display_duration: 1
+  display_duration: 2
   slide_distance: 300
 --- !u!4 &286052093
 Transform:
@@ -11697,11 +11697,13 @@ Transform:
   m_GameObject: {fileID: 286052091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 213.90819, y: 951.2335, z: -12.206823}
+  m_LocalPosition: {x: 222.5275, y: 948.7669, z: 1.7163792}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 709789657}
+  m_Children:
+  - {fileID: 1403457785}
+  - {fileID: 1388054031}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &290453237
 GameObject:
@@ -18187,40 +18189,6 @@ Transform:
   - {fileID: 270687943}
   m_Father: {fileID: 1475286071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &468024851
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 468024852}
-  m_Layer: 0
-  m_Name: Game_Triggers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &468024852
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468024851}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5109984, y: 1.1710126, z: -0.2783223}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1403457785}
-  - {fileID: 496333863}
-  - {fileID: 776787096}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &469087235 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c48013c97d3d39c48af94be7a310e9ac, type: 3}
@@ -19160,134 +19128,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1432523048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &496333858
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 496333863}
-  - component: {fileID: 496333862}
-  - component: {fileID: 496333861}
-  - component: {fileID: 496333860}
-  - component: {fileID: 496333859}
-  m_Layer: 0
-  m_Name: AchievementTrigger2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &496333859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496333858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90aec35bb793ac94689f110304c640e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  achievement_tag: screw
-  unlock_condition: 3
-  require_both_players: 0
-  luthe_allowed: 1
-  cherie_allowed: 1
-  one_time_only: 1
-  debug_trigger: 0
---- !u!65 &496333860
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496333858}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &496333861
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496333858}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 17f97f82f4e53d746ac7e2be99df06f2, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &496333862
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496333858}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &496333863
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 496333858}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7069655, z: -0, w: 0.70724803}
-  m_LocalPosition: {x: 1.9392102, y: -0.35000002, z: 0.5899973}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 468024852}
-  m_LocalEulerAnglesHint: {x: 0, y: 89.977, z: 0}
 --- !u!1001 &497080860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27984,7 +27824,6 @@ Transform:
   - {fileID: 39920058}
   - {fileID: 705410100}
   - {fileID: 644271300}
-  - {fileID: 286052093}
   - {fileID: 1071525423}
   - {fileID: 2108055204}
   m_Father: {fileID: 0}
@@ -30814,11 +30653,11 @@ Transform:
   m_GameObject: {fileID: 776787095}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.964, y: -0.39, z: 0.2744}
+  m_LocalPosition: {x: 10.475006, y: 0.78100586, z: -0.0039223433}
   m_LocalScale: {x: 3.609476, y: 0.8817, z: 0.66213936}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 468024852}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &776787097
 BoxCollider:
@@ -37555,7 +37394,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 45.89795, y: -371.5}
+  m_AnchoredPosition: {x: 49.92685, y: -44.300034}
   m_SizeDelta: {x: 36.6695, y: 19.0203}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &905243274
@@ -37691,7 +37530,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 7.3710938, y: -359.09998}
+  m_AnchoredPosition: {x: 11.4, y: -31.9}
   m_SizeDelta: {x: 38.6773, y: 38.8969}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &906048264
@@ -56074,8 +55913,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11, y: -392}
-  m_SizeDelta: {x: 137.0362, y: 41.0647}
+  m_AnchoredPosition: {x: 15.0289, y: -64.80003}
+  m_SizeDelta: {x: 242.798, y: 19.8111}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1331440323
 MonoBehaviour:
@@ -56097,7 +55936,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: patient crisis!
+  m_text: 'Achievement Unlocked: Vent Crawler
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
   m_sharedMaterial: {fileID: -4541259606381603500, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
@@ -56124,8 +55965,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -58240,6 +58081,134 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c7d5243afd50cfd4baaad397d757c23e, type: 3}
   m_PrefabInstance: {fileID: 1042914674}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1388054030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1388054031}
+  - component: {fileID: 1388054035}
+  - component: {fileID: 1388054034}
+  - component: {fileID: 1388054033}
+  - component: {fileID: 1388054032}
+  m_Layer: 0
+  m_Name: Achievement_Trigger_Start
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1388054031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388054030}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7069655, z: -0, w: 0.70724803}
+  m_LocalPosition: {x: -211.4289, y: -948.02, z: -1.48}
+  m_LocalScale: {x: 1.5224881, y: 1.2049764, z: 3.44998}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 286052093}
+  m_LocalEulerAnglesHint: {x: 0, y: 89.977, z: 0}
+--- !u!114 &1388054032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388054030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90aec35bb793ac94689f110304c640e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  achievement_tag: Start
+  unlock_condition: 3
+  require_both_players: 0
+  luthe_allowed: 1
+  cherie_allowed: 1
+  one_time_only: 1
+  debug_trigger: 0
+--- !u!65 &1388054033
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388054030}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1388054034
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388054030}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 17f97f82f4e53d746ac7e2be99df06f2, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1388054035
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388054030}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1389027668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58895,7 +58864,7 @@ GameObject:
   - component: {fileID: 1403457782}
   - component: {fileID: 1403457781}
   m_Layer: 0
-  m_Name: AchievementTrigger1
+  m_Name: Achievement_Trigger_Crawl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58913,7 +58882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90aec35bb793ac94689f110304c640e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  achievement_tag: Five more minutes...
+  achievement_tag: Vent
   unlock_condition: 3
   require_both_players: 0
   luthe_allowed: 1
@@ -59003,11 +58972,11 @@ Transform:
   m_GameObject: {fileID: 1403457780}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7069655, z: -0, w: 0.70724803}
-  m_LocalPosition: {x: 9.401, y: 0.125, z: 2.024}
-  m_LocalScale: {x: 1.5224881, y: 0.49303457, z: 0.4754925}
+  m_LocalPosition: {x: -201.4229, y: -947.7029, z: 6.3492985}
+  m_LocalScale: {x: 1.5224881, y: 1.2049764, z: 1.1111042}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 468024852}
+  m_Father: {fileID: 286052093}
   m_LocalEulerAnglesHint: {x: 0, y: 89.977, z: 0}
 --- !u!1 &1403601913
 GameObject:
@@ -83169,7 +83138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2067319079
 Transform:
   m_ObjectHideFlags: 0
@@ -109160,7 +109129,8 @@ SceneRoots:
   - {fileID: 1174683826}
   - {fileID: 1367318}
   - {fileID: 969807729}
-  - {fileID: 468024852}
+  - {fileID: 776787096}
+  - {fileID: 286052093}
   - {fileID: 1154726093}
   - {fileID: 1770448032}
   - {fileID: 2016052828}

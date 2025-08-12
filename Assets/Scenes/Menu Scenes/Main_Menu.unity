@@ -2606,7 +2606,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &517424940
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7249,7 +7249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!225 &1529944921
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7538,7 +7538,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: KAYSON | LEAD MODELLER | ANIMATOR | UI | GAME DESIGN
+  m_text: KAYSON | LEAD MODELLER | ANIMATOR | UI | GAME DESIGN | SET DRESSING | POST
+    PROCESSING
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
   m_sharedMaterial: {fileID: -4541259606381603500, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
@@ -8940,7 +8941,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DOMINIC | UI-UX | LOGO - ANIMATOR
+  m_text: DOMINIC | LOGO - ANIMATOR | MENU UI
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
   m_sharedMaterial: {fileID: -4541259606381603500, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
@@ -9436,7 +9437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1943437139
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9559,7 +9560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -55.7, y: -30}
+  m_AnchoredPosition: {x: -55.7, y: -29.4}
   m_SizeDelta: {x: 115.4806, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1944221795
@@ -9582,7 +9583,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'AZAR ALI SHAIKH | LEAD PROGRAMMER | VFX | SHADERS '
+  m_text: AZAR (MISAN) | LEAD PROGRAMMER | VFX | SHADERS | PARTICLE EFFECTS | LOGIC
+    & SYSTEMS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
   m_sharedMaterial: {fileID: -4541259606381603500, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
@@ -9854,7 +9856,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: AZWA AL ISLAM | MODELLER | GAME DESIGNER | ART | UI-UX
+  m_text: 'AZWA AL ISLAM | MODELLER | GAME DESIGNER | ART | UI-UX | SET DRESSING '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}
   m_sharedMaterial: {fileID: -4541259606381603500, guid: d3fa8b5681cb1de4ca0db653c702bf89, type: 2}

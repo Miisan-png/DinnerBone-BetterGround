@@ -20,6 +20,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Final/First_Room.unity
     guid: 98de7b9751a73624face7b1e7e97f3fe
+  - enabled: 1
+    path: Assets/Scenes/Game Final/Seccond_Room.unity
+    guid: 472a40a2c6a07e04b919ca9f6241a350
+  - enabled: 1
+    path: Assets/Scenes/Game Final/Third_Room.unity
+    guid: 5be703c458922104ba515caa7b3fea21
+  - enabled: 1
+    path: Assets/Scenes/Game Final/Fourth_Room.unity
+    guid: 6bfbc0f8444a86b45a63ee6d3d0215e6
+  - enabled: 1
+    path: Assets/Scenes/Game Final/Demo_OverScene.unity
+    guid: d1d75a40127c3e84997ef9e1c903f88c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -6793,7 +6793,7 @@ MonoBehaviour:
   trigger_zone_2: {fileID: 397254399}
   player_1_indicator: {fileID: 2120145445}
   player_2_indicator: {fileID: 1380380524}
-  scene_name: MenuAnyKeyScene
+  scene_name: Fourth_Room
   fade_duration: 1.5
   hold_time_before_change: 1
   use_trigger_zones: 1

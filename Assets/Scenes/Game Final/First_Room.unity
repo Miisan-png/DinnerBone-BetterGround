@@ -51553,7 +51553,7 @@ MonoBehaviour:
   trigger_zone_2: {fileID: 1219066525}
   player_1_indicator: {fileID: 1963104607}
   player_2_indicator: {fileID: 62762326}
-  scene_name: MenuAnyKeyScene
+  scene_name: Seccond_Room
   fade_duration: 1.5
   hold_time_before_change: 1
   use_trigger_zones: 1

@@ -160,6 +160,13 @@ public class SpiderLegEvents : MonoBehaviour
     public void StartAttack()
     {
         if (isAttacking) return;
+        // Cancel any ongoing tweens
+        DOTween.Kill(legPivot);
+        DOTween.Kill(legRoot);
+        
+        isAttacking = true;
+        animationFinished = false;
+        targetPlayer = FindClosestPlayer();
         
         isAttacking = true;
         animationFinished = false;

@@ -338,6 +338,7 @@ public class Void_Scene_Changer : MonoBehaviour
         yield return new WaitForSeconds(hold_time_before_change);
 
         PlaySound(scene_change_sound);
+        SoundManager.Instance.PlaySound("sfx_room_change");
 
         yield return StartCoroutine(FadeToBlack());
 

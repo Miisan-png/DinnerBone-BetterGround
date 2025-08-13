@@ -19,7 +19,7 @@ public class Vent_Manager : MonoBehaviour
         {
             instance = this;
             if (persistAcrossScenes) DontDestroyOnLoad(gameObject);
-            SceneManager.activeSceneChanged += OnActiveSceneChanged;
+            //SceneManager.activeSceneChanged += OnActiveSceneChanged;
         }
         else
         {
@@ -29,7 +29,7 @@ public class Vent_Manager : MonoBehaviour
 
     void OnDestroy()
     {
-        if (instance == this) SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+        //if (instance == this) SceneManager.activeSceneChanged -= OnActiveSceneChanged;
     }
 
     void OnActiveSceneChanged(Scene oldScene, Scene newScene)

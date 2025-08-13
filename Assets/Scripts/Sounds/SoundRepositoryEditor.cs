@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 
 public class SoundRepositoryWindow : EditorWindow
@@ -161,3 +163,4 @@ public class SoundRepositoryWindow : EditorWindow
         EditorGUI.DrawRect(rect, borderColor);
     }
 }
+#endif

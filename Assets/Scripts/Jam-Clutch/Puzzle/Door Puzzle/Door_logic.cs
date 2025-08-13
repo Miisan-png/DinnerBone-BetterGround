@@ -25,11 +25,11 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
         if (interactIcon == null)
             interactIcon = GetComponentInChildren<Advanced_Interact_Icon>();
         
-        if (doorAnimation != null && doorClosedClip != null)
-        {
-            doorAnimation.clip = doorClosedClip;
-            doorAnimation.Play();
-        }
+        //if (doorAnimation != null && doorClosedClip != null)
+        //{
+        //    doorAnimation.clip = doorClosedClip;
+        //    doorAnimation.Play();
+        //}
         
         if (doorOpenClip != null)
         {

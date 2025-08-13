@@ -72,11 +72,13 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier,
         
         if (shouldScaleUp && !isScaledUp)
         {
+            SoundManager.Instance.PlaySound("sfx_item_interactable");
             isScaledUp = true;
             itemIconCanvas.transform.DOScale(originalScale * scaleUpSize, animationSpeed);
         }
         else if (!shouldScaleUp && isScaledUp)
         {
+            SoundManager.Instance.PlaySound("sfx_interactable_disappear");
             isScaledUp = false;
             itemIconCanvas.transform.DOScale(Vector3.zero, animationSpeed);
         }
@@ -97,6 +99,7 @@ public class PickupItem : MonoBehaviour, I_Interactable, IInteractionIdentifier,
         if (Inventory_Manager.Instance.PickupItem(itemData.itemID, player.Get_Player_Type()))
         {
             isPickedUp = true;
+            SoundManager.Instance.PlaySound("sfx_" + interaction_id);
             
             if (itemIconCanvas != null)
             {

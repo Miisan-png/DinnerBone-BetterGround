@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84def0c8488db5e41a82dee32dad5d84, type: 3}
+  m_Name: SO_SoundRepo
+  m_EditorClassIdentifier: 
+  SoundList:
+  - SoundName: sfx_test_sound
+    Clip: {fileID: 8300000, guid: 4ed07ebb1b279d54086b8d3e6d1a1886, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_footstep
+    Clip: {fileID: 8300000, guid: de8ef81b5d7fcc4428b9150ff646aeb9, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.3
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_interactable_appear
+    Clip: {fileID: 8300000, guid: a3dbb8d990bbd1b44a9fa92a0f4837ce, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.85
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_interactable_disappear
+    Clip: {fileID: 8300000, guid: 4a54972e6ead68048bf271492e7709ef, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.8
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_item_interactable
+    Clip: {fileID: 8300000, guid: 1b316326695882444ac8629de8ab4a39, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_wire_select
+    Clip: {fileID: 8300000, guid: 5e765247db81b87419ce0ce20c2fca8f, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.8
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_wire_choose
+    Clip: {fileID: 8300000, guid: 1cfd679700cd90d4a92011e5284f3c46, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.8
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_wire_rotate
+    Clip: {fileID: 8300000, guid: 21d46b1704a41d744bbdc934c7e0eaea, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.8
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_wire_deselect
+    Clip: {fileID: 8300000, guid: 8a0f5033217a2ff498072ef6a7175c87, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.6
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_paper_appear
+    Clip: {fileID: 8300000, guid: 92e0f3dc2b5679343942c323b47f1d55, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_paper_disappear
+    Clip: {fileID: 8300000, guid: f53558ae9acd20a4ba06338cf41ffbdf, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_door_open
+    Clip: {fileID: 8300000, guid: b500500a750715444b076980d69421dc, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_pickup_key
+    Clip: {fileID: 8300000, guid: fa767f35bc056c24ea0d834dce4ff353, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.5
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_start_generator
+    Clip: {fileID: 8300000, guid: 9a27767f3cc3b434d9b13ae4d8915323, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.5
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_player_death
+    Clip: {fileID: 8300000, guid: 8107bee66fb21cb47b8116e164d2be3a, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_player_respawn
+    Clip: {fileID: 8300000, guid: 9b33460b31422cf429d97abefb8ce3a7, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_vent_enter
+    Clip: {fileID: 8300000, guid: 9be2c0ba97ce88c4a96c022b906ca2ea, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  BGMList: []
+  DialoguePath: 

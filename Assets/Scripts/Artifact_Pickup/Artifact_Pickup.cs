@@ -27,6 +27,7 @@ public class Artifact_Note_System : MonoBehaviour, I_Interactable, IInteractionI
     private Vector3 originalImagePosition;
     private Color originalIconColor;
     private Note_UI_Closer uiCloser;
+    private bool wasShowingIcon;
     
     void Start()
     {
@@ -94,6 +95,20 @@ public class Artifact_Note_System : MonoBehaviour, I_Interactable, IInteractionI
         
         bool shouldShow = nearbyPlayer != null;
         Vector3 targetScale = shouldShow ? originalIconScale : Vector3.zero;
+
+        //Dissapear interactable
+        if (wasShowingIcon && !shouldShow)
+        {
+
+            SoundManager.Instance.PlaySound("sfx_interactable_disappear");
+
+        }
+        else if (!wasShowingIcon && shouldShow)
+        {
+            SoundManager.Instance.PlaySound("sfx_interactable_appear");
+        }
+
+        wasShowingIcon = shouldShow;
         
         iconCanvas.transform.DOScale(targetScale, 0.3f);
     }
@@ -109,10 +124,12 @@ public class Artifact_Note_System : MonoBehaviour, I_Interactable, IInteractionI
         
         isUsed = true;
         ShowNote();
-        Destroy(gameObject);
+        Util.WaitNextFrame(this, ()=>Destroy(gameObject));
+        
     }
     
-    public void End_Interaction(Player_Controller player) { }
+    public void End_Interaction(Player_Controller player) {
+    }
     
     public string Get_Interaction_Text()
     {
@@ -138,6 +155,8 @@ public class Artifact_Note_System : MonoBehaviour, I_Interactable, IInteractionI
             noteCanvasGroup.interactable = true;
             noteCanvasGroup.blocksRaycasts = true;
         }
+
+        SoundManager.Instance.PlaySound("sfx_paper_appear");
         
         if (showNoteSampleImage != null && noteSprite != null)
         {

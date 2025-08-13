@@ -1,9 +1,12 @@
-using UnityEngine;
-using System.Collections;
 using DG.Tweening;
+using System;
+using System.Collections;
+using UnityEngine;
 
 public class Player_State_Manager : MonoBehaviour
 {
+    public static Action<Player_Controller> OnPlayerRespawn;
+
     private static Player_State_Manager instance;
     public static Player_State_Manager Instance => instance;
     
@@ -48,6 +51,7 @@ public class Player_State_Manager : MonoBehaviour
         if (player.Get_Player_Type() == Player_Type.Luthe && player1IsDead) return;
         if (player.Get_Player_Type() == Player_Type.Cherie && player2IsDead) return;
         
+        SoundManager.Instance.PlaySound("sfx_player_death");
         StartCoroutine(HandlePlayerDeath(player));
     }
     
@@ -66,7 +70,9 @@ public class Player_State_Manager : MonoBehaviour
         yield return new WaitForSeconds(respawnDelay);
         
         RespawnPlayer(player);
-        
+        OnPlayerRespawn?.Invoke(player);
+        SoundManager.Instance.PlaySound("sfx_player_respawn");
+
         if (playerType == Player_Type.Luthe)
             player1IsDead = false;
         else

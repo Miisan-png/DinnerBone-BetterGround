@@ -6,6 +6,8 @@ public class Vent_Manager : MonoBehaviour
     private static Vent_Manager instance;
     public static Vent_Manager Instance => instance;
 
+    [SerializeField] private SfxVentManager sfxVentManager;
+
     private Player_Controller current_vent_player;
     private bool player_in_vent = false;
 
@@ -46,16 +48,24 @@ public class Vent_Manager : MonoBehaviour
     {
         current_vent_player = player;
         player_in_vent = true;
-        Vent_Fade.Instance.Fade_In_Out(() => { TeleportPlayerToVent(player, entry); });
+        SoundManager.Instance.PlaySound("sfx_vent_enter");
+        Vent_Fade.Instance.Fade_In_Out(() => { 
+            TeleportPlayerToVent(player, entry);
+            sfxVentManager.EnableVentSfx();
+        });
     }
 
     public void Exit_Vent(Player_Controller player, Vent_Exit exit)
     {
         if (current_vent_player != player) return;
+
+        SoundManager.Instance.PlaySound("sfx_vent_enter");
+
         Vent_Fade.Instance.Fade_In_Out(() =>
         {
             TeleportPlayerFromVent(player, exit);
             ResetVentState();
+            sfxVentManager.DisableVentSfx();
         });
     }
 

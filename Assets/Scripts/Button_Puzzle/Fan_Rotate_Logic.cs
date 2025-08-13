@@ -24,6 +24,8 @@ public class Fan_Rotate_Logic : MonoBehaviour
     [Header("Slowdown Settings")]
     [SerializeField] private float slowdown_duration = 2f; // How long the slowdown effect lasts
     [SerializeField] private float speed_recovery_rate = 30f; // How fast speed recovers per second
+
+    [SerializeField] private AudioSource fanAudio;
     
     private Material icon_material;
     private int current_button_index = 0;
@@ -70,8 +72,10 @@ public class Fan_Rotate_Logic : MonoBehaviour
         {
             // Changed from Vector3.forward to -Vector3.forward to rotate clockwise (to the right)
             fan_blades.Rotate(-Vector3.forward, current_rotation_speed * Time.deltaTime);
+            fanAudio.pitch = current_rotation_speed / rotation_speed;
+
         }
-        
+
         rotation_timer += Time.deltaTime;
         if (rotation_timer >= icon_change_interval)
         {
@@ -186,42 +190,57 @@ public class Fan_Rotate_Logic : MonoBehaviour
             icon_change_interval = 2f;
         }
     }
-    
+
+    private Tween slowdown_tween;
+
     public void SlowDownFan()
     {
+        // Kill any existing slowdown tween (and prevent OnComplete from running)
+        if (slowdown_tween != null)
+        {
+            slowdown_tween.Kill(true);
+            slowdown_tween = null;
+        }
+
         // Kill any existing recovery tween
         if (speed_recovery_tween != null)
         {
-            speed_recovery_tween.Kill();
+            speed_recovery_tween.Kill(true);
+            speed_recovery_tween = null;
         }
-        
-        // Calculate new target speed (more dramatic slowdown each time)
+
+        // Calculate new target speed
         float new_target_speed = Mathf.Max(min_speed, current_rotation_speed - slowdown_amount);
-        
+
         // Animate to the slower speed
-        DOTween.To(() => current_rotation_speed, x => current_rotation_speed = x, new_target_speed, 0.5f)
+        slowdown_tween = DOTween.To(() => current_rotation_speed,
+                                     x => current_rotation_speed = x,
+                                     new_target_speed,
+                                     0.5f)
             .SetEase(Ease.OutQuad)
-            .OnComplete(() => {
+            .OnComplete(() =>
+            {
                 // After slowdown, start recovery after a delay
-                DOVirtual.DelayedCall(slowdown_duration, () => {
+                DOVirtual.DelayedCall(slowdown_duration, () =>
+                {
                     StartSpeedRecovery();
                 });
             });
-        
+
         Debug.Log($"Fan slowed down! Speed: {current_rotation_speed} -> {new_target_speed}");
-        
+
         if (new_target_speed <= min_speed)
         {
             OnFanStopped();
         }
     }
-    
+
     private void StartSpeedRecovery()
     {
         if (current_rotation_speed < rotation_speed)
         {
             is_recovering_speed = true;
-            
+
             // Gradually recover speed
             speed_recovery_tween = DOTween.To(
                 () => current_rotation_speed, 

@@ -28,6 +28,8 @@ public class Note_UI_Closer : MonoBehaviour
     {
         if (canvasGroup != null)
         {
+            SoundManager.Instance.PlaySound("sfx_paper_disappear");
+
             canvasGroup.DOFade(0f, 0.3f).OnComplete(() => {
                 ResetPositions();
                 canvasGroup.interactable = false;

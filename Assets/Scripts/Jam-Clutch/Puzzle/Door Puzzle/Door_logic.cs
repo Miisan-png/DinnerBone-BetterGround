@@ -92,6 +92,7 @@ public class Door_Logic : MonoBehaviour, I_Interactable, IInteractionIdentifier,
             doorAnimation.AddClip(doorOpenClip, doorOpenClip.name);
             doorAnimation.AddClip(doorClosedClip, doorClosedClip.name);
             doorAnimation.Play(doorOpenClip.name);
+            SoundManager.Instance.PlaySound("sfx_door_open");
             Debug.Log($"Playing animation: {doorOpenClip.name}");
         }
         else

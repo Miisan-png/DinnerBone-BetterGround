@@ -179,6 +179,9 @@ MonoBehaviour:
   stamina_regen_rate: 15
   min_stamina_to_sprint: 10
   stamina_regen_delay: 1
+  audio_source: {fileID: 0}
+  walk_sound: {fileID: 0}
+  footstep_interval: 0.33
 --- !u!114 &8595221336781419581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4816a8841be6af488159ce3092f8cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interaction_range: 2
+  interaction_range: 1.5
   interaction_layer:
     serializedVersion: 2
     m_Bits: 8

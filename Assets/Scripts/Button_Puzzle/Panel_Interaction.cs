@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIdentifier
 {
@@ -42,6 +44,11 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     private bool[] has_been_rotated;
     private Dual_Panel_Manager dual_panel_manager;
     private int panel_id = 0;
+
+
+    // Kudo's hack to solve rotation bug panel
+    private Dictionary<Transform, Vector3> supposedTargetRotation = new Dictionary<Transform, Vector3>();
+
     
     void Start()
     {
@@ -73,6 +80,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             if (power_components[i] != null)
             {
                 original_rotations[i] = power_components[i].eulerAngles;
+                supposedTargetRotation.Add(power_components[i], power_components[i].eulerAngles);
             }
         }
         
@@ -270,6 +278,8 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
         
         if (arrow_indicator != null)
         {
+            SoundManager.Instance.PlaySound("sfx_wire_select");
+
             Vector3 currentScale = arrow_indicator.transform.localScale;
             arrow_indicator.transform.DOScale(currentScale * 1.2f, 0.15f)
                 .OnComplete(() => {
@@ -281,6 +291,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     private void ExitObjectRotation()
     {
         is_rotating_object = false;
+        SoundManager.Instance.PlaySound("sfx_wire_deselect");
         UpdateArrowAppearance();
     }
     
@@ -290,16 +301,19 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
             power_components[current_component_index] != null)
         {
             Transform target = power_components[current_component_index];
-            Vector3 currentRotation = target.eulerAngles;
+            Vector3 currentRotation = supposedTargetRotation[target];
             Vector3 targetRotation = currentRotation + (Vector3.forward * degrees);
             
             has_been_rotated[current_component_index] = true;
-            
+            supposedTargetRotation[target] = targetRotation;
+            SoundManager.Instance.PlaySound("sfx_wire_rotate");
+
+
             if (reset_tweens[current_component_index] != null)
             {
                 reset_tweens[current_component_index].Kill();
             }
-            
+            //target.DOKill(); 
             target.DORotate(targetRotation, rotation_duration)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() => {
@@ -475,6 +489,7 @@ public class Panel_Interaction : MonoBehaviour, I_Interactable, IInteractionIden
     {
         if (arrow_indicator != null && current_component_index < power_components.Length)
         {
+            SoundManager.Instance.PlaySound("sfx_wire_choose");
             Vector3 target_pos = power_components[current_component_index].position;
             target_pos.z += z_offset;
             target_pos.y += height_offset;

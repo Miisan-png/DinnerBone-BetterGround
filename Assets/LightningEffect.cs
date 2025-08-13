@@ -19,6 +19,9 @@ public class LightningFlicker : MonoBehaviour
     public float flashDuration = 0.1f;
     [Range(0, 1)] public float doubleFlashChance = 0.3f;
 
+    public Vector2 minMaxThunderSoundVolume;
+    public float thunderDelaySfx;
+
     private List<Light> childLights = new List<Light>();
     private float nextFlashTime;
     private float[] originalIntensities;
@@ -66,6 +69,13 @@ public class LightningFlicker : MonoBehaviour
         if (mainFlash != null)
         {
             mainFlash.intensity = mainFlashBaseIntensity + (flashIntensity * mainFlashMultiplier);
+
+            Util.WaitForSeconds(this, () =>
+            {
+                SoundSetting soundSetting = new SoundSetting() { Volume = Random.Range(minMaxThunderSoundVolume.x, minMaxThunderSoundVolume.y) };
+                SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_thunder_", 0.1f, 0, 4), null, soundSetting);
+            }, thunderDelaySfx);
+            
         }
         yield return new WaitForSeconds(flashDuration);
 
@@ -83,6 +93,15 @@ public class LightningFlicker : MonoBehaviour
             
             // Secondary flash (smaller)
             SetLightIntensities(baseIntensity + flashIntensity * 0.7f);
+
+            Util.WaitForSeconds(this, () =>
+            {
+                SoundSetting soundSetting = new SoundSetting() { Volume = Random.Range(minMaxThunderSoundVolume.x, minMaxThunderSoundVolume.y / 2) };
+                SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_thunder_", 0.15f, 0, 4), null, soundSetting);
+            }, thunderDelaySfx);
+
+
+            
             if (mainFlash != null)
             {
                 mainFlash.intensity = mainFlashBaseIntensity + (flashIntensity * mainFlashMultiplier * 0.7f);

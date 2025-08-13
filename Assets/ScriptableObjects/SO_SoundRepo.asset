@@ -115,5 +115,29 @@ MonoBehaviour:
     Volume: 1
     SpatialBlend: 0
     Pitch: 1
+  - SoundName: sfx_thunder_0
+    Clip: {fileID: 8300000, guid: 55eea8b72a5a17242882342efe20a376, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_1
+    Clip: {fileID: 8300000, guid: 019322570543216468811968a869ab2c, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_2
+    Clip: {fileID: 8300000, guid: 851ea6d4b3811f645b061220b46fdd48, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_3
+    Clip: {fileID: 8300000, guid: c7599460bd4a09b47a979d6ddfa4045b, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
   BGMList: []
   DialoguePath: 

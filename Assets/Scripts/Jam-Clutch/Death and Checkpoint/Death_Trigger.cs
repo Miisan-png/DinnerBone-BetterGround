@@ -39,7 +39,7 @@ public class Death_Trigger : MonoBehaviour
         
         if (debugTrigger) Debug.Log($"Death trigger activated by {player.Get_Player_Type()}");
 
-        if (specialDeathSfxName != "")
+        if (!string.IsNullOrEmpty(specialDeathSfxName))
         {
             SoundManager.Instance.PlaySound(specialDeathSfxName);
         }

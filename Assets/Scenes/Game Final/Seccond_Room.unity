@@ -2018,6 +2018,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 0
+  specialDeathSfxName: 
 --- !u!65 &73813426
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11995,6 +11996,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &232308151
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14393,6 +14395,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &306303459
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21895,6 +21898,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &501430254
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25490,6 +25494,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 0
+  specialDeathSfxName: 
 --- !u!65 &604853530
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25994,6 +25999,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &613149398
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31450,6 +31456,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 0
+  specialDeathSfxName: 
 --- !u!1001 &751156944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70542,6 +70549,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &1758764402
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70883,6 +70891,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &1768919091
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -73449,6 +73458,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &1819622274
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79781,6 +79791,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 1
+  specialDeathSfxName: 
 --- !u!65 &1983071490
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -84200,7 +84211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2101504316
 MonoBehaviour:
   m_ObjectHideFlags: 0

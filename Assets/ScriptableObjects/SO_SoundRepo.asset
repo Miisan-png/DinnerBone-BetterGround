@@ -154,11 +154,17 @@ MonoBehaviour:
   - SoundName: sfx_room_change
     Clip: {fileID: 8300000, guid: 1ce90e4cb9a72cf46926e31fc94a831c, type: 3}
     AttachedParent: {fileID: 0}
-    Volume: 0.8
+    Volume: 0.7
     SpatialBlend: 0
     Pitch: 1
   - SoundName: sfx_door_locked
     Clip: {fileID: 8300000, guid: 0e0d290e08d1ff944b41fc57fa195ac2, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.6
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_spider_attack
+    Clip: {fileID: 8300000, guid: b3e7b20d509092e4991197dcd035ad24, type: 3}
     AttachedParent: {fileID: 0}
     Volume: 0.5
     SpatialBlend: 0

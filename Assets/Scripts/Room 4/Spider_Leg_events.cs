@@ -292,7 +292,20 @@ public class SpiderLegEvents : MonoBehaviour
         if (!impactVFX || !impactPoint) return;
 
         var vfx = Instantiate(impactVFX, impactPoint.position, impactPoint.rotation);
-        SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_spider_attack", 0.1f));
+
+        if (CameraUtils.IsPointVisible(Camera.main, impactPoint.position))
+        {
+            SoundSetting soundSetting = new SoundSetting()
+            {
+                Volume = 0.75f
+            };
+            SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_spider_attack", 0.1f), null, soundSetting);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_spider_attack", 0.1f));
+        }
+
 
         if (vfxAutoDestroyAfter > 0f) Destroy(vfx, vfxAutoDestroyAfter);
     }

@@ -15,59 +15,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.3802658, g: 0.4378189, b: 0.5471698, a: 1}
+    m_Value: {r: 0.010047037, g: 0.025157154, b: 0.022083908, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 0.93710685, g: 0.6158475, b: 0.26816562, a: 1}
+    m_Value: {r: 0.9433962, g: 0.69377834, b: 0.5013646, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: -8
---- !u!114 &-5151255253834222710
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
-  m_Name: DepthOfField
-  m_EditorClassIdentifier: 
-  active: 1
-  mode:
-    m_OverrideState: 1
-    m_Value: 2
-  gaussianStart:
-    m_OverrideState: 1
-    m_Value: 0.49
-  gaussianEnd:
-    m_OverrideState: 1
-    m_Value: 83.05
-  gaussianMaxRadius:
-    m_OverrideState: 1
-    m_Value: 0.5
-  highQualitySampling:
-    m_OverrideState: 0
-    m_Value: 0
-  focusDistance:
-    m_OverrideState: 1
-    m_Value: 40
-  aperture:
-    m_OverrideState: 1
-    m_Value: 3.6
-  focalLength:
-    m_OverrideState: 1
-    m_Value: 55
-  bladeCount:
-    m_OverrideState: 0
-    m_Value: 5
-  bladeCurvature:
-    m_OverrideState: 0
-    m_Value: 1
-  bladeRotation:
-    m_OverrideState: 0
-    m_Value: 0
+    m_Value: -0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,7 +35,6 @@ MonoBehaviour:
   m_Name: PP_Volume Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: -5151255253834222710}
   - {fileID: -5774296510016095522}
   - {fileID: 6488293460688507976}
 --- !u!114 &6488293460688507976
@@ -99,13 +52,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.9082316, y: 0.9531207, z: 1, w: 0.027210781}
+    m_Value: {x: 0.94021237, y: 0.98539704, z: 1, w: -0.15510462}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 0.94267607, y: 1, z: 0.9191263, w: -0.08163265}
+    m_Value: {x: 0.92997235, y: 1, z: 0.82789934, w: 0.09419637}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.06802742}
+    m_Value: {x: 0.9259051, y: 0.8923829, z: 1, w: 0.0048987316}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0

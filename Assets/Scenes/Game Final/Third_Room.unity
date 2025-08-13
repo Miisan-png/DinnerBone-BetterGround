@@ -1565,6 +1565,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   debugTrigger: 0
+  specialDeathSfxName: sfx_water_drop
 --- !u!65 &73813426
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40214,10 +40215,6 @@ PrefabInstance:
     - target: {fileID: 7788517609140947031, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
       propertyPath: sprint_speed
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7788517609140947031, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
-      propertyPath: footstep_interval
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7788517609140947031, guid: 981b538c5b2e3d84eaf15817e12157db, type: 3}
       propertyPath: stamina_drain_rate

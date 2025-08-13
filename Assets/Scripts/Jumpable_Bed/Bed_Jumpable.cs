@@ -8,6 +8,7 @@ public class Bed_Jumpable : MonoBehaviour
     [SerializeField] private float animationDuration = 0.5f;
     
     private Vector3 originalScale;
+    private Player_Controller _prevJumpOwner;
     
     void Start()
     {
@@ -35,5 +36,19 @@ public class Bed_Jumpable : MonoBehaviour
             typeof(Player_Movement).GetField("velocity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                 ?.SetValue(movement, new Vector3(0, bounceForce, 0));
         }
+
+        // Kudo's stupid fix for trigger playing twice causing sfx to play twice
+
+        if (_prevJumpOwner != player)
+        {
+            _prevJumpOwner = player;
+            Util.WaitForSeconds(this, () =>
+            {
+                SoundManager.Instance.PlaySound(new SoundVariationizer("sfx_bed_jump", 0.1f));
+                _prevJumpOwner = null;
+            }, 0.1f);
+        }
+
+        
     }
 }

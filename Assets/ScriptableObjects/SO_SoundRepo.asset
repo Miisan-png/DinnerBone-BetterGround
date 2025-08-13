@@ -139,5 +139,17 @@ MonoBehaviour:
     Volume: 1
     SpatialBlend: 0
     Pitch: 1
+  - SoundName: sfx_bed_jump
+    Clip: {fileID: 8300000, guid: b22d34ff9a8b8044385f4dd65b0838b6, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_water_drop
+    Clip: {fileID: 8300000, guid: 7e57f3e2913259244bd6b908fead5e84, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
   BGMList: []
   DialoguePath: 

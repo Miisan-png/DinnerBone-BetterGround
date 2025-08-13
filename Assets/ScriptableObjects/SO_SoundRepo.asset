@@ -28,13 +28,13 @@ MonoBehaviour:
   - SoundName: sfx_interactable_appear
     Clip: {fileID: 8300000, guid: a3dbb8d990bbd1b44a9fa92a0f4837ce, type: 3}
     AttachedParent: {fileID: 0}
-    Volume: 0.85
+    Volume: 1
     SpatialBlend: 0
     Pitch: 1
   - SoundName: sfx_interactable_disappear
     Clip: {fileID: 8300000, guid: 4a54972e6ead68048bf271492e7709ef, type: 3}
     AttachedParent: {fileID: 0}
-    Volume: 0.8
+    Volume: 1
     SpatialBlend: 0
     Pitch: 1
   - SoundName: sfx_item_interactable
@@ -149,6 +149,18 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 7e57f3e2913259244bd6b908fead5e84, type: 3}
     AttachedParent: {fileID: 0}
     Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_room_change
+    Clip: {fileID: 8300000, guid: 1ce90e4cb9a72cf46926e31fc94a831c, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.8
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_door_locked
+    Clip: {fileID: 8300000, guid: 0e0d290e08d1ff944b41fc57fa195ac2, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.5
     SpatialBlend: 0
     Pitch: 1
   BGMList: []

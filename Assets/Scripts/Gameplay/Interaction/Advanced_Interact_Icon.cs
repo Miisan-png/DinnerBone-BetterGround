@@ -125,6 +125,7 @@ public class Advanced_Interact_Icon : MonoBehaviour
             
             if (isInInteractRange && !isExpanded)
             {
+                SoundManager.Instance.PlaySound("sfx_door_locked");
                 ExpandBrackets();
             }
             else if (!isInInteractRange && isExpanded)

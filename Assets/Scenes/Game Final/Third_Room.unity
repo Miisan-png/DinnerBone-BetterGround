@@ -3140,8 +3140,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.2925558, z: 1}
+  m_Center: {x: 5.5611564e-11, y: 0.14627816, z: 7.176553e-12}
 --- !u!23 &167829472
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7412,6 +7412,7 @@ MonoBehaviour:
   fadeSpeed: 5
   movementThreshold: 0.1
   idleDelay: 1
+  shadowObject: {fileID: 890580753}
 --- !u!82 &403699659
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31795,6 +31796,7 @@ MonoBehaviour:
   fadeSpeed: 5
   movementThreshold: 0.1
   idleDelay: 1
+  shadowObject: {fileID: 1742387154}
 --- !u!82 &1645402605
 AudioSource:
   m_ObjectHideFlags: 0

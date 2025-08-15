@@ -18895,6 +18895,7 @@ MonoBehaviour:
   fadeSpeed: 5
   movementThreshold: 0.1
   idleDelay: 1
+  shadowObject: {fileID: 606690017}
 --- !u!82 &403699659
 AudioSource:
   m_ObjectHideFlags: 0
@@ -67976,6 +67977,7 @@ MonoBehaviour:
   fadeSpeed: 5
   movementThreshold: 0.1
   idleDelay: 1
+  shadowObject: {fileID: 1380766754}
 --- !u!82 &1645402605
 AudioSource:
   m_ObjectHideFlags: 0

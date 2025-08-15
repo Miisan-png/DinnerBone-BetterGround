@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Video;
-
+using DG.Tweening;
 public class CutsceneVideoPlayer : MonoBehaviour
 {
     [Header("References")]
@@ -39,14 +39,28 @@ public class CutsceneVideoPlayer : MonoBehaviour
     void OnVideoFinished(VideoPlayer vp)
     {
         if (hasVideoEnded) return;
-        
+
         hasVideoEnded = true;
-        
-        if (skipToSceneOnVideoEnd && cutsceneManager != null)
+
+        if (cutsceneManager != null && cutsceneManager.fadePanel != null)
         {
-            cutsceneManager.LoadNextScene();
+            cutsceneManager.fadePanel.DOFade(1f, cutsceneManager.fadeInSpeed).OnComplete(() =>
+            {
+                if (skipToSceneOnVideoEnd)
+                {
+                    cutsceneManager.LoadNextScene();
+                }
+            });
+        }
+        else
+        {
+            if (skipToSceneOnVideoEnd && cutsceneManager != null)
+            {
+                cutsceneManager.LoadNextScene();
+            }
         }
     }
+
     
     public void PlayVideo()
     {

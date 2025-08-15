@@ -156,6 +156,7 @@ public class Player_Movement : MonoBehaviour
         if (controller != null && controller.enabled && is_grounded)
         {
             velocity.y = jump_force;
+            SoundManager.Instance.PlaySound("sfx_player_jump");
             GetComponent<Player_Animation_Controller>()?.TriggerJump(); // Add this line
         }
     }

@@ -1337,7 +1337,7 @@ MonoBehaviour:
   stamina_regen_delay: 1
   audio_source: {fileID: 0}
   walk_sound: {fileID: 0}
-  footstep_interval: 0.5
+  footstep_interval: 0.33
 --- !u!114 &6470454470610860219
 MonoBehaviour:
   m_ObjectHideFlags: 0

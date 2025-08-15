@@ -8,6 +8,7 @@ public class Death_Trigger : MonoBehaviour
     [SerializeField] private bool oneTimeOnly = false;
     [SerializeField] private LayerMask playerLayerMask = -1;
     [SerializeField] private bool debugTrigger = false;
+    [SerializeField] private string specialDeathSfxName;
     
     private bool hasTriggered = false;
     
@@ -37,7 +38,12 @@ public class Death_Trigger : MonoBehaviour
         }
         
         if (debugTrigger) Debug.Log($"Death trigger activated by {player.Get_Player_Type()}");
-        
+
+        if (!string.IsNullOrEmpty(specialDeathSfxName))
+        {
+            SoundManager.Instance.PlaySound(specialDeathSfxName);
+        }
+
         if (killBothPlayers)
         {
             Player_Controller[] allPlayers = FindObjectsByType<Player_Controller>(FindObjectsSortMode.None);

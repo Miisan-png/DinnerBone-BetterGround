@@ -28,13 +28,13 @@ MonoBehaviour:
   - SoundName: sfx_interactable_appear
     Clip: {fileID: 8300000, guid: a3dbb8d990bbd1b44a9fa92a0f4837ce, type: 3}
     AttachedParent: {fileID: 0}
-    Volume: 0.85
+    Volume: 1
     SpatialBlend: 0
     Pitch: 1
   - SoundName: sfx_interactable_disappear
     Clip: {fileID: 8300000, guid: 4a54972e6ead68048bf271492e7709ef, type: 3}
     AttachedParent: {fileID: 0}
-    Volume: 0.8
+    Volume: 1
     SpatialBlend: 0
     Pitch: 1
   - SoundName: sfx_item_interactable
@@ -113,6 +113,72 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 9be2c0ba97ce88c4a96c022b906ca2ea, type: 3}
     AttachedParent: {fileID: 0}
     Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_0
+    Clip: {fileID: 8300000, guid: 55eea8b72a5a17242882342efe20a376, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_1
+    Clip: {fileID: 8300000, guid: 019322570543216468811968a869ab2c, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_2
+    Clip: {fileID: 8300000, guid: 851ea6d4b3811f645b061220b46fdd48, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_thunder_3
+    Clip: {fileID: 8300000, guid: c7599460bd4a09b47a979d6ddfa4045b, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_bed_jump
+    Clip: {fileID: 8300000, guid: b22d34ff9a8b8044385f4dd65b0838b6, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_water_drop
+    Clip: {fileID: 8300000, guid: 7e57f3e2913259244bd6b908fead5e84, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_room_change
+    Clip: {fileID: 8300000, guid: 1ce90e4cb9a72cf46926e31fc94a831c, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.7
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_door_locked
+    Clip: {fileID: 8300000, guid: 0e0d290e08d1ff944b41fc57fa195ac2, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.6
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_spider_attack
+    Clip: {fileID: 8300000, guid: b3e7b20d509092e4991197dcd035ad24, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.05
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_player_damage
+    Clip: {fileID: 8300000, guid: 0956fc5ebedc34444bfc3bbdb647cfc8, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 1
+    SpatialBlend: 0
+    Pitch: 1
+  - SoundName: sfx_player_jump
+    Clip: {fileID: 8300000, guid: a34745162bd8c394dbbbe780493d8841, type: 3}
+    AttachedParent: {fileID: 0}
+    Volume: 0.5
     SpatialBlend: 0
     Pitch: 1
   BGMList: []

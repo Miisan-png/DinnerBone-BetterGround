@@ -158,7 +158,10 @@ public class Player_Animation_Controller : MonoBehaviour
             isWalking = false;
             isRunning = false;
             if (debugAnimations) Debug.Log($"{gameObject.name}: Jump triggered");
-            
+
+            SoundManager.Instance.PlaySound("sfx_player_jump");
+
+
             DOTween.Sequence()
                 .AppendInterval(0.5f)
                 .AppendCallback(() => {

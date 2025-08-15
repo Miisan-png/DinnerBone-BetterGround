@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
 
-public class Spider_Boss_Player_State : MonoBehaviour
+public class Spider_Boss_Player_State : Singleton<Spider_Boss_Player_State>
 {
     [Header("Player References")]
     [SerializeField] private Player_Controller player1;
@@ -49,7 +49,10 @@ public class Spider_Boss_Player_State : MonoBehaviour
     
     private Canvas fadeCanvas;
     private Image fadeImage;
-    
+
+    public int Player1Hits { get => player1Hits; }
+    public int Player2Hits { get => player2Hits; }
+
     void Start()
     {
         if (player1 == null || player2 == null)
@@ -245,6 +248,8 @@ public class Spider_Boss_Player_State : MonoBehaviour
         if (hitVFX != null)
         {
             hitVFX.SetActive(true);
+
+            SoundManager.Instance.PlaySound("sfx_player_damage");
             
             ParticleSystem[] particles = hitVFX.GetComponentsInChildren<ParticleSystem>();
             foreach (var ps in particles)

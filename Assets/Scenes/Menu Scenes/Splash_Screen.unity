@@ -703,7 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f4cf56277bbbf4fa15474925840923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Main_Menu
+  nextSceneName: Menu_Start
   waitTime: 5
   fadeCanvasGroup: {fileID: 928445387}
   fadeOutDuration: 1

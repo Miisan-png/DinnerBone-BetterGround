@@ -49,97 +49,108 @@ public class Player_Animation_Controller : MonoBehaviour
     }
     
     private void HandleAnimations()
+{
+    if (meshAnimator == null || characterController == null || playerMovement == null) return;
+
+    // Stop everything else if picking up or jumping
+    if (isPickingUp || isJumping)
     {
-        if (meshAnimator == null || characterController == null || playerMovement == null) return;
-        
-        if (isPickingUp || isJumping) return;
-        
-        Vector3 velocity = characterController.velocity;
-        Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
-        float speed = horizontalVelocity.magnitude;
-        bool isGrounded = characterController.isGrounded;
-        bool isSprinting = playerMovement.IsSprinting();
-        
-        bool shouldMove = speed > movementThreshold && isGrounded;
-        
-        if (!wasGrounded && isGrounded)
+        meshAnimator.SetTrigger("idle");
+        isWalking = false;
+        isRunning = false;
+        return;
+    }
+
+    Vector3 velocity = characterController.velocity;
+    Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
+    float speed = horizontalVelocity.magnitude;
+    bool isGrounded = characterController.isGrounded;
+    bool isSprinting = playerMovement.IsSprinting();
+
+    // check if player has actual input (so standing still while interacting won't play walk)
+    bool hasInput = playerMovement != null && playerMovement.CurrentInputMagnitude() > 0.1f;
+    bool shouldMove = hasInput && speed > movementThreshold && isGrounded;
+
+    // Landing
+    if (!wasGrounded && isGrounded)
+    {
+        if (debugAnimations) Debug.Log($"{gameObject.name}: Landing");
+        meshAnimator.SetTrigger("land");
+    }
+
+    if (shouldMove)
+    {
+        if (isSprinting)
         {
-            if (debugAnimations) Debug.Log($"{gameObject.name}: Landing");
-        }
-        
-        if (shouldMove)
-        {
-            if (isSprinting)
+            if (!isRunning)
             {
-                if (!isRunning)
-                {
-                    if (debugAnimations) Debug.Log($"{gameObject.name}: Starting to run");
-                    meshAnimator.SetTrigger("running");
-                    isRunning = true;
-                    isWalking = false;
-                }
-            }
-            else
-            {
-                if (!isWalking)
-                {
-                    if (debugAnimations) Debug.Log($"{gameObject.name}: Starting to walk");
-                    meshAnimator.SetTrigger("walk");
-                    isWalking = true;
-                    isRunning = false;
-                }
+                if (debugAnimations) Debug.Log($"{gameObject.name}: Start running");
+                meshAnimator.SetTrigger("running");
+                isRunning = true;
+                isWalking = false;
             }
         }
         else
         {
-            if (isWalking || isRunning)
+            if (!isWalking)
             {
-                if (debugAnimations) Debug.Log($"{gameObject.name}: Going to idle");
-                meshAnimator.SetTrigger("idle");
-                isWalking = false;
+                if (debugAnimations) Debug.Log($"{gameObject.name}: Start walking");
+                meshAnimator.SetTrigger("walk");
+                isWalking = true;
                 isRunning = false;
             }
         }
-        
-        if (shouldMove && isWalking && isSprinting)
+    }
+    else
+    {
+        if (isWalking || isRunning)
         {
-            if (debugAnimations) Debug.Log($"{gameObject.name}: Transitioning from walk to run");
-            meshAnimator.SetTrigger("running");
-            isRunning = true;
+            if (debugAnimations) Debug.Log($"{gameObject.name}: Idle");
+            meshAnimator.SetTrigger("idle");
             isWalking = false;
-        }
-        else if (shouldMove && isRunning && !isSprinting)
-        {
-            if (debugAnimations) Debug.Log($"{gameObject.name}: Transitioning from run to walk");
-            meshAnimator.SetTrigger("walk");
-            isWalking = true;
             isRunning = false;
         }
-        
-        wasGrounded = isGrounded;
-        
-        if (meshAnimator.parameters.Length > 0)
+    }
+
+    // Transition checks
+    if (shouldMove && isWalking && isSprinting)
+    {
+        meshAnimator.SetTrigger("running");
+        isRunning = true;
+        isWalking = false;
+    }
+    else if (shouldMove && isRunning && !isSprinting)
+    {
+        meshAnimator.SetTrigger("walk");
+        isWalking = true;
+        isRunning = false;
+    }
+
+    wasGrounded = isGrounded;
+
+    // Update animator parameters if they exist
+    if (meshAnimator.parameters.Length > 0)
+    {
+        foreach (AnimatorControllerParameter param in meshAnimator.parameters)
         {
-            foreach (AnimatorControllerParameter param in meshAnimator.parameters)
+            switch (param.name)
             {
-                switch (param.name)
-                {
-                    case "Speed":
-                        meshAnimator.SetFloat("Speed", speed);
-                        break;
-                    case "IsGrounded":
-                        meshAnimator.SetBool("IsGrounded", isGrounded);
-                        break;
-                    case "IsSprinting":
-                        meshAnimator.SetBool("IsSprinting", isSprinting);
-                        break;
-                    case "IsMoving":
-                        meshAnimator.SetBool("IsMoving", shouldMove);
-                        break;
-                }
+                case "Speed":
+                    meshAnimator.SetFloat("Speed", speed);
+                    break;
+                case "IsGrounded":
+                    meshAnimator.SetBool("IsGrounded", isGrounded);
+                    break;
+                case "IsSprinting":
+                    meshAnimator.SetBool("IsSprinting", isSprinting);
+                    break;
+                case "IsMoving":
+                    meshAnimator.SetBool("IsMoving", shouldMove);
+                    break;
             }
         }
     }
+}
     
     private void CheckForPickupTrigger()
     {

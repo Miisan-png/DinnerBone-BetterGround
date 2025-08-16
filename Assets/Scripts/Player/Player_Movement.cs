@@ -69,7 +69,7 @@ public class Player_Movement : MonoBehaviour
         }
 
         Debug.Log($"Player mesh assigned to: {player_mesh.name}");
-        
+
         // Initialize footstep timer
         footstep_timer = footstep_interval;
     }
@@ -133,9 +133,9 @@ public class Player_Movement : MonoBehaviour
         // This makes it feel more responsive when starting to walk again after a pause.
         if (!isMoving && wasMoving)
         {
-             footstep_timer = footstep_interval;
+            footstep_timer = footstep_interval;
         }
-        
+
         // Update the previous moving state
         wasMoving = isMoving;
     }
@@ -305,4 +305,10 @@ public class Player_Movement : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position + Vector3.up * 3f, stamina_ratio);
         }
     }
+    
+    public float CurrentInputMagnitude()
+    {
+        return current_input.magnitude;
+    }
+
 }

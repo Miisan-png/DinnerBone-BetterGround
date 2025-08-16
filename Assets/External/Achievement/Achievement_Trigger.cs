@@ -20,15 +20,25 @@ public class Achievement_Trigger : MonoBehaviour
     private bool has_triggered = false;
     private bool luthe_in_trigger = false;
     private bool cherie_in_trigger = false;
+
+    private Achievement_Manager achievementManager; // scene reference
     
     void Start()
     {
+        // Make sure there’s always a BoxCollider
         BoxCollider trigger_collider = GetComponent<BoxCollider>();
         if (trigger_collider == null)
         {
             trigger_collider = gameObject.AddComponent<BoxCollider>();
         }
         trigger_collider.isTrigger = true;
+
+        // Find Achievement_Manager in the same scene
+        achievementManager = FindObjectOfType<Achievement_Manager>();
+        if (achievementManager == null)
+        {
+            Debug.LogError("No Achievement_Manager found in this scene!");
+        }
     }
     
     void OnTriggerEnter(Collider other)
@@ -120,9 +130,9 @@ public class Achievement_Trigger : MonoBehaviour
     
     private void TriggerAchievement()
     {
-        if (Achievement_Manager.Instance != null)
+        if (achievementManager != null)
         {
-            Achievement_Manager.Instance.UnlockAchievement(achievement_tag);
+            achievementManager.UnlockAchievement(achievement_tag);
             has_triggered = true;
             
             if (debug_trigger)
@@ -132,7 +142,7 @@ public class Achievement_Trigger : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Achievement_Manager instance not found!");
+            Debug.LogError("Achievement_Manager not found in scene when trying to unlock!");
         }
     }
     

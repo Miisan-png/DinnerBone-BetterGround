@@ -6,9 +6,6 @@ using System.Collections.Generic;
 
 public class Achievement_Manager : MonoBehaviour
 {
-    private static Achievement_Manager instance;
-    public static Achievement_Manager Instance => instance;
-    
     [Header("UI References")]
     [SerializeField] private Image achievement_icon;
     [SerializeField] private TextMeshProUGUI description_text;
@@ -31,19 +28,6 @@ public class Achievement_Manager : MonoBehaviour
     private Vector3 count_hidden_position;
     private bool is_showing = false;
     private Queue<Achievement_Database.Achievement_Entry> achievement_queue = new Queue<Achievement_Database.Achievement_Entry>();
-    
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     
     void Start()
     {
